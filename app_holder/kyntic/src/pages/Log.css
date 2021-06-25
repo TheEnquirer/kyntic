@@ -1,3 +1,16 @@
 .input {
     --color: var(--primary);
 }
+
+.submit-wrapper {
+    /*border: 1px solid red;*/
+    display: flex;
+    align-content: center;
+    justify-content: center;
+
+}
+
+.submit {
+    --width: 100%;
+
+}

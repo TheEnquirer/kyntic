@@ -1,5 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonRange, IonIcon,
-    IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonInput, IonTextarea, IonLabel
+    IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonInput, IonTextarea, IonLabel,
+    IonButton
 } from '@ionic/react';
 import { happy, sad, bed, batteryDead, batteryCharging } from 'ionicons/icons';
 import ExploreContainer from '../components/ExploreContainer';
@@ -76,7 +77,9 @@ const Log = () => {
 			></IonTextarea>
 		    </IonItem>
 		</IonCard>
-
+		<div className="submit-wrapper">
+	    <IonButton color="primary" expand={"block"} className="submit" mode="ios">Record</IonButton>
+		</div>
 	    </IonContent>
 	</IonPage>
     );
