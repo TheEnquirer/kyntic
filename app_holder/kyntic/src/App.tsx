@@ -11,7 +11,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle, barChart, search, pulse, analytics } from 'ionicons/icons';
 import Log from './pages/Log';
-import Tab2 from './pages/Tab2';
+import Analyze from './pages/Analyze';
 import Tab3 from './pages/Tab3';
 
 /* Core CSS required for Ionic components to work properly */
@@ -41,8 +41,8 @@ const App: React.FC = () => (
           <Route exact path="/log">
             <Log />
           </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
+          <Route exact path="/analyze">
+            <Analyze />
           </Route>
           <Route path="/tab3">
             <Tab3 />
@@ -56,7 +56,7 @@ const App: React.FC = () => (
             <IonIcon icon={pulse} />
             <IonLabel>Log</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
+          <IonTabButton tab="analyze" href="/analyze">
             <IonIcon icon={search} />
             <IonLabel>Analyze</IonLabel>
           </IonTabButton>
