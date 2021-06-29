@@ -7,17 +7,22 @@ import React, { useState } from "react"
 import Chart from "../components/Chart"
 
 const Analyze = () => {
-    const data = {
-	labels: ['1', '2', '3', '4', '5', '6'],
-	datasets: [
-	    {
-		label: '# of Votes',
-		data: [12, 19, 3, 5, 2, 3],
-		fill: false,
-		backgroundColor: 'rgb(255, 99, 132)',
-		borderColor: 'rgba(255, 99, 132, 0.2)',
-	    },
-	],
+    const data = (canvas) => {
+	const c = canvas.getContext('2d')
+	const grd = c.createLinearGradient(0,1200,0,0);
+	grd.addColorStop(1, "#96e2d6");
+	grd.addColorStop(0, "#3fbda8");
+	return {
+	    labels: ['12 AM', '', '', '', '', '', '6', '', '', '', '', '', '12 PM', '', '', '', '', '', '6'],
+	    datasets: [
+		{
+		    label: '# of Tics',
+		    data: [12, 19, 3, 5, 2, 3, 7, 19, 4, 9, 1, 12, 5, 14, 6, 18, 3, 9, 12, 4],
+		    backgroundColor: grd,
+		    borderWidth: 0,
+		},
+	    ],
+	}
     };
     return (
 	<IonPage>
@@ -33,8 +38,9 @@ const Analyze = () => {
 		    </IonToolbar>
 		</IonHeader>
 		{/* CONTENT STARTS HERE */}
-		<Chart data={data} />
-
+		<div className="chart-wrapper">
+		</div>
+		    <Chart data={data} />
 
 	    </IonContent>
 	</IonPage>

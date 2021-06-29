@@ -4,12 +4,31 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonRange
 } from '@ionic/react';
 import { happy, sad, bed, batteryDead, batteryCharging } from 'ionicons/icons';
 import React, { useState } from "react"
-import { Line } from 'react-chartjs-2'
+import { Line, Bar } from 'react-chartjs-2'
 
 const Chart = (props) => {
+    const options = {
+	scales: {
+	    yAxes: [
+		{
+		    ticks: {
+			beginAtZero: true,
+		    },
+		},
+	    ],
+	},
+	maintainAspectRatio: false,
+	responsive: true,
+    };
     return (
 	<IonContent>
-	    <Line data={props.data} />
+	    {
+	    // <Line data={props.data} />
+	    }
+	    <Bar data={props.data} options={options}
+		height={0.1}
+		width={1}
+	    />
 	</IonContent>
 
     );
