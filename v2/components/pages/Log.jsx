@@ -48,6 +48,7 @@ const Log = () => {
         <IonToolbar>
 	  <IonTitle>
 	      <div className={pageStyles.title}> log </div>
+	      <hr className={pageStyles.sep}/>
 	  </IonTitle>
           {/*<IonButtons slot="start">*/}
             {/*<IonMenuButton />*/}
@@ -69,7 +70,7 @@ const Log = () => {
         {/*{homeItems.map((i, index) => (
           <FeedCard {...i} key={index} />
         ))}*/}
-	  gutted.
+	  {/*gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted. gutted.*/}
       </IonContent>
     </IonPage>
   );

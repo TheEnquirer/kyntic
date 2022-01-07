@@ -8,6 +8,8 @@ body {
   overflow: hidden;
   height: 100vh;
   width: 100vw;
+  /*background-color: #f9f7f4;*/
+  /*background-color: red;*/
 }
 
 #__next {
