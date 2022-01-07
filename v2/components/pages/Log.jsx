@@ -37,7 +37,7 @@ import Store from '../../store';
   </Card>
 );*/}
 
-const Feed = () => {
+const Log = () => {
   const homeItems = Store.useState(getHomeItems);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -45,7 +45,7 @@ const Feed = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Feed</IonTitle>
+          <IonTitle>log</IonTitle>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
@@ -59,7 +59,7 @@ const Feed = () => {
       <IonContent className="ion-padding" fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Feed</IonTitle>
+            <IonTitle size="large">log</IonTitle>
           </IonToolbar>
         </IonHeader>
         {/*<Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />*/}
@@ -72,4 +72,4 @@ const Feed = () => {
   );
 };
 
-export default Feed;
+export default Log;

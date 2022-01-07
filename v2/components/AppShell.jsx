@@ -16,11 +16,13 @@ window.matchMedia("(prefers-color-scheme: dark)").addListener(async (status) => 
 });
 
 const AppShell = () => {
+//localStorage.theme = 'light'
+
   return (
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          <Menu />
+          {/*<Menu />*/}
           <IonRouterOutlet id="main">
             <Route path="/tabs" render={() => <Tabs />} />
             <Route exact path="/" render={() => <Redirect to="/tabs" />} />
