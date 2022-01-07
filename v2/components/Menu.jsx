@@ -16,9 +16,9 @@ import { cog, flash, list } from 'ionicons/icons';
 
 const pages = [
   {
-    title: 'Feed',
+    title: 'log',
     icon: flash,
-    url: '/tabs/feed',
+    url: '/tabs/log',
   },
   //{
   //  title: 'Lists',
@@ -56,11 +56,11 @@ const Menu = () => {
 
   return (
     <IonMenu side="start" contentId="main" onIonDidOpen={handleOpen} onIonDidClose={handleClose}>
-      <IonHeader>
+      {/*<IonHeader>
         <IonToolbar>
           <IonTitle>Menu</IonTitle>
         </IonToolbar>
-      </IonHeader>
+      </IonHeader>*/}
       <IonContent>
         <IonList>
           {pages.map((p, k) => (

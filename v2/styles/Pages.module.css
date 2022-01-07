@@ -1,0 +1,5 @@
+.title {
+    border: 1px solid red;
+    @apply border-2 border-red-500;
+}
+

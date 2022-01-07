@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { notificationsOutline } from 'ionicons/icons';
 import { getHomeItems } from '../../store/selectors';
 import Store from '../../store';
+import pageStyles from '../../styles/Pages.module.css';
 
 {/*const FeedCard = ({ title, type, text, author, authorAvatar, image }) => (
   <Card className="mx-auto my-4">
@@ -43,23 +44,25 @@ const Log = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      {/*<IonHeader>*/}
         <IonToolbar>
-          <IonTitle>log</IonTitle>
-          <IonButtons slot="start">
-            <IonMenuButton />
-          </IonButtons>
+	  <IonTitle>
+	      <div className={pageStyles.title}> log </div>
+	  </IonTitle>
+          {/*<IonButtons slot="start">*/}
+            {/*<IonMenuButton />*/}
+          {/*</IonButtons>*/}
           {/*<IonButtons slot="end">
             <IonButton onClick={() => setShowNotifications(true)}>
               <IonIcon icon={notificationsOutline} />
             </IonButton>
           </IonButtons>*/}
         </IonToolbar>
-      </IonHeader>
+      {/*</IonHeader>*/}
       <IonContent className="ion-padding" fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">log</IonTitle>
+	    <IonTitle size="large">log</IonTitle>
           </IonToolbar>
         </IonHeader>
         {/*<Notifications open={showNotifications} onDidDismiss={() => setShowNotifications(false)} />*/}
