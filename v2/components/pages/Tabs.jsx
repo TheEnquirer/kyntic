@@ -12,7 +12,7 @@ import {
 
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { cog, flash, list } from 'ionicons/icons';
+import { cog, flash, list, barcodeOutline, ellipse, analytics, copy, radioButtonOnOutline, resizeOutline } from 'ionicons/icons';
 import pageStyles from '../../styles/Pages.module.css';
 
 import Log from './Log';
@@ -36,19 +36,21 @@ const Tabs = () => {
 		  className={pageStyles.borderSep}
 		  slot="bottom"
 	      >
-		  <IonTabButton className="mt-3" tab="tab1" href="/tabs/log">
-		      <IonIcon icon={flash} />
-		      <IonLabel>log</IonLabel>
+		  <IonTabButton className={pageStyles.tabs} tab="tab1" href="/tabs/log">
+		      {/*<div className="flex flex-col border-2 border-blue-300">*/}
+		      {/*<IonIcon icon={radioButtonOnOutline} />*/}
+		      <IonLabel className="font-bold">log</IonLabel>
+		      {/*</div>*/}
 		  </IonTabButton>
 
-		  <IonTabButton className="mt-3" tab="tab2" href="/tabs/see">
-		      <IonIcon icon={flash} />
-		      <IonLabel>see</IonLabel>
+		  <IonTabButton className={pageStyles.tabs} tab="tab2" href="/tabs/see">
+		      {/*<IonIcon icon={copy} />*/}
+		      <IonLabel className="font-bold">see</IonLabel>
 		  </IonTabButton>
 
-		  <IonTabButton className="mt-3" tab="tab3" href="/tabs/sync">
-		      <IonIcon icon={flash} />
-		      <IonLabel>link</IonLabel>
+		  <IonTabButton className={pageStyles.tabs} tab="tab3" href="/tabs/sync">
+		      {/*<IonIcon icon={resizeOutline} />*/}
+		      <IonLabel className="font-bold">link</IonLabel>
 		  </IonTabButton>
 	      </IonTabBar>
 	  </IonTabs>
