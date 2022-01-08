@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { 
+import {
     IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel,
     IonPage,
     IonHeader,
@@ -15,22 +15,24 @@ import { IonReactRouter } from '@ionic/react-router';
 import { cog, flash, list } from 'ionicons/icons';
 import pageStyles from '../../styles/Pages.module.css';
 
-import Home from './Log';
-//import Lists from './Lists';
-//import ListDetail from './ListDetail';
-//import Settings from './Settings';
+import Log from './Log';
+import See from './See';
+import Sync from './Sync';
 
 const Tabs = () => {
   return (
 	  <IonTabs >
 	      <IonRouterOutlet>
-		  <Route path="/tabs/log" component={Home} exact={true} />
+		  <Route path="/tabs/log" component={Log} exact={true} />
+		  <Route path="/tabs/see" component={See} exact={true} />
+		  <Route path="/tabs/sync" component={Sync} exact={true} />
+
 		  {/*<Route path="/tabs/lists" component={Lists} exact={true} />
 	<Route path="/tabs/lists/:listId" component={ListDetail} exact={true} />
 	<Route path="/tabs/settings" component={Settings} exact={true} />*/}
 		  <Route path="/tabs" render={() => <Redirect to="/tabs/log" />} exact={true} />
 	      </IonRouterOutlet>
-	      <IonTabBar 
+	      <IonTabBar
 		  className={pageStyles.borderSep}
 		  slot="bottom"
 	      >
@@ -39,14 +41,14 @@ const Tabs = () => {
 		      <IonLabel>log</IonLabel>
 		  </IonTabButton>
 
-		  <IonTabButton className="mt-3" tab="tab1" href="/tabs/log">
+		  <IonTabButton className="mt-3" tab="tab2" href="/tabs/see">
 		      <IonIcon icon={flash} />
-		      <IonLabel>log</IonLabel>
+		      <IonLabel>see</IonLabel>
 		  </IonTabButton>
 
-		  <IonTabButton className="mt-3" tab="tab1" href="/tabs/log">
+		  <IonTabButton className="mt-3" tab="tab3" href="/tabs/sync">
 		      <IonIcon icon={flash} />
-		      <IonLabel>log</IonLabel>
+		      <IonLabel>link</IonLabel>
 		  </IonTabButton>
 	      </IonTabBar>
 	  </IonTabs>
