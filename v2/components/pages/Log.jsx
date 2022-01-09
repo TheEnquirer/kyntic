@@ -12,6 +12,7 @@ import {
 import { useState } from 'react';
 import pageStyles from '../../styles/Pages.module.css';
 import Item from "../ui/Item";
+import { useHistory } from "react-router-dom";
 
 const Log = () => {
 
@@ -31,7 +32,16 @@ const Log = () => {
 	</IonHeader>
 	  <div className="flex flex-col mt-3 space-y-8">
 	      {Items.map((e) => {
-		  return ( <Item obj={e} /> )
+		  return ( 
+		      <Item 
+			  obj={e} 
+			  //className="cursor-pointer"
+			  //onClick={(e) => {
+			  //    console.log("clicked!");
+			  //    history.push("/log/sub");
+			  //}}
+		      /> 
+		  )
 	      })}
 	  </div>
       </IonContent>

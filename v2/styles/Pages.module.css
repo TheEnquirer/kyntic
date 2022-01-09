@@ -56,3 +56,12 @@
     @apply h-12 border-0 border-blue-300 rounded-lg;
 }
 
+
+
+.pager {
+    background-color: #f9f7f4;
+    @apply absolute z-10 w-screen h-screen;
+}
+
+
+

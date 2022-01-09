@@ -19,7 +19,7 @@ import pageStyles from '../../styles/Pages.module.css';
 import Log from './Log';
 import See from './See';
 import Sync from './Sync';
-import Mood from './Mood';
+import Sub from './Sub';
 
 const Tabs = () => {
   return (
@@ -29,14 +29,15 @@ const Tabs = () => {
 		  <Route path="/tabs/see" component={See} exact={true} />
 		  <Route path="/tabs/sync" component={Sync} exact={true} />
 
-		  <Route path="/tabs/log/mood" component={Mood} exact={true} />
+		  {/*<Route path="/tabs/sub" component={Sub} exact={true} />*/}
+		  <Route path="/tabs/sub" render={() => <Sub /> } exact={true} />
 
 		  {/*<Route path="/tabs/lists" component={Lists} exact={true} />
 	<Route path="/tabs/lists/:listId" component={ListDetail} exact={true} />
 	<Route path="/tabs/settings" component={Settings} exact={true} />*/}
 		  <Route path="/tabs" render={() => <Redirect to="/tabs/log" />} exact={true} />
 	      </IonRouterOutlet>
-	      {String(location.pathname).includes("log/")? 
+	      {String(location.pathname).includes("log/")?
 	      <IonTabBar
 		  //slot="bottom"
 		  //className="appearance-none"
@@ -63,6 +64,10 @@ const Tabs = () => {
 		      {/*<IonIcon icon={resizeOutline} />*/}
 		      <IonLabel className="font-bold">link</IonLabel>
 		  </IonTabButton>
+
+		  {/*<IonTabButton className="appearance-none" tab="tab4" href="/tabs/sub">
+		  </IonTabButton>*/}
+
 	      </IonTabBar>
 	      }
 	  </IonTabs>
