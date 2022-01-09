@@ -16,12 +16,12 @@ import { useHistory } from "react-router-dom";
 //import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 
 const Item = (props) => {
-    const history = useHistory();
+    const history = useHistory()
     return (
 	    <div className="p-4 ml-4 mr-4 h-28 rounded-2xl" style={{backgroundColor: props.obj.color}}
 		onClick={() => {
-		    console.log("clicked?")
-		    history.push("/tabs/sub");
+		//    console.log("clicked?")
+		    history.push("/tabs/new");
 		}}
 		//href="/tabs/sub"
 	    > 
