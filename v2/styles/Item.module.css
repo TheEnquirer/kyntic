@@ -16,8 +16,9 @@
     font-family: 'Rubik', sans-serif;
     font-size: 14px;
     /*max-width: 80%;*/
-    /*display: flex;*/
-    justify-content: center;
+    display: flex;
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
     align-items: center;
     @apply font-medium;
 }
