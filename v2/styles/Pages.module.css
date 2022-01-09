@@ -7,7 +7,6 @@
     font-size: 64px;
     font-family: 'Rubik', sans-serif;
     @apply font-bold text-center border-0;
-
 }
 
 .sep {
@@ -34,7 +33,7 @@
 .borderSep:before {
     content: " ";
     position: absolute;
-    margin-top: -77px;
+    margin-top: -79px;
     /*margin-top: -70px;*/
     border-top: 1px solid #c4c5c7;
     width: 79%;
