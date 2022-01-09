@@ -15,8 +15,8 @@
     color: #646a74;
     font-family: 'Rubik', sans-serif;
     font-size: 14px;
-    max-width: 80%;
-    display: flex;
+    /*max-width: 80%;*/
+    /*display: flex;*/
     justify-content: center;
     align-items: center;
     @apply font-medium;

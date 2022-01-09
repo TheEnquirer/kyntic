@@ -15,12 +15,15 @@ import itemStyles from '../../styles/Item.module.css';
 
 const Item = (props) => {
   return (
-      <div className="p-4 pl-5 pr-5 ml-4 mr-4 h-28 rounded-2xl" style={{backgroundColor: props.obj.color}}> 
+      <div className="p-4 ml-4 mr-4 h-28 rounded-2xl" style={{backgroundColor: props.obj.color}}> 
 	  <div className={itemStyles.title}>
 	      {props.obj.title}
 	  </div>
 	  <div className={itemStyles.desc}>
-	      {props.obj.desc}
+	      <div className="flex flex-col">
+		  {props.obj.desc}
+		  <p><span className="font-extrabold">untracked</span> so far.</p>
+	      </div>
 	  </div>
       </div>
   );
