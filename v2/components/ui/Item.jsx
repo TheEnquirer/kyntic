@@ -21,7 +21,7 @@ const Item = (props) => {
 	    <div className="p-4 ml-4 mr-4 h-28 rounded-2xl" style={{backgroundColor: props.obj.color}}
 		onClick={() => {
 		//    console.log("clicked?")
-		    history.push("/tabs/new");
+		    history.push("/tabs/log/sub");
 		}}
 		//href="/tabs/sub"
 	    > 

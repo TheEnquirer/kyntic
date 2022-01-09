@@ -5,7 +5,16 @@
 
 
 
-
+.subtitle {
+    /*color: #4a505f;*/
+    /*color: #77797b;*/
+    /*color: #a8a8a8;*/
+    /*color: #9496b2;*/
+    color: #a1a1a9;
+    /*letter-spacing: 0.1em;*/
+    font-family: 'Rubik', sans-serif;
+    @apply content-center text-base font-medium text-center;
+}
 
 
 

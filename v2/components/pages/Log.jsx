@@ -32,15 +32,11 @@ const Log = () => {
 	</IonHeader>
 	  <div className="flex flex-col mt-3 space-y-8">
 	      {Items.map((e) => {
-		  return ( 
-		      <Item 
-			  obj={e} 
+		  return (
+		      <Item
+			  obj={e}
 			  //className="cursor-pointer"
-			  //onClick={(e) => {
-			  //    console.log("clicked!");
-			  //    history.push("/log/sub");
-			  //}}
-		      /> 
+		      />
 		  )
 	      })}
 	  </div>

@@ -59,7 +59,8 @@
 
 
 .pager {
-    background-color: #f9f7f4;
+    /*background-color: #f9f7f4;*/
+    background-color: #fdfcfa;
     @apply absolute z-10 w-screen h-screen;
 }
 
