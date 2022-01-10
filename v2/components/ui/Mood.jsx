@@ -24,7 +24,7 @@ const Mood = () => {
 		    history.push("/tabs/log");
 		}}
 	    />
-	    <div className={subStyles.subtitle}> 
+	    <div className={subStyles.subtitle}>
 		how are you feeling today?
 	    </div>
 	</div>
