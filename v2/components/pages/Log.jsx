@@ -31,10 +31,11 @@ const Log = () => {
           </IonToolbar>
 	</IonHeader>
 	  <div className="flex flex-col mt-3 space-y-8">
-	      {Items.map((e) => {
+	      {Items.map((e, i) => {
 		  return (
 		      <Item
 			  obj={e}
+			  idx={i}
 			  //className="cursor-pointer"
 		      />
 		  )
@@ -49,7 +50,7 @@ const Log = () => {
 const Items = [
     {
 	title: "mood",
-	color: "#b2d4a7",
+	color: "#2d4a7",
 	desc: "how are you feeling?",
 	target: "/tabs/log/sleep",
     },

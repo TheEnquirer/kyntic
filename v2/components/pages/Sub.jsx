@@ -14,38 +14,50 @@ import 'swiper/css';
 import Mood from "../ui/Mood"
 import React, { useState, useRef, useEffect } from 'react';
 import { Controller } from 'swiper';
+import { useContext } from 'react'
+import GlobalContext from '../../utils/global-context'
+import pageStyles from "../../styles/Pages.module.css"
+import { arrowBackOutline } from 'ionicons/icons';
+import { useHistory } from "react-router-dom";
+import Slide from '../ui/Slide';
 
 
 
-const Sub = () => {
+
+const Sub = (props) => {
+    const global = useContext(GlobalContext)
+    const history = useHistory()
+
     useEffect(() => {
+	console.log("mounting sliders")
 	if (swiperRef.current) {
-	    swiperRef.current.swiper.slideTo(2);
+	    swiperRef.current.swiper.slideTo(global.targetSubPage);
 	}
     })
 
     const [controlledSwiper, setControlledSwiper] = useState(null);
     const swiperRef = useRef(null)
+    const tracks = [<Mood color={"#b2d4a7"} />, "slide 2", "slide3", "slide4", "slide5"]
 
     return (
 	<IonPage> <IonContent className="" fullscreen>
 	    <Swiper className="absolute h-screen border-0 border-blue-500"
-		modules={[Controller]} 
+		modules={[Controller]}
 		ref={swiperRef}
-		//controller={{ control: controlledSwiper }}
 		onSwipe ={setControlledSwiper}
 		spaceBetween={0}
 		slidesPerView={1}
 		onSlideChange={() => console.log('slide change')}
-		//onSwiper={(swiper) => console.log(swiper, "yooo")}
 		hashNavigation={{ replaceState: true }}
 		history={true}
 	    >
-		{console.log(controlledSwiper)}
-		<SwiperSlide> <Mood /> </SwiperSlide>
-		<SwiperSlide> <Mood /> </SwiperSlide>
-		<SwiperSlide>Slide 3</SwiperSlide>
-		<SwiperSlide>Slide 4</SwiperSlide>
+		{tracks.map((v, i) => {
+		    return (
+			<SwiperSlide>
+			    <Slide>{v}{swiperRef}{i}</Slide>
+			</SwiperSlide>
+		    )
+		})}
 	    </Swiper>
 	</IonContent> </IonPage>
 
