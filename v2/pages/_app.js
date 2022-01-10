@@ -12,21 +12,32 @@ import '@ionic/react/css/display.css';
 
 import '../styles/global.css';
 import '../styles/variables.css';
+import React, { useState, useRef, useEffect } from 'react';
+import GlobalContext from '../utils/global-context';
+//import { AppStateProvier } from './app-context'
 
 function MyApp({ Component, pageProps }) {
-    //localStorage.theme = 'light'
-    //console.log("setting to lgiht")
+    const [state, setState] = useState({
+	count: 0,
+	targetSubPage: 0,
+	update
+    })
+    function update(data) {
+	setState(Object.assign({}, state, data));
+    }
+
+    const [subPage, setSubPage] = useState(0)
     return (
-	<>
-	    {/*<Head>
-		<meta
+	<GlobalContext.Provider value={state}>
+	    <Head> <meta
 		    name="viewport"
 		    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-		></meta>
-	    </Head>*/}
+	    ></meta> </Head>
+
 	    <Component {...pageProps} />
 	    <Script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></Script>
-	</>
+	</GlobalContext.Provider>
+
     );
 }
 

@@ -23,12 +23,14 @@ const Slide = ({ children, props }) => {
     const global = useContext(GlobalContext)
     const history = useHistory()
     const handleFinish = () => {
-	children[1].current.swiper.slideTo(children[2] + 1);
+	if (children[2] != 4) {
+	    children[1].current.swiper.slideTo(children[2] + 1); // lmaoo
+	} else { history.push("/tabs/log") }
     }
 
     return (
 	<div className={pageStyles.pager}>
-	    <IonIcon icon={arrowBackOutline} className="mt-8 ml-3 text-lg text-gray-500"
+	    <IonIcon icon={arrowBackOutline} className="z-10 p-3 mt-8 ml-3 text-lg text-gray-500 border-0 border-red-500"
 		onClick={() => {
 		    history.push("/tabs/log");
 		}}
@@ -38,7 +40,7 @@ const Slide = ({ children, props }) => {
 	    <div
 		onClick={handleFinish}
 		className="pt-3 pb-3 pl-10 pr-10 mt-32 font-medium text-center border-0 border-red-500 rounded-full text-gray-50"
-		style={{backgroundColor: children[0].props? children[0].props.color : ""}}
+		style={{backgroundColor: children[0].props? children[0].props.color : "black"}}
 	    > done </div>
 	    </div>
 

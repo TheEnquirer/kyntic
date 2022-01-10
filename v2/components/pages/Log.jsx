@@ -50,7 +50,7 @@ const Log = () => {
 const Items = [
     {
 	title: "mood",
-	color: "#2d4a7",
+	color: "#b2d4a7",
 	desc: "how are you feeling?",
 	target: "/tabs/log/sleep",
     },
