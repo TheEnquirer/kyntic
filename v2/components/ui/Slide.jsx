@@ -19,9 +19,14 @@ import { useHistory } from "react-router-dom";
 
 
 
-const Slide = ({ children }) => {
+const Slide = ({ children, props }) => {
     const global = useContext(GlobalContext)
     const history = useHistory()
+    const handleFinish = () => {
+	if (props.swiperRef.current) {
+	    props.swiperRef.current.swiper.slideTo(props.i + 1);
+	}
+    }
 
     return (
 	<div className={pageStyles.pager}>
@@ -31,6 +36,9 @@ const Slide = ({ children }) => {
 		}}
 	    />
 	    {children}
+	    <div
+		onClick={handleFinish}
+	    >done</div>
 	</div>
     );
 };
