@@ -39,7 +39,8 @@ const Slide = ({ children, props }) => {
 	    <div className="flex flex-row content-center justify-center">
 	    <div
 		onClick={handleFinish}
-		className="pt-3 pb-3 pl-10 pr-10 mt-32 font-medium text-center border-0 border-red-500 rounded-full text-gray-50"
+		//className="static absolute pt-3 pb-3 pl-10 pr-10 font-medium text-center border-0 border-red-500 rounded-full text-gray-50"
+		className={pageStyles.fab}
 		style={{backgroundColor: children[0].props? children[0].props.color : "black"}}
 	    > done </div>
 	    </div>
