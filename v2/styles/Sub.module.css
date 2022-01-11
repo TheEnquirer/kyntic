@@ -13,10 +13,15 @@
     color: #a1a1a9;
     /*letter-spacing: 0.1em;*/
     font-family: 'Rubik', sans-serif;
-    @apply content-center text-base font-medium text-center;
+    @apply content-center mt-24 text-base font-medium text-center;
 }
 
-
+.emacs {
+    color: #5C5E61;
+    font-size: 2.5rem;
+    font-family: 'Rubik', sans-serif;
+    @apply font-extrabold text-center -mt-28;
+}
 
 
 

@@ -61,12 +61,14 @@
 .pager {
     /*background-color: #f9f7f4;*/
     background-color: #fdfcfa;
-    @apply absolute z-10 w-screen h-screen;
+    @apply absolute z-10 w-screen h-screen border-0 border-red-400;
 }
 
 
 .fab {
     position : absolute;
-    right : 10px;
-    bottom : 16px;
+    margin-left: auto;
+    margin-right: auto;
+    bottom : 2rem;
+    @apply pt-3 pb-3 pl-10 pr-10 font-medium text-center border-0 border-red-500 rounded-full text-gray-50;
 }

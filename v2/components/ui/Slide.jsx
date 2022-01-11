@@ -30,13 +30,13 @@ const Slide = ({ children, props }) => {
 
     return (
 	<div className={pageStyles.pager}>
-	    <IonIcon icon={arrowBackOutline} className="z-10 p-3 mt-8 ml-3 text-lg text-gray-500 border-0 border-red-500"
+	    <IonIcon icon={arrowBackOutline} className="absolute z-10 p-3 mt-5 ml-3 text-lg text-gray-500 border-0 border-red-500"
 		onClick={() => {
 		    history.push("/tabs/log");
 		}}
 	    />
 	    {children[0]}
-	    <div className="flex flex-row content-center justify-center">
+	    <div className="flex flex-row content-center justify-center border-0 border-green-500">
 	    <div
 		onClick={handleFinish}
 		//className="static absolute pt-3 pb-3 pl-10 pr-10 font-medium text-center border-0 border-red-500 rounded-full text-gray-50"
