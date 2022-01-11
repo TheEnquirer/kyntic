@@ -17,11 +17,18 @@ import { useHistory } from "react-router-dom";
 import Slider from '@mui/material/Slider';
 import ReactDOM from 'react-dom';
 import { ReactComponent as GreenBlob } from '../../public/green_blob.svg';
-
+import React, { useState, useRef, useEffect } from 'react';
 
 
 const Mood = () => {
     const history = useHistory()
+    const sliderRef = useRef()
+    const [sliderVal, setSlider] = useState();
+    //useEffect(() => {
+    //    console.log(sliderRef.current)
+    //})
+
+
     return (
 	<div className="w-screen h-screen border-0 border-red-500">
 	    {/*<GreenBlob />*/}
@@ -30,7 +37,7 @@ const Mood = () => {
 		<path d="M127.981 182.586C45.8926 182.586 32.5 129.5 -5.00007 115.5C-5.0001 59.5 -5.00045 68.5 -5.00007 1.50003C-5.00001 -8.99996 321.5 1.50005 569 1.50003V132.984C573.785 128.775 576.651 125.613 577.855 124.18C578.726 123.002 578.763 123.099 577.855 124.18C576.578 125.907 573.51 130.374 569 138.5V132.984C553.951 146.222 519.911 169.82 458.835 182.586C325.192 210.518 230.59 182.586 127.981 182.586Z" fill="#B2D4A7"/>
 		<path d="M-5.00007 115.5C32.5 129.5 45.8926 182.586 127.981 182.586C230.59 182.586 325.192 210.518 458.835 182.586C575.444 158.213 593.5 94.3538 569 138.5V1.50003C321.5 1.50005 -5.00001 -8.99996 -5.00007 1.50003C-5.00045 68.5 -5.0001 59.5 -5.00007 115.5Z" stroke="#B2D4A7"/>
 	    </svg>
-	    <div className={subStyles.emacs}>sleep</div>
+	    <div className={subStyles.emacs}>mood</div>
 
 	    <div className={subStyles.subtitle}>
 		how are you feeling today?
@@ -40,6 +47,33 @@ const Mood = () => {
 		className="flex justify-center mt-12 mb-12 border-0 border-blue-500 h-1/2"
 	    >
 		<Slider
+		    sx={{
+			color: "rgba(255, 255, 255, 0)",
+			background: "linear-gradient(180deg, rgba(171,197,197,1) 0%, rgba(199,196,225,1) 50%, rgba(163,115,144,1) 100%)",
+			//background: "linear-gradient(180deg, rgba(178,212,167,1) 0%, rgba(196,209,225,1) 50%, rgba(167,174,212,1) 100%)",
+			//width: "0.01rem",
+			padding: "5px !important",
+			//maxWidth: "1px",
+			'& input[type="range"]': {
+			    WebkitAppearance: 'slider-vertical',
+			},
+			'& .MuiSlider-thumb': {
+			    color: '#131313',
+			    width: "25px",
+			    height: "25px",
+			},
+			'& .MuiSlider-track': {
+			    backgroundColor: "rgba(255, 255, 255, 0)",
+			    border: "none",
+			},
+		    }}
+		    track="inverted"
+		    ref={sliderRef}
+		    onChange={(e) => {
+			setSlider(e.target.value);
+			//console.log(sliderVal)
+		    }}
+
 		    //size="small"
 		    defaultValue={50}
 		    //aria-label="Small"
