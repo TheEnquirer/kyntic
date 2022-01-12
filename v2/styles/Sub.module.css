@@ -24,7 +24,16 @@
 }
 
 
-
+.infoTag {
+    /*color: #d2d2d2;*/
+    color: #a1a1a9;
+    /*color: #8bc1a1;*/
+    /*color: #5C5E61;*/
+    font-size: 1rem;
+    font-family: 'Rubik', sans-serif;
+    /*@apply m-3 font-medium;*/
+    @apply m-3 text-base font-medium;
+}
 
 
 

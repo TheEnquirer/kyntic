@@ -11,7 +11,6 @@ import {
 } from '@ionic/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import Mood from "../ui/Mood"
 import React, { useState, useRef, useEffect } from 'react';
 import { Controller } from 'swiper';
 import { useContext } from 'react'
@@ -20,6 +19,8 @@ import pageStyles from "../../styles/Pages.module.css"
 import { arrowBackOutline } from 'ionicons/icons';
 import { useHistory } from "react-router-dom";
 import Slide from '../ui/Slide';
+import Mood from "../ui/Mood"
+import Sleep from "../ui/Sleep"
 
 
 
@@ -37,7 +38,7 @@ const Sub = (props) => {
 
     const [controlledSwiper, setControlledSwiper] = useState(null);
     const swiperRef = useRef(null)
-    const tracks = [<Mood color={"#b2d4a7"} />, "slide 2", "slide3", "slide4", "slide5"]
+    const tracks = [<Mood color={"#b2d4a7"} />, <Sleep color={"#a7aed4"} />, "slide3", "slide4", "slide5"]
 
     return (
 	<IonPage> <IonContent className="" fullscreen>
@@ -45,7 +46,8 @@ const Sub = (props) => {
 		modules={[Controller]}
 		ref={swiperRef}
 		onSwipe ={setControlledSwiper}
-		spaceBetween={0}
+		spaceBetween={30}
+		//spaceBetween={0}
 		slidesPerView={1}
 		onSlideChange={() => console.log('slide change')}
 		hashNavigation={{ replaceState: true }}
