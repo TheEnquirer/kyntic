@@ -49,8 +49,8 @@ const Mood = () => {
 		<Slider
 		    sx={{
 			color: "rgba(255, 255, 255, 0)",
-			background: "linear-gradient(180deg, rgba(171,197,197,1) 0%, rgba(199,196,225,1) 50%, rgba(163,115,144,1) 100%)",
-			//background: "linear-gradient(180deg, rgba(178,212,167,1) 0%, rgba(196,209,225,1) 50%, rgba(167,174,212,1) 100%)",
+			//background: "linear-gradient(180deg, rgba(171,197,197,1) 0%, rgba(199,196,225,1) 50%, rgba(163,115,144,1) 100%)",
+			background: "linear-gradient(180deg, rgba(178,212,167,1) 0%, rgba(196,209,225,1) 50%, rgba(167,174,212,1) 100%)",
 			//width: "0.01rem",
 			padding: "5px !important",
 			//maxWidth: "1px",
