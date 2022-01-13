@@ -19,8 +19,10 @@ import pageStyles from "../../styles/Pages.module.css"
 import { arrowBackOutline } from 'ionicons/icons';
 import { useHistory } from "react-router-dom";
 import Slide from '../ui/Slide';
+
 import Mood from "../ui/Mood"
 import Sleep from "../ui/Sleep"
+import Exercise from "../ui/Exercise"
 
 
 
@@ -38,7 +40,7 @@ const Sub = (props) => {
 
     const [controlledSwiper, setControlledSwiper] = useState(null);
     const swiperRef = useRef(null)
-    const tracks = [<Mood color={"#b2d4a7"} />, <Sleep color={"#a7aed4"} />, "slide3", "slide4", "slide5"]
+    const tracks = [<Mood color={"#b2d4a7"} />, <Sleep color={"#a7aed4"} />, <Exercise color={'#d4a7a7'} />, "slide4", "slide5"]
 
     return (
 	<IonPage> <IonContent className="" fullscreen>

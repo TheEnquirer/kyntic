@@ -71,5 +71,5 @@
     margin-right: auto;
     bottom : 2rem;
     font-family: 'Rubik', sans-serif;
-    @apply pt-3 pb-3 pl-10 pr-10 font-normal text-center border-0 border-red-500 rounded-full text-gray-50;
+   @apply pt-3 pb-3 pl-10 pr-10 font-normal text-center border-0 border-red-500 rounded-full text-gray-50;
 }
