@@ -1,0 +1,1 @@
+tailscaled requires root; use sudo tailscaled (or use --tun=userspace-networking)

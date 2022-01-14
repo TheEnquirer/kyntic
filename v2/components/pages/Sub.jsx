@@ -23,6 +23,7 @@ import Slide from '../ui/Slide';
 import Mood from "../ui/Mood"
 import Sleep from "../ui/Sleep"
 import Exercise from "../ui/Exercise"
+import ScreenTime from "../ui/ScreenTime"
 
 
 
@@ -40,7 +41,7 @@ const Sub = (props) => {
 
     const [controlledSwiper, setControlledSwiper] = useState(null);
     const swiperRef = useRef(null)
-    const tracks = [<Mood color={"#b2d4a7"} />, <Sleep color={"#a7aed4"} />, <Exercise color={'#d4a7a7'} />, "slide4", "slide5"]
+    const tracks = [<Mood color={"#b2d4a7"} />, <Sleep color={"#a7aed4"} />, <Exercise color={'#d4a7a7'} />, <ScreenTime color={"#a7d4cf"} />, "slide5"]
 
     return (
 	<IonPage> <IonContent className="" fullscreen>
