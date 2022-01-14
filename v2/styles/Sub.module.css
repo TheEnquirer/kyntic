@@ -41,6 +41,7 @@
     font-family: 'Rubik', sans-serif;
     background-color: #d4a7a7;
     transition: 0.3s;
+    min-height: 3rem;
     /*color:;*/
     @apply flex flex-col items-center justify-center w-4/6 h-12 font-medium text-center align-middle border-0 border-gray-400 rounded-lg text-gray-50;
 }

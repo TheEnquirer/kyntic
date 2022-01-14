@@ -52,9 +52,14 @@ const ExerciseBlock = (props) => {
 		</div>
 	    </div>
 
-	    <div className="flex mr-3 text-4xl align-middle border-0 border-red-500"> 
-		<IonIcon icon={open} className="text-white" />
+	    <div className="flex mr-3 text-4xl align-middle border-0 border-red-500"
+		onClick={() => {
+		    console.log("clin", props.idx)
+		    props.edit(props.idx)
+		}}
 
+	    > 
+		<IonIcon icon={open} className="text-white" />
 	    </div>
 	</div>
     );

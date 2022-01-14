@@ -35,6 +35,11 @@ const reducer = (state, action) => {
 	case 'append':
 	    //return state.append(action.payload)
 	    return [action.payload, ...state]
+	case 'edit':
+	    let localState = state
+	    localState[action.i] = action.payload
+	    console.log(localState)
+	    return localState
 	//case 'decrement':
 	//    return {count: state.count - 1};
 	case 'reset':
@@ -47,19 +52,27 @@ const reducer = (state, action) => {
 const TEST = [
     {
 	name: "run",
-	len: "30m"
+	len: "30m",
+	h: null,
+	m: 30,
     },
     {
 	name: "walk",
-	len: "1h, 14m"
+	len: "1h, 14m",
+	h: 1,
+	m: 14,
     },
     {
 	name: "swim",
-	len: "2h, 1m"
+	len: "2h, 1m",
+	h: 2,
+	m: 1,
     },
     {
 	name: "tennis",
-	len: "30m"
+	len: "30m",
+	h: null,
+	m: 30,
     },
 ]
 
@@ -107,6 +120,16 @@ const Exercise = (props) => {
 
     const [hourVal, setHourVal] = React.useState("");
     const [minVal, setMinVal] = React.useState("");
+    const [isEditing, setEditing] = React.useState(false)
+
+    const handleEdit = (i) => {
+	setSelectVal({ title: workouts[i].name })
+	console.log(workouts[i])
+	setHourVal(workouts[i].h)
+	setMinVal(workouts[i].m)
+	setEditing([true, i])
+	toggleModal(true)
+    }
 
     const containsOption = (obj, list) => {
 	let i;
@@ -130,24 +153,31 @@ const Exercise = (props) => {
 		what exercise did you get today?
 	    </div>
 	    <div
-		className={`flex flex-col items-center mt-5 text-center border-0 border-blue-500 h-1/2`}
-	    >
+		className={`flex flex-col items-center mt-5 text-center border-0 border-blue-500 h-3/5 overflow-scroll`}
+		// TODO fix overlap w/ the done button!
+	    > 
 		<div className={subStyles.fullButton}
 		    onClick={() => {
 			console.log("clikcking!")
 			//manageWorkouts({type: 'reset', payload: "workout!"})
+			setEditing(false)
 			toggleModal(true)
 		    }}
 		> 
 		    + add a workout
 		</div>
-		{workouts.map((v) => {
-		    return ( <ExerciseBlock name={v.name} len={ v.len } color={props.color}/>)
+		{workouts.map((v, i) => {
+		    return ( <ExerciseBlock name={v.name} idx={i} edit={handleEdit} len={ v.len } color={props.color}/> )
 		})}
 	    </div>
 	    <Modal
 		open={modal}
-		onClose={() => toggleModal(false)}
+		onClose={() => {
+		    setMinVal(null)
+		    setHourVal(null)
+		    setSelectVal(null)
+		    toggleModal(false)
+		}}
 		closeAfterTransition
 		BackdropComponent={Backdrop}
 		BackdropProps={{
@@ -159,15 +189,6 @@ const Exercise = (props) => {
 			<div className="flex flex-col">
 			    {/*workout:
 			    length: */}
-
-
-
-
-
-
-
-
-
 
 			    <Autocomplete
 				value={selectVal}
@@ -260,19 +281,39 @@ const Exercise = (props) => {
 					//setMinVal(null)
 				    }
 				    if (( localMin == "" || localMin == null) && ( localHour == "" || localHour == null) ) { localMin = "1" }
+				    if (selectVal == null || selectVal == "") {
+					console.log("no title!!")
+					return
+				    }
 				    //
 				    //
 				    console.log(hourVal)
 				    if (selectVal != null && !containsOption(selectVal, workoutOptions)) {
 					workoutOptions.push(selectVal)
 				    }
-				    manageWorkouts({type: 'append', payload: { 
-					name: selectVal.title,
-					len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`
-				    }})
+
+				    if (!isEditing) {
+					manageWorkouts({type: 'append', payload: { 
+					    name: selectVal.title,
+					    len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
+					    m: localMin, 
+					    h: localHour,
+					}})
+				    } else {
+					manageWorkouts({type: 'edit', payload: { 
+					    name: selectVal.title,
+					    len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
+					    m: localMin, 
+					    h: localHour,
+					}, i: isEditing[1]})
+				    }
 
 
 				    toggleModal(false)
+
+				    setMinVal(null)
+				    setHourVal(null)
+				    setSelectVal(null)
 				    //console.log(workoutOptions)
 				    //console.log(workoutOptions.indexOf({ title: "indoor walk" }))
 				}}
@@ -287,17 +328,6 @@ const Exercise = (props) => {
 	</div>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
