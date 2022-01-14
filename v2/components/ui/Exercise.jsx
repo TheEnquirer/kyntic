@@ -49,18 +49,18 @@ const TEST = [
 	name: "run",
 	len: "30m"
     },
-    //{
-    //    name: "walk",
-    //    len: "1h, 14m"
-    //},
-    //{
-    //    name: "swim",
-    //    len: "2h, 1m"
-    //},
-    //{
-    //    name: "tennis",
-    //    len: "30m"
-    //},
+    {
+	name: "walk",
+	len: "1h, 14m"
+    },
+    {
+	name: "swim",
+	len: "2h, 1m"
+    },
+    {
+	name: "tennis",
+	len: "30m"
+    },
 ]
 
 const style = {
@@ -105,6 +105,9 @@ const Exercise = (props) => {
     const [modal, toggleModal] = useState(false)
     const [selectVal, setSelectVal] = React.useState(null);
 
+    const [hourVal, setHourVal] = React.useState("");
+    const [minVal, setMinVal] = React.useState("");
+
     const containsOption = (obj, list) => {
 	let i;
 	for (i = 0; i < list.length; i++) {
@@ -131,7 +134,7 @@ const Exercise = (props) => {
 	    >
 		<div className={subStyles.fullButton}
 		    onClick={() => {
-			console.log("clicking!")
+			console.log("clikcking!")
 			//manageWorkouts({type: 'reset', payload: "workout!"})
 			toggleModal(true)
 		    }}
@@ -225,20 +228,52 @@ const Exercise = (props) => {
 
 			    <div className="flex flex-row mt-3 space-x-3"> 
 				<TextField 
-				    id="outlined-basic" placeholder="0" label="hours" variant="outlined"
+				    id="outlined-basic" placeholder="0" label="hours" variant="outlined" 
+				    value={hourVal}
+				    onChange={(e) => {
+					console.log(e)
+					setHourVal(e.target.value)
+				    }}
 				/>
 				<TextField 
 				    id="outlined-basic" placeholder="0" label="minutes" variant="outlined"
+				    value={minVal}
+				    onChange={(e) => {
+					//console.log(e)
+					setMinVal(e.target.value)
+				    }}
 				/>
 			    </div>
 			    <div className="flex flex-col content-center justify-center h-12 mt-3 mb-0 font-bold text-center align-middle bg-blue-300 rounded-lg"
 				onClick={() => { 
-				    // validation checks!!
+				    // validation checks!! TODO
+				    let localHour = hourVal;
+				    let localMin = minVal;
+
+				    if (localHour == "0") { 
+					//setHourVal(null) 
+					localHour = null;
+					console.log("hours are 0")
+				    }
+				    if (localMin == "0") { 
+					localMin = null;
+					//setMinVal(null)
+				    }
+				    if (( localMin == "" || localMin == null) && ( localHour == "" || localHour == null) ) { localMin = "1" }
+				    //
+				    //
+				    console.log(hourVal)
 				    if (selectVal != null && !containsOption(selectVal, workoutOptions)) {
 					workoutOptions.push(selectVal)
 				    }
+				    manageWorkouts({type: 'append', payload: { 
+					name: selectVal.title,
+					len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`
+				    }})
+
+
 				    toggleModal(false)
-				    console.log(workoutOptions)
+				    //console.log(workoutOptions)
 				    //console.log(workoutOptions.indexOf({ title: "indoor walk" }))
 				}}
 			    >

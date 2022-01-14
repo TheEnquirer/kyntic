@@ -44,7 +44,7 @@ const ExerciseBlock = (props) => {
 		    <p className="text-xl font-thin text-left text-gray-50" style={{
 			fontfamily: "'rubik', sans-serif"
 		    }}>{props.name}</p>
-		    <p className="text-xl font-bold text-gray-50"
+		    <p className="text-xl font-bold text-left text-gray-50"
 			style={{
 			    fontFamily: "'Rubik', sans-serif"
 			}}
