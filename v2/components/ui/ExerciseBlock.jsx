@@ -21,7 +21,9 @@ import React, { useState, useRef, useEffect } from 'react';
 const ExerciseBlock = (props) => {
 
     return (
-	<div className="text-black border-0 border-red-500"> wheee </div>
+	<div className="text-black border-0 border-red-500">
+	    wheee
+	</div>
     );
 }
 export default ExerciseBlock;

@@ -36,9 +36,17 @@
 }
 
 
+.fullButton {
+    font-size: 1rem;
+    font-family: 'Rubik', sans-serif;
+    background-color: #d4a7a7;
+    transition: 0.3s;
+    @apply flex flex-col items-center justify-center w-5/6 font-medium text-center align-middle border-0 border-gray-400 rounded-lg h-14;
+}
 
-
-
+/*.fullButton:hover {*/
+/*    background-color: red;*/
+/*}*/
 
 
 

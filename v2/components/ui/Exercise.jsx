@@ -46,8 +46,15 @@ const Exercise = (props) => {
 		what exercise did you get today?
 	    </div>
 	    <div
-		className="flex flex-col items-center mt-12 mb-12 text-center border-2 border-blue-500 h-1/2"
+		className={`flex flex-col items-center mt-5 text-center border-0 border-blue-500 h-1/2`}
 	    >
+		<div className={subStyles.fullButton}
+		    //style={{
+		    //    backgroundColor: props.color,
+		    //}}
+		> 
+		    + add an activity
+		</div>
 		<ExerciseBlock />
 
 
