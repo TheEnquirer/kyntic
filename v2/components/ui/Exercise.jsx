@@ -25,7 +25,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
+import TextField from '@mui/material/TextField';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
+const filter = createFilterOptions();
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -62,12 +65,13 @@ const TEST = [
 
 const style = {
     position: 'absolute',
-    top: '50%',
+    top: '20%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    //width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    //border: '2px solid #000',
+    borderRadius: "0.8rem",
     boxShadow: 24,
     p: 4,
 };
@@ -75,6 +79,8 @@ const style = {
 const Exercise = (props) => {
     const [workouts, manageWorkouts] = useReducer(reducer, TEST)
     const [modal, toggleModal] = useState(false)
+    const [selectVal, setSelectVal] = React.useState(null);
+
 
 
     return (
@@ -115,16 +121,126 @@ const Exercise = (props) => {
 	    >
 		<Fade in={modal}>
 		    <Box sx={style}>
-			<Typography id="modal-modal-title" variant="h6" component="h2">
-			    Text in a modal
-			</Typography>
-			<Typography id="modal-modal-description" sx={{ mt: 2 }}>
-			    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-			</Typography>
+			<div className="">
+			    {/*workout:
+			    length: */}
+
+
+
+
+
+
+
+
+
+
+			    <Autocomplete
+				value={selectVal}
+				onChange={(event, newValue) => {
+				    if (typeof newValue === 'string') {
+					setSelectVal({
+					    title: newValue,
+					});
+				    } else if (newValue && newValue.inputValue) {
+					// Create a new value from the user input
+					setSelectVal({
+					    title: newValue.inputValue,
+					});
+				    } else {
+					setSelectVal(newValue);
+				    }
+				}}
+				filterOptions={(options, params) => {
+				    const filtered = filter(options, params);
+
+				    const { inputValue } = params;
+				    // Suggest the creation of a new value
+				    const isExisting = options.some((option) => inputValue === option.title);
+				    if (inputValue !== '' && !isExisting) {
+					filtered.push({
+					    inputValue,
+					    title: `Add "${inputValue}"`,
+					});
+				    }
+
+				    return filtered;
+				}}
+				selectOnFocus
+				clearOnBlur
+				handleHomeEndKeys
+				id="free-solo-with-text-demo"
+				options={workoutOptions}
+				getOptionLabel={(option) => {
+				    // Value selected with enter, right from the input
+				    if (typeof option === 'string') {
+					return option;
+				    }
+				    // Add "xxx" option created dynamically
+				    if (option.inputValue) {
+					return option.inputValue;
+				    }
+				    // Regular option
+				    return option.title;
+				}}
+				renderOption={(props, option) => <li {...props}>{option.title}</li>}
+				sx={{ width: 300 }}
+				freeSolo renderInput={(params) => (
+				    <TextField {...params} label="workout" />
+				)}
+			    />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</div>
 		    </Box>
 		</Fade>
 	    </Modal>
 	</div>
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+const workoutOptions = [
+    { title: "outdoor run" },
+    { title: "indoor run" },
+    { title: "outdoor walk" },
+    { title: "indoor walk" },
+    { title: "outdoor cycle" },
+    { title: "indoor cycle" },
+    { title: "swim" },
+    { title: "yoga" },
+    { title: "strength training" },
+    
+    { title: "soccer" },
+    { title: "footbal" },
+    { title: "tennis" },
+    { title: "volleyball" },
+    { title: "baseball" },
+    { title: "basketball" },
+    { title: "hiking" },
+];
+
+
+
 export default Exercise;
