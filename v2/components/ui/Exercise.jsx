@@ -69,19 +69,51 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     //width: 400,
-    bgcolor: 'background.paper',
+    //bgcolor: 'background.paper',
+    bgcolor: '#f2e8e8',
     //border: '2px solid #000',
     borderRadius: "0.8rem",
     boxShadow: 24,
     p: 4,
+    outline: "none",
+    color: "white",
+    fontWeight: "900",
 };
+
+let workoutOptions = [
+    { title: "outdoor run" },
+    { title: "indoor run" },
+    { title: "outdoor walk" },
+    { title: "indoor walk" },
+    { title: "outdoor cycle" },
+    { title: "indoor cycle" },
+    { title: "swim" },
+    { title: "yoga" },
+    { title: "strength training" },
+    
+    { title: "soccer" },
+    { title: "footbal" },
+    { title: "tennis" },
+    { title: "volleyball" },
+    { title: "baseball" },
+    { title: "basketball" },
+    { title: "hiking" },
+];
 
 const Exercise = (props) => {
     const [workouts, manageWorkouts] = useReducer(reducer, TEST)
     const [modal, toggleModal] = useState(false)
     const [selectVal, setSelectVal] = React.useState(null);
 
-
+    const containsOption = (obj, list) => {
+	let i;
+	for (i = 0; i < list.length; i++) {
+	    if (list[i].title === obj.title) {
+		return true;
+	    }
+	}
+	return false;
+    }
 
     return (
 	<div className="w-screen h-screen border-0 border-red-500">
@@ -121,7 +153,7 @@ const Exercise = (props) => {
 	    >
 		<Fade in={modal}>
 		    <Box sx={style}>
-			<div className="">
+			<div className="flex flex-col">
 			    {/*workout:
 			    length: */}
 
@@ -159,7 +191,7 @@ const Exercise = (props) => {
 				    if (inputValue !== '' && !isExisting) {
 					filtered.push({
 					    inputValue,
-					    title: `Add "${inputValue}"`,
+					    title: `add "${inputValue}"`,
 					});
 				    }
 
@@ -177,6 +209,7 @@ const Exercise = (props) => {
 				    }
 				    // Add "xxx" option created dynamically
 				    if (option.inputValue) {
+					//console.log("new thing!")
 					return option.inputValue;
 				    }
 				    // Regular option
@@ -190,17 +223,27 @@ const Exercise = (props) => {
 			    />
 
 
-
-
-
-
-
-
-
-
-
-
-
+			    <div className="flex flex-row mt-3 space-x-3"> 
+				<TextField 
+				    id="outlined-basic" placeholder="0" label="hours" variant="outlined"
+				/>
+				<TextField 
+				    id="outlined-basic" placeholder="0" label="minutes" variant="outlined"
+				/>
+			    </div>
+			    <div className="flex flex-col content-center justify-center h-12 mt-3 mb-0 font-bold text-center align-middle bg-blue-300 rounded-lg"
+				onClick={() => { 
+				    // validation checks!!
+				    if (selectVal != null && !containsOption(selectVal, workoutOptions)) {
+					workoutOptions.push(selectVal)
+				    }
+				    toggleModal(false)
+				    console.log(workoutOptions)
+				    //console.log(workoutOptions.indexOf({ title: "indoor walk" }))
+				}}
+			    >
+				done
+			    </div>
 
 			</div>
 		    </Box>
@@ -221,25 +264,6 @@ const Exercise = (props) => {
 
 
 
-const workoutOptions = [
-    { title: "outdoor run" },
-    { title: "indoor run" },
-    { title: "outdoor walk" },
-    { title: "indoor walk" },
-    { title: "outdoor cycle" },
-    { title: "indoor cycle" },
-    { title: "swim" },
-    { title: "yoga" },
-    { title: "strength training" },
-    
-    { title: "soccer" },
-    { title: "footbal" },
-    { title: "tennis" },
-    { title: "volleyball" },
-    { title: "baseball" },
-    { title: "basketball" },
-    { title: "hiking" },
-];
 
 
 
