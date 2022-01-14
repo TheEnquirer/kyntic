@@ -40,6 +40,11 @@ const reducer = (state, action) => {
 	    localState[action.i] = action.payload
 	    console.log(localState)
 	    return localState
+	case 'delete':
+	    localState = state
+	    localState.splice(action.i, 1)
+	    console.log(localState)
+	    return localState
 	//case 'decrement':
 	//    return {count: state.count - 1};
 	case 'reset':
@@ -158,8 +163,9 @@ const Exercise = (props) => {
 	    > 
 		<div className={subStyles.fullButton}
 		    onClick={() => {
-			console.log("clikcking!")
+			//console.log("clikcking!")
 			//manageWorkouts({type: 'reset', payload: "workout!"})
+			//console.log(workouts)
 			setEditing(false)
 			toggleModal(true)
 		    }}
@@ -265,61 +271,76 @@ const Exercise = (props) => {
 				    }}
 				/>
 			    </div>
-			    <div className="flex flex-col content-center justify-center h-12 mt-3 mb-0 font-bold text-center align-middle bg-blue-300 rounded-lg"
-				onClick={() => { 
-				    // validation checks!! TODO
-				    let localHour = hourVal;
-				    let localMin = minVal;
+			    <div className="flex flex-row w-full border-0 border-red-500 space-x-3">
+				{isEditing? <div className="flex flex-col content-center justify-center w-full h-12 mt-3 mb-0 font-bold text-center align-middle bg-red-400 rounded-lg" 
+				    onClick={() => {
+					console.log("deletinnn")
+					manageWorkouts({type: 'delete', i: isEditing[1]})
+					toggleModal(false)
+					setMinVal(null)
+					setHourVal(null)
+					setSelectVal(null)
+				    }}
+				>
+				    delete
+				</div> : ""}
+				<div className="flex flex-col content-center justify-center w-full h-12 mt-3 mb-0 font-bold text-center align-middle bg-blue-300 rounded-lg"
+				    onClick={() => { 
+					// validation checks!! TODO
+					let localHour = hourVal;
+					let localMin = minVal;
 
-				    if (localHour == "0") { 
-					//setHourVal(null) 
-					localHour = null;
-					console.log("hours are 0")
-				    }
-				    if (localMin == "0") { 
-					localMin = null;
-					//setMinVal(null)
-				    }
-				    if (( localMin == "" || localMin == null) && ( localHour == "" || localHour == null) ) { localMin = "1" }
-				    if (selectVal == null || selectVal == "") {
-					console.log("no title!!")
-					return
-				    }
-				    //
-				    //
-				    console.log(hourVal)
-				    if (selectVal != null && !containsOption(selectVal, workoutOptions)) {
-					workoutOptions.push(selectVal)
-				    }
+					if (localHour == "0") { 
+					    //setHourVal(null) 
+					    localHour = null;
+					    console.log("hours are 0")
+					}
+					if (localMin == "0") { 
+					    localMin = null;
+					    //setMinVal(null)
+					}
+					if (( localMin == "" || localMin == null) && ( localHour == "" || localHour == null) ) { localMin = "1" }
+					if (selectVal == null || selectVal == "") {
+					    console.log("no title!!")
+					    return
+					}
+					//
+					//
+					console.log(hourVal)
+					if (selectVal != null && !containsOption(selectVal, workoutOptions)) {
+					    workoutOptions.push(selectVal)
+					}
 
-				    if (!isEditing) {
-					manageWorkouts({type: 'append', payload: { 
-					    name: selectVal.title,
-					    len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
-					    m: localMin, 
-					    h: localHour,
-					}})
-				    } else {
-					manageWorkouts({type: 'edit', payload: { 
-					    name: selectVal.title,
-					    len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
-					    m: localMin, 
-					    h: localHour,
-					}, i: isEditing[1]})
-				    }
+					if (!isEditing) {
+					    manageWorkouts({type: 'append', payload: { 
+						name: selectVal.title,
+						len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
+						m: localMin, 
+						h: localHour,
+					    }})
+					} else {
+					    manageWorkouts({type: 'edit', payload: { 
+						name: selectVal.title,
+						len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
+						m: localMin, 
+						h: localHour,
+					    }, i: isEditing[1]}) //TODO some bug here where a space gets added after the comma?
+					}
 
 
-				    toggleModal(false)
+					toggleModal(false)
 
-				    setMinVal(null)
-				    setHourVal(null)
-				    setSelectVal(null)
-				    //console.log(workoutOptions)
-				    //console.log(workoutOptions.indexOf({ title: "indoor walk" }))
-				}}
-			    >
-				done
-			    </div>
+					setMinVal(null)
+					setHourVal(null)
+					setSelectVal(null)
+					//console.log(workoutOptions)
+					//console.log(workoutOptions.indexOf({ title: "indoor walk" }))
+				    }}
+				>
+				    done
+				</div>
+
+			</div>
 
 			</div>
 		    </Box>
