@@ -17,10 +17,42 @@ import { useHistory } from "react-router-dom";
 import Slider from '@mui/material/Slider';
 import ReactDOM from 'react-dom';
 import { ReactComponent as GreenBlob } from '../../public/green_blob.svg';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useReducer } from 'react';
 import ExerciseBlock from "./ExerciseBlock";
 
+const reducer = (state, action) => {
+    switch (action.type) {
+	case 'append':
+	    //return state.append(action.payload)
+	    return [...state, action.payload]
+	//case 'decrement':
+	//    return {count: state.count - 1};
+	default:
+	    throw new Error();
+    }
+}
+
+const TEST = [
+    {
+	name: "run",
+	len: "30m"
+    },
+    {
+	name: "walk",
+	len: "1h, 14m"
+    },
+    {
+	name: "swim",
+	len: "2h, 1m"
+    },
+    {
+	name: "tennis",
+	len: "30m"
+    },
+]
+
 const Exercise = (props) => {
+    const [workouts, manageWorkouts] = useReducer(reducer, TEST)
 
     return (
 	<div className="w-screen h-screen border-0 border-red-500">
@@ -52,10 +84,17 @@ const Exercise = (props) => {
 		    //style={{
 		    //    backgroundColor: props.color,
 		    //}}
+		    onClick={() => {
+			console.log("clicking!")
+			//manageWorkouts({type: 'append', payload: "workout!"})
+
+		    }}
 		> 
-		    + add an activity
+		    + add a workout
 		</div>
-		<ExerciseBlock />
+		{workouts.map((v) => {
+		   return ( <ExerciseBlock name={v.name} len={ v.len } color={props.color}/>)
+		})}
 
 
 	    </div>
@@ -63,4 +102,3 @@ const Exercise = (props) => {
     );
 }
 export default Exercise;
-

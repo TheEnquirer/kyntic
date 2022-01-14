@@ -41,7 +41,8 @@
     font-family: 'Rubik', sans-serif;
     background-color: #d4a7a7;
     transition: 0.3s;
-    @apply flex flex-col items-center justify-center w-5/6 font-medium text-center align-middle border-0 border-gray-400 rounded-lg h-14;
+    /*color:;*/
+    @apply flex flex-col items-center justify-center w-4/6 h-12 font-medium text-center align-middle border-0 border-gray-400 rounded-lg text-gray-50;
 }
 
 /*.fullButton:hover {*/
@@ -49,7 +50,10 @@
 /*}*/
 
 
-
+.workoutItem {
+    background-color: #d4a7a7;
+    @apply flex flex-row items-center justify-between w-5/6 h-16 p-1 pl-3 mt-4 text-black border-0 border-red-500 rounded-lg;
+}
 
 
 

@@ -23,6 +23,7 @@
     "@ionic/react-router": "^5.5.2",
     "@mui/material": "^5.2.8",
     "autoprefixer": "^10.2.6",
+    "boring-avatars": "^1.6.1",
     "classnames": "^2.2.6",
     "next": "^11.0.0",
     "postcss": "^8.3.5",
