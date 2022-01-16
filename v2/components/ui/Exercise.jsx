@@ -108,7 +108,6 @@ let workoutOptions = [
     { title: "swim" },
     { title: "yoga" },
     { title: "strength training" },
-    
     { title: "soccer" },
     { title: "footbal" },
     { title: "tennis" },
@@ -278,7 +277,6 @@ const Exercise = (props) => {
 					manageWorkouts({type: 'delete', i: isEditing[1]})
 					toggleModal(false)
 					setMinVal(null)
-					setHourVal(null)
 					setSelectVal(null)
 				    }}
 				>
@@ -308,19 +306,19 @@ const Exercise = (props) => {
 					//
 					console.log(hourVal)
 					if (selectVal != null && !containsOption(selectVal, workoutOptions)) {
-					    workoutOptions.push(selectVal)
+					    workoutOptions.push({ title: selectVal.title.toLowerCase() })
 					}
 
 					if (!isEditing) {
 					    manageWorkouts({type: 'append', payload: { 
-						name: selectVal.title,
+						name: selectVal.title.toLowerCase(),
 						len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
 						m: localMin, 
 						h: localHour,
 					    }})
 					} else {
 					    manageWorkouts({type: 'edit', payload: { 
-						name: selectVal.title,
+						name: selectVal.title.toLowerCase(),
 						len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
 						m: localMin, 
 						h: localHour,
