@@ -28,6 +28,14 @@ const ScreenTime = (props) => {
     //useEffect(() => {
     //    console.log(sliderRef.current)
     //})
+    
+    const handleScale = (v) => {
+	return decToTime(v)
+    }
+    
+    const decToTime = (num) => {
+	return ('0' + Math.floor(num) % 24).slice(-2) + ':' + ((num % 1)*60 + '0').slice(0, 2);
+    }
 
 
     return (
@@ -47,16 +55,20 @@ const ScreenTime = (props) => {
 		//className="flex content-center justify-center border-2 border-red-500 h-96"
 		className="flex flex-col items-center mt-12 mb-12 text-center border-0 border-blue-500 h-1/2"
 	    >
-		<p className={subStyles.infoTag}>good!</p>
+		<p className={subStyles.infoTag}>16h</p>
 		<Slider
 		    sx={{
 			color: "rgba(255, 255, 255, 0)",
+			//background: rgb(167,212,207);
+
 			//alignItems: "center",
 			//justifyContent: "center",
 			//display: "flex",
 			//border: "1px solid red",
 			//background: "linear-gradient(180deg, rgba(171,197,197,1) 0%, rgba(199,196,225,1) 50%, rgba(163,115,144,1) 100%)",
-			background: "linear-gradient(180deg, rgba(178,212,167,1) 0%, rgba(196,209,225,1) 50%, rgba(167,174,212,1) 100%)",
+			//background: "linear-gradient(180deg, rgba(178,212,167,1) 0%, rgba(196,209,225,1) 50%, rgba(167,174,212,1) 100%)",
+			background: "linear-gradient(180deg, rgba(167,212,207,1) 0%, rgba(224,175,220,1) 100%);",
+
 			//width: "0.01rem",
 			padding: "5px !important",
 			//maxWidth: "1px",
@@ -72,6 +84,13 @@ const ScreenTime = (props) => {
 			    backgroundColor: "rgba(255, 255, 255, 0)",
 			    border: "none",
 			},
+			'& .MuiSlider-valueLabel': {
+			    //backgroundColor: "rgba(255, 255, 255, 0)",
+			    //border: "none",
+			    borderRadius: "10px",
+			    //border: "none",
+			    backgroundColor: "#292929",
+			},
 		    }}
 		    track="inverted"
 		    ref={sliderRef}
@@ -79,16 +98,20 @@ const ScreenTime = (props) => {
 			setSlider(e.target.value);
 			//console.log(sliderVal)
 		    }}
+		    max={16}
+		    min={0}
+		    step={0.01} // bleh convert to actual time later
+		    scale={handleScale}
 
 		    //size="small"
 		    defaultValue={50}
 		    //aria-label="Small"
-		    valueLabelDisplay="off"
+		    valueLabelDisplay="on"
 		    orientation="vertical"
 		/>
 		<p className={subStyles.infoTag}
 		    //style={{marginBottom: "-20px"}}
-		>not good.</p>
+		>0h</p>
 	    </div>
 	</div>
     );

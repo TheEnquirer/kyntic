@@ -27,6 +27,14 @@ const Sleep = () => {
     //useEffect(() => {
     //    console.log(sliderRef.current)
     //})
+    const handleScale = (v) => {
+	return decToTime(v)
+    }
+    
+    const decToTime = (num) => {
+	return ('0' + Math.floor(num) % 24).slice(-2) + ':' + ((num % 1)*60 + '0').slice(0, 2);
+    }
+
 
 
     return (
@@ -87,7 +95,8 @@ const Sleep = () => {
 		    }}
 		    max={11} 
 		    min={0}
-		    step={0.1} // bleh convert to actual time later
+		    step={0.01} // bleh convert to actual time later
+		    scale={handleScale}
 
 		    //size="small"
 		    defaultValue={50}
