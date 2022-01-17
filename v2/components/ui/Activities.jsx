@@ -36,6 +36,7 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 const Activities = (props) => {
     const [activitieOptions, setActivitieOptions] = useState(starterOptions)
+    const [noteValue, setNoteValue] = useState("")
 
     return (
 	<div className="w-screen h-screen border-0 border-red-500">
@@ -47,7 +48,9 @@ const Activities = (props) => {
 
 	    <div className={subStyles.subtitle}>
 		what activities did you do today?
-		<div className="m-4 mt-7">
+	    </div>
+	    <div className="border-0 border-blue-500 ">
+		<div className="m-4 mb-0 mt-7">
 		    <Autocomplete
 
 			onChange={(event, value, reason) => {
@@ -107,7 +110,17 @@ const Activities = (props) => {
 			)}
 		    />
 		</div>
-
+		<div className="flex flex-col m-4 -mt-2 border-0 border-red-300">
+		    <textarea
+			type="text"
+			value={noteValue.target.value}
+			onChange={setNoteValue}
+			className={subStyles.noteBox}
+			placeholder={"any notes about today?"}
+		    />
+		</div>
+		<div className="h-screen border-0 border-red-500"> 
+		</div>
 	    </div>
 	</div>
     );
