@@ -1,0 +1,3 @@
+[submodule "plugin/Metawear-Capacitor"]
+	path = plugin/Metawear-Capacitor
+	url = https://github.com/FlyN-Nick/Metawear-Capacitor
