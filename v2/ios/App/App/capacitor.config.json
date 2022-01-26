@@ -1,6 +1,6 @@
 {
-	"appId": "com.example.app",
-	"appName": "nextjs-tailwind-capacitor",
+	"appId": "com.example.kyntic",
+	"appName": "Kyntic",
 	"bundledWebRuntime": false,
 	"npmClient": "npm",
 	"webDir": "out",
