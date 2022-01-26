@@ -36,7 +36,7 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 const Activities = (props) => {
     const [activitieOptions, setActivitieOptions] = useState(starterOptions)
-    const [noteValue, setNoteValue] = useState("")
+    const [noteValue, setNoteValue] = useState({target: ""})
 
     return (
 	<div className="w-screen h-screen border-0 border-red-500">
