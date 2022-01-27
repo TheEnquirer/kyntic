@@ -1146,10 +1146,10 @@
     "tslib" "^2.1.0"
     "xml2js" "^0.4.23"
 
-"@capacitor/core@^3.0.0", "@capacitor/core@^3.0.1", "@capacitor/core@~3.0.0":
-  "integrity" "sha512-17iFkpICdOdTqfbKh3oXFYbwXn9dSxLe85PWeptXSW5jkiHN/YhI+iedRpcukv1QXkR1P629B+7kDqBcrzKL9w=="
-  "resolved" "https://registry.npmjs.org/@capacitor/core/-/core-3.0.1.tgz"
-  "version" "3.0.1"
+"@capacitor/core@^3.0.0", "@capacitor/core@^3.4.0", "@capacitor/core@~3.0.0":
+  "integrity" "sha512-utfMAYZyU8SL+JkVOcqanjmWarSBlvCyVDPL6AnXG/B//9VtleZ5NtorUXL0ggnK7t+Zbd8xGgA+LN7mn4+3Lw=="
+  "resolved" "https://registry.npmjs.org/@capacitor/core/-/core-3.4.0.tgz"
+  "version" "3.4.0"
   dependencies:
     "tslib" "^2.1.0"
 
@@ -1158,10 +1158,10 @@
   "resolved" "https://registry.npmjs.org/@capacitor/filesystem/-/filesystem-1.1.0.tgz"
   "version" "1.1.0"
 
-"@capacitor/ios@^3.0.1":
-  "integrity" "sha512-g0xQgiGu0MyHl/17tEiMJUAL6sTj76pu3gtqY5wWGLAfTDRodDz2WjmV6i8OQvfrR69IWfdqEvKaFz7MCeHajg=="
-  "resolved" "https://registry.npmjs.org/@capacitor/ios/-/ios-3.0.1.tgz"
-  "version" "3.0.1"
+"@capacitor/ios@^3.4.0":
+  "integrity" "sha512-S500W45rxLrcrrt+Vx4fJDhmt+07P6yaiE+l32ANV3SHcUvQMWOLXQ7JlKqwkec5er1xonmtor7PQhIt/5UKAA=="
+  "resolved" "https://registry.npmjs.org/@capacitor/ios/-/ios-3.4.0.tgz"
+  "version" "3.4.0"
 
 "@capacitor/status-bar@^1.0.1":
   "integrity" "sha512-5JwaseLxyhT8P86WiL776+1UTxR3k7klH4hU+gBD5UdAHRP4/jyS1/FiEuUpkMAMy6yvCJcDwZl8b6P1zWbiMQ=="
@@ -7103,10 +7103,10 @@
   "resolved" "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   "version" "1.4.1"
 
-"metawear-capacitor@^0.0.3":
-  "integrity" "sha512-hxaOJG8f0qX9LQ7N/kxrWwkNmq4kbM8X+q9w3H2p0EWkMfaWJckemTDYCAuTOKbRjOitSM9sH262WrjGIAeHcA=="
-  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.0.3.tgz"
-  "version" "0.0.3"
+"metawear-capacitor@^0.0.4":
+  "integrity" "sha512-dUfPJeBLI2O3R/l0xp38dVAeK2bbs35kHd9esHzi498YjPsIjUREo+U8t5WO7LPVJ2z6eGke37SJKbbTPHUtAg=="
+  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.0.4.tgz"
+  "version" "0.0.4"
 
 "methods@~1.1.2":
   "integrity" "sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4="
