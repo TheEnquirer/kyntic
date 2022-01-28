@@ -1,13 +1,13 @@
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  IonContent,
-  IonMenuButton,
+	IonPage,
+	IonHeader,
+	IonToolbar,
+	IonTitle,
+	IonButtons,
+	IonButton,
+	IonIcon,
+	IonContent,
+	IonMenuButton,
 } from '@ionic/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -26,65 +26,68 @@ import Exercise from '../ui/Exercise';
 import ScreenTime from '../ui/ScreenTime';
 import Activities from '../ui/Activities';
 import { MetawearCapacitor } from 'metawear-capacitor';
+import { BleClient } from '@capacitor-community/bluetooth-le';
 
 const Sub = props => {
-  const global = useContext(GlobalContext);
-  const history = useHistory();
+	const global = useContext(GlobalContext);
+	const history = useHistory();
 
-  useEffect(() => {
-    console.log('mounting sliders');
-    if (swiperRef.current) {
-      swiperRef.current.swiper.slideTo(global.targetSubPage);
-    }
-  });
-  MetawearCapacitor.connect()
-    .then(async () => {
-      console.log('Running connection did not error.');
-    })
-    .catch(err => {
-      console.error(err);
-    });
+	useEffect(() => {
+		console.log('mounting sliders');
+		if (swiperRef.current) {
+			swiperRef.current.swiper.slideTo(global.targetSubPage);
+		}
+	});
 
-  const [controlledSwiper, setControlledSwiper] = useState(null);
-  const swiperRef = useRef(null);
-  const tracks = [
-    <Mood color={'#b2d4a7'} />,
-    <Sleep color={'#a7aed4'} />,
-    <Exercise color={'#d4a7a7'} />,
-    <ScreenTime color={'#a7d4cf'} />,
-    <Activities color={'#d4a7d0'} />,
-  ];
+	BleClient.initialize();
+	MetawearCapacitor.connect()
+		.then(async () => {
+			console.log('Running connection did not error.');
+		})
+		.catch(err => {
+			console.error(err);
+		});
 
-  return (
-    <IonPage>
-      {' '}
-      <IonContent className="" fullscreen>
-        <Swiper
-          className="absolute h-screen border-0 border-blue-500"
-          modules={[Controller]}
-          ref={swiperRef}
-          onSwipe={setControlledSwiper}
-          spaceBetween={30}
-          //spaceBetween={0}
-          slidesPerView={1}
-          onSlideChange={() => console.log('slide change')}
-          hashNavigation={{ replaceState: true }}
-          history={true}
-        >
-          {tracks.map((v, i) => {
-            return (
-              <SwiperSlide>
-                <Slide>
-                  {v}
-                  {swiperRef}
-                  {i}
-                </Slide>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
-      </IonContent>{' '}
-    </IonPage>
-  );
+	const [controlledSwiper, setControlledSwiper] = useState(null);
+	const swiperRef = useRef(null);
+	const tracks = [
+		<Mood color={'#b2d4a7'} />,
+		<Sleep color={'#a7aed4'} />,
+		<Exercise color={'#d4a7a7'} />,
+		<ScreenTime color={'#a7d4cf'} />,
+		<Activities color={'#d4a7d0'} />,
+	];
+
+	return (
+		<IonPage>
+			{' '}
+			<IonContent className="" fullscreen>
+				<Swiper
+					className="absolute h-screen border-0 border-blue-500"
+					modules={[Controller]}
+					ref={swiperRef}
+					onSwipe={setControlledSwiper}
+					spaceBetween={30}
+					//spaceBetween={0}
+					slidesPerView={1}
+					onSlideChange={() => console.log('slide change')}
+					hashNavigation={{ replaceState: true }}
+					history={true}
+				>
+					{tracks.map((v, i) => {
+						return (
+							<SwiperSlide>
+								<Slide>
+									{v}
+									{swiperRef}
+									{i}
+								</Slide>
+							</SwiperSlide>
+						);
+					})}
+				</Swiper>
+			</IonContent>{' '}
+		</IonPage>
+	);
 };
 export default Sub;
