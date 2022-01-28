@@ -1,6 +1,6 @@
 {
-  "name": "nextjs-tailwind-capacitor",
-  "version": "0.1.0",
+  "name": "kyntic",
+  "version": "0.0.1",
   "private": true,
   "engines": {
     "node": ">=12"
