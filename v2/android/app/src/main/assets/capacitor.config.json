@@ -1,5 +1,5 @@
 {
-	"appId": "com.example.kyntic",
+	"appId": "com.kyntic.kyntic",
 	"appName": "Kyntic",
 	"bundledWebRuntime": false,
 	"npmClient": "npm",

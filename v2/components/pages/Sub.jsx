@@ -19,7 +19,7 @@ import pageStyles from '../../styles/Pages.module.css';
 import { arrowBackOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import Slide from '../ui/Slide';
-
+import { PermissionStatus } from '@capacitor/filesystem';
 import Mood from '../ui/Mood';
 import Sleep from '../ui/Sleep';
 import Exercise from '../ui/Exercise';
@@ -37,11 +37,13 @@ const Sub = props => {
       swiperRef.current.swiper.slideTo(global.targetSubPage);
     }
   });
-//   MetawearCapacitor.connect()
-//     .then(async () => {console.log("successfull connection")})
-//     .catch(err => {
-//       console.error(err);
-//     });
+  MetawearCapacitor.connect()
+    .then(async () => {
+      console.log('Running connection did not error.');
+    })
+    .catch(err => {
+      console.error(err);
+    });
 
   const [controlledSwiper, setControlledSwiper] = useState(null);
   const swiperRef = useRef(null);
