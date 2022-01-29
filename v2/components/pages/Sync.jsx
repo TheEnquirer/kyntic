@@ -11,8 +11,38 @@ import {
 } from '@ionic/react';
 import { useState } from 'react';
 import pageStyles from '../../styles/Pages.module.css';
+import { MetawearCapacitor } from 'metawear-capacitor';
+
+let connectedListenerMade = false; // when we have made a listener to listen if we have successfully connected 
+let connectCalled = false; // have we asked the plugin to connect?
+let connected = false; // have we been told by the plugin that we have successfully connected?
+
+const createConnectedListener = () => {
+	if (!connectedListenerMade) {
+		connectedListenerMade = true;
+		console.log("CreateConnectedListener made.");
+		MetawearCapacitor.addListener('successfulConnection', () => {
+			if (!connected) {
+				connected = true;
+				console.log('JS knows that we are connected!');
+			}
+		});
+	}
+}
 
 const Sync = () => {
+	// connect to the sensor
+	if (!connectCalled) {
+		MetawearCapacitor.connect()
+			.then(async () => {
+				console.log('Running connection did not error.');
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}
+	createConnectedListener(); // listens to see if we have successfully connected
+
 	return (
 		<IonPage>
 			<IonToolbar>

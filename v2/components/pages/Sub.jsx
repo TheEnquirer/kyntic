@@ -25,8 +25,6 @@ import Sleep from '../ui/Sleep';
 import Exercise from '../ui/Exercise';
 import ScreenTime from '../ui/ScreenTime';
 import Activities from '../ui/Activities';
-import { MetawearCapacitor } from 'metawear-capacitor';
-import { BleClient } from '@capacitor-community/bluetooth-le';
 
 const Sub = props => {
 	const global = useContext(GlobalContext);
@@ -38,15 +36,6 @@ const Sub = props => {
 			swiperRef.current.swiper.slideTo(global.targetSubPage);
 		}
 	});
-
-	//BleClient.initialize();
-	MetawearCapacitor.connect()
-		.then(async () => {
-			console.log('Running connection did not error.');
-		})
-		.catch(err => {
-			console.error(err);
-		});
 
 	const [controlledSwiper, setControlledSwiper] = useState(null);
 	const swiperRef = useRef(null);
