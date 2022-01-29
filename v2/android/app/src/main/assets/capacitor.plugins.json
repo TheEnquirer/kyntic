@@ -1,9 +1,5 @@
 [
 	{
-		"pkg": "@capacitor-community/bluetooth-le",
-		"classpath": "com.capacitorjs.community.plugins.bluetoothle.BluetoothLe"
-	},
-	{
 		"pkg": "@capacitor/filesystem",
 		"classpath": "com.capacitorjs.plugins.filesystem.FilesystemPlugin"
 	},
