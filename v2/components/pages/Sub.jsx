@@ -39,7 +39,7 @@ const Sub = props => {
 		}
 	});
 
-	BleClient.initialize();
+	//BleClient.initialize();
 	MetawearCapacitor.connect()
 		.then(async () => {
 			console.log('Running connection did not error.');
