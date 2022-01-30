@@ -7103,10 +7103,10 @@
   "resolved" "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   "version" "1.4.1"
 
-"metawear-capacitor@^0.1.9":
-  "integrity" "sha512-DKXDUBeW1SJp8bBMG0VakwfirrexHajcDoIe65SxVXcpggkdXwQzX+bDdQ66au97gDhSr1j4eeGPivLDTUrY6A=="
-  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.1.9.tgz"
-  "version" "0.1.9"
+"metawear-capacitor@^0.2.1":
+  "integrity" "sha512-X2oFfmdLsgtEoM7hrloXwj1SCT/n8MmPMN4feAnXv/MLS6XBJzj0/Fg16e5wcpLObJzYJTDPaHTd0xCCPSg5sw=="
+  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.2.1.tgz"
+  "version" "0.2.1"
 
 "methods@~1.1.2":
   "integrity" "sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4="
