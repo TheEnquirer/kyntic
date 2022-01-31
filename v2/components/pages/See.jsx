@@ -50,6 +50,8 @@ const startLogging = () => {
 				console.log('JS: Data files created!');
 				MetawearCapacitor.startData().then(() => {
 					console.log('JS: Running startData did not error.');
+					createGyroDataListener();
+					createAccelDataListener();
 				}).catch(err => {
 					console.log("JS: Error while starting data logging:")
 					console.error(err);
@@ -63,6 +65,24 @@ const startLogging = () => {
 			console.error(err);
 		});
 	}
+}
+
+/**
+ * Gyro data stream from native code.
+ */
+const createGyroDataListener = () => {
+	MetawearCapacitor.addListener('gyroData', (gyro) => {
+		console.log(`JS: gyroData: (${gyro["x"]}, ${gyro["y"]}, ${gyro["z"]})`);
+	});
+}
+
+/**
+ * Accel data stream from native code.
+ */
+ const createAccelDataListener = () => {
+	MetawearCapacitor.addListener('accelData', (accel) => {
+		console.log(`JS: accel: (${accel["x"]}, ${accel["y"]}, ${accel["z"]})`);
+	});
 }
 
 const writeFile = () => {
