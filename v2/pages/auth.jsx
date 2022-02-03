@@ -24,7 +24,7 @@ const Auth = () => {
 		    Fill in your email, we'll send you a magic link.
 		</p>
 
-		<form>
+		<form onSubmit={handleSubmit}>
 		    <input
 			type="email"
 			placeholder="Your email address"
