@@ -92,7 +92,7 @@ function MyApp({ Component, pageProps }) {
 	    handleAuthChange(event, session)
 	    if (event === 'SIGNED_IN') {
 		setAuthenticatedState('authenticated')
-		router.push('/profile')
+		router.push('/tabs')
 	    }
 	    if (event === 'SIGNED_OUT') {
 		setAuthenticatedState('not-authenticated')
