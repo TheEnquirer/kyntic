@@ -5,62 +5,6 @@ export default function handler(req, res) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //import supabase from '../lib/supabase'
 //import { useState } from 'react'
 //import { useRouter } from 'next/router'
