@@ -36,50 +36,50 @@ import Sync from './Sync';
 import Sub from './Sub';
 
 const Tabs = () => {
-	return (
-		<IonTabs>
-			<IonRouterOutlet>
-				<Route path="/tabs/log" component={Log} exact={true} />
-				<Route path="/tabs/see" component={See} exact={true} />
-				<Route path="/tabs/sync" component={Sync} exact={true} />
-				<Route path="/tabs/log/sub" component={Sub} exact={true} />
+    return (
+	<IonTabs>
+	    <IonRouterOutlet>
+		<Route path="/tabs/log" component={Log} exact={true} />
+		<Route path="/tabs/see" component={See} exact={true} />
+		<Route path="/tabs/sync" component={Sync} exact={true} />
+		<Route path="/tabs/log/sub" component={Sub} exact={true} />
 
-				{/*<Route path="/tabs/lists" component={Lists} exact={true} />
+		{/*<Route path="/tabs/lists" component={Lists} exact={true} />
 	<Route path="/tabs/lists/:listId" component={ListDetail} exact={true} />
 	<Route path="/tabs/settings" component={Settings} exact={true} />*/}
 
-				<Route path="/tabs" render={() => <Redirect to="/tabs/log" />} exact={true} />
-			</IonRouterOutlet>
-			{String(location.pathname).includes('log/') ? (
-				<IonTabBar
-				//slot="bottom"
-				//className="appearance-none"
-				></IonTabBar>
-			) : (
-				<IonTabBar className={pageStyles.borderSep} slot="bottom">
-					<IonTabButton className={pageStyles.tabs} tab="tab1" href="/tabs/log">
-						{/*<div className="flex flex-col border-2 border-blue-300">*/}
-						{/*<IonIcon icon={radioButtonOnOutline} />*/}
-						<IonLabel className="font-bold">log</IonLabel>
-						{/*</div>*/}
-					</IonTabButton>
+		<Route path="/tabs" render={() => <Redirect to="/tabs/log" />} exact={true} />
+	    </IonRouterOutlet>
+	    {String(location.pathname).includes('log/') ? (
+		<IonTabBar
+		    //slot="bottom"
+		    //className="appearance-none"
+		></IonTabBar>
+	    ) : (
+		<IonTabBar className={pageStyles.borderSep} slot="bottom">
+		    <IonTabButton className={pageStyles.tabs} tab="tab1" href="/tabs/log">
+			{/*<div className="flex flex-col border-2 border-blue-300">*/}
+			{/*<IonIcon icon={radioButtonOnOutline} />*/}
+			<IonLabel className="font-bold">log</IonLabel>
+			{/*</div>*/}
+		    </IonTabButton>
 
-					<IonTabButton className={pageStyles.tabs} tab="tab2" href="/tabs/see">
-						{/*<IonIcon icon={copy} />*/}
-						<IonLabel className="font-bold">see</IonLabel>
-					</IonTabButton>
+		    <IonTabButton className={pageStyles.tabs} tab="tab2" href="/tabs/see">
+			{/*<IonIcon icon={copy} />*/}
+			<IonLabel className="font-bold">see</IonLabel>
+		    </IonTabButton>
 
-					<IonTabButton className={pageStyles.tabs} tab="tab3" href="/tabs/sync">
-						{/*<IonIcon icon={resizeOutline} />*/}
-						<IonLabel className="font-bold">link</IonLabel>
-					</IonTabButton>
+		    <IonTabButton className={pageStyles.tabs} tab="tab3" href="/tabs/sync">
+			{/*<IonIcon icon={resizeOutline} />*/}
+			<IonLabel className="font-bold">link</IonLabel>
+		    </IonTabButton>
 
-					{/*<IonTabButton className="appearance-none" tab="tab4" href="/tabs/sub">
+		    {/*<IonTabButton className="appearance-none" tab="tab4" href="/tabs/sub">
 		  </IonTabButton>*/}
-				</IonTabBar>
-			)}
-		</IonTabs>
-	);
+		</IonTabBar>
+	    )}
+	</IonTabs>
+    );
 };
 
 export default Tabs;

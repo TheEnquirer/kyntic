@@ -19,6 +19,7 @@ import { useContext } from 'react'
 
 const Item = (props) => {
     const history = useHistory()
+    console.log("over here bro", history)
     const global = useContext(GlobalContext)
     const handleNav = () => {
 	global.update({

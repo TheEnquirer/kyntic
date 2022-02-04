@@ -24,11 +24,11 @@ const Log = () => {
 		</IonTitle>
 	    </IonToolbar>
 	    <IonContent className="ion-padding" fullscreen>
-		<IonHeader collapse="condense">
+		{/*<IonHeader collapse="condense">
 		    <IonToolbar>
 			<IonTitle size="large">log</IonTitle>
 		    </IonToolbar>
-		</IonHeader>
+		</IonHeader>*/}
 		<div className="flex flex-col mt-3 space-y-8">
 		    {Items.map((e, i) => {
 			return (
