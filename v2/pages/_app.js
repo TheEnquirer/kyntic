@@ -19,63 +19,68 @@ import supabaseClient from '../lib/supabase';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useRouter } from 'next/router';
 import styles from '../styles/Home.module.css'
+import SignIn from './sign-in'
 
 //import useIonRouter from "@ionic/react";
 //import GlobalContext from '../utils/global-context';
 //import { AppStateProvier } from './app-context'
 
 
-function SignIn() {
-    const [email, setEmail] = useState('')
-    const [submitted, setSubmitted] = useState(false)
-    const router = useRouter()
-    //console.log(supabaseClient, "supabase")
+//function SignIn() {
+//    const [email, setEmail] = useState('')
+//    const [submitted, setSubmitted] = useState(false)
+//    const router = useRouter()
 
-    //useEffect( async () => {
-    //    const profileData = await supabaseClient.auth.user()
-    //    if (profileData) {
-    //        console.log("profileData!")
-    //        router.push('/tabs')
-    //    } else {
-    //        console.log("not logged in yet")
-    //    }
-    //}, [])
+//    useEffect(() => {
 
-    async function signIn() {
+//    })
+//    //console.log(supabaseClient, "supabase")
 
-	if (!email) return
+//    //useEffect( async () => {
+//    //    const profileData = await supabaseClient.auth.user()
+//    //    if (profileData) {
+//    //        console.log("profileData!")
+//    //        router.push('/tabs')
+//    //    } else {
+//    //        console.log("not logged in yet")
+//    //    }
+//    //}, [])
 
-	const { error, data } = await supabaseClient.auth.signIn({
-	    email
-	})
+//    async function signIn() {
 
-	if (error) { console.log({error})}
-	else { setSubmitted(true) }
-    }
+//        if (!email) return
 
-    if (submitted) {
-	return (
-	    <div className={styles.container}>
-		<h1>Please check your email to sign in</h1>
-	    </div>
-	)
-    }
+//        const { error, data } = await supabaseClient.auth.signIn({
+//            email
+//        })
 
-    return (
-	<div className={styles.container}>
-	    <main className={styles.main}>
-		<h1 className={styles.title}>
-		    Sign In
-		</h1>
-		<input
-		    onChange={e => setEmail(e.target.value)}
-		    style={{ margin: 10 }}
-		/>
-		<button onClick={() => signIn()}>Sign In</button>
-	    </main>
-	</div>
-    )
-}
+//        if (error) { console.log({error})}
+//        else { setSubmitted(true) }
+//    }
+
+//    if (submitted) {
+//        return (
+//            <div className={styles.container}>
+//                <h1>Please check your email to sign in</h1>
+//            </div>
+//        )
+//    }
+
+//    return (
+//        <div className={styles.container}>
+//            <main className={styles.main}>
+//                <h1 className={styles.title}>
+//                    Sign In
+//                </h1>
+//                <input
+//                    onChange={e => setEmail(e.target.value)}
+//                    style={{ margin: 10 }}
+//                />
+//                <button onClick={() => signIn()}>Sign In</button>
+//            </main>
+//        </div>
+//    )
+//}
 
 
 
@@ -84,7 +89,7 @@ function SignIn() {
 function MyApp({ Component, pageProps }) {
     const [authenticatedState, setAuthenticatedState] = useState('not-authenticated')
     const router = useRouter()
-    console.log("history!!", router)
+    //console.log("history!!", router)
 
     useEffect(() => {
 	/* fires when a user signs in or out */
@@ -147,9 +152,6 @@ function MyApp({ Component, pageProps }) {
 		{(authenticatedState === 'not-authenticated')? (
 		    <>
 			<SignIn />
-		    <div onClick={() => { handleNav("/sign-in") }}>
-			<a style={linkStyle}>Sign In</a>
-		    </div>
 		    </>
 		) : (
 		    <>
@@ -166,7 +168,6 @@ function MyApp({ Component, pageProps }) {
 
 	    {/*</GlobalContext.Provider>*/}
 	</>
-
     );
 }
 

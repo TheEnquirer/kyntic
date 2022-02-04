@@ -11,15 +11,20 @@ export default function SignIn() {
     const router = useRouter()
     //console.log(supabaseClient, "supabase")
 
-    //useEffect( async () => {
-    //    const profileData = await supabaseClient.auth.user()
-    //    if (profileData) {
-    //        console.log("profileData!")
-    //        router.push('/tabs')
-    //    } else {
-    //        console.log("not logged in yet")
-    //    }
-    //}, [])
+    useEffect(() => {
+	const user = supabaseClient.auth.user()
+	if (user && router.pathname == "/sign-in") {
+	    router.push('/tabs')
+	    //console.log(router.pathname)
+	}
+	//const profileData = await supabaseClient.auth.user()
+	//if (profileData) {
+	//    console.log("profileData!")
+	//    router.push('/tabs')
+	//} else {
+	//    console.log("not logged in yet")
+	//}
+    }, [])
 
     async function signIn() {
 
