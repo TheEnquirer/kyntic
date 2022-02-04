@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 .container {
     min-height: 100vh;
     padding: 0 0.5rem;
@@ -119,3 +121,25 @@
 	flex-direction: column;
     }
 }
+
+
+
+.cleanTitle {
+    font-variant: small-caps;
+    /*font-family: 'Rubik', sans-serif;*/
+
+    @apply text-3xl font-medium text-gray-700;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

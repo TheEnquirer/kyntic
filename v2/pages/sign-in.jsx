@@ -38,7 +38,8 @@ export default function SignIn() {
     }
 
     return (
-	<div className={styles.container}>
+	<>
+	{/*<div className={styles.container}>
 	    <main className={styles.main}>
 		<h1 className={styles.title}>
 		    Sign In
@@ -49,7 +50,12 @@ export default function SignIn() {
 		/>
 		<button onClick={() => signIn()}>Sign In</button>
 	    </main>
-	</div>
+	</div>*/}
+	    <div className="flex content-center justify-center pt-64">
+		<p className={styles.cleanTitle}> sign in </p>
+	    </div>
+
+	</>
     )
 }
 
