@@ -8,6 +8,8 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family: 'Rubik', sans-serif;
+    @apply font-medium text-gray-700;
 }
 
 .main {
@@ -128,12 +130,21 @@
     font-variant: small-caps;
     /*font-family: 'Rubik', sans-serif;*/
 
-    @apply text-3xl font-medium text-gray-700;
+    @apply text-3xl;
 
 }
 
+.largeButton {
+    /*font-variant: small-caps;*/
+    font-family: 'Rubik', sans-serif;
+    background-color: #131313;
+    @apply pt-4 pb-4 pl-16 pr-16 mt-20 text-lg text-gray-100 rounded-sm;
+}
 
+/*.largeButton:hover {*/
+/*    background-color: #1E1E1E;*/
 
+/*}*/
 
 
 
