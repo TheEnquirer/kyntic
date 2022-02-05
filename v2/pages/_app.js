@@ -62,10 +62,6 @@ function MyApp({ Component, pageProps }) {
 	})
     }
 
-    const handleNav = (target) => {
-	router.push(target)
-    }
-
     return (
 	<>
 	    <Head> <meta
