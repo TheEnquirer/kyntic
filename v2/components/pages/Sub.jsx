@@ -25,8 +25,10 @@ import Sleep from '../ui/Sleep';
 import Exercise from '../ui/Exercise';
 import ScreenTime from '../ui/ScreenTime';
 import Activities from '../ui/Activities';
+import db from '../../lib/db'
 
 const Sub = props => {
+    //const db = DB;
     const global = useContext(GlobalContext);
     const history = useHistory();
     const [loggingData, setLoggingData] = useState({})
@@ -37,6 +39,13 @@ const Sub = props => {
 	setLoggingData(localLog)
 	console.log(loggingData)
     }
+
+    useEffect(() => {
+	db();
+	//db.test("whee");
+	//console.log(db.getUser())
+	db.logData({});
+    }, [])
 
 
     useEffect(() => {
