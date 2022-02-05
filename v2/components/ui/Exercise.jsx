@@ -30,29 +30,6 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 const filter = createFilterOptions();
 
-const reducer = (state, action) => {
-    switch (action.type) {
-	case 'append':
-	    //return state.append(action.payload)
-	    return [action.payload, ...state]
-	case 'edit':
-	    let localState = state
-	    localState[action.i] = action.payload
-	    console.log(localState)
-	    return localState
-	case 'delete':
-	    localState = state
-	    localState.splice(action.i, 1)
-	    console.log(localState)
-	    return localState
-	//case 'decrement':
-	//    return {count: state.count - 1};
-	case 'reset':
-	    return TEST;
-	default:
-	    throw new Error();
-    }
-}
 
 const TEST = [
     {
@@ -117,7 +94,35 @@ let workoutOptions = [
     { title: "hiking" },
 ];
 
+const reducer = (state, action) => {
+    switch (action.type) {
+	case 'append':
+	    //return state.append(action.payload)
+	    let newval = [action.payload, ...state]
+	    action.props.setLoggingData("exercise", newval)
+	    return newval
+	case 'edit':
+	    let localState = state
+	    localState[action.i] = action.payload
+	    action.props.setLoggingData("exercise", localState)
+	    return localState
+	case 'delete':
+	    localState = state
+	    localState.splice(action.i, 1)
+	    action.props.setLoggingData("exercise", localState)
+	    return localState
+	    //case 'decrement':
+	    //    return {count: state.count - 1};
+	case 'reset':
+	    return TEST;
+	default:
+	    throw new Error();
+    }
+}
+
 const Exercise = (props) => {
+
+
     const [workouts, manageWorkouts] = useReducer(reducer, TEST)
     const [modal, toggleModal] = useState(false)
     const [selectVal, setSelectVal] = React.useState(null);
@@ -274,7 +279,7 @@ const Exercise = (props) => {
 				{isEditing? <div className="flex flex-col content-center justify-center w-full h-12 mt-3 mb-0 font-bold text-center align-middle bg-red-400 rounded-lg" 
 				    onClick={() => {
 					console.log("deletinnn")
-					manageWorkouts({type: 'delete', i: isEditing[1]})
+					manageWorkouts({type: 'delete', i: isEditing[1], props: props})
 					toggleModal(false)
 					setMinVal(null)
 					setSelectVal(null)
@@ -302,9 +307,7 @@ const Exercise = (props) => {
 					    console.log("no title!!")
 					    return
 					}
-					//
-					//
-					console.log(hourVal)
+
 					if (selectVal != null && !containsOption(selectVal, workoutOptions)) {
 					    workoutOptions.push({ title: selectVal.title.toLowerCase() })
 					}
@@ -315,14 +318,14 @@ const Exercise = (props) => {
 						len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
 						m: localMin, 
 						h: localHour,
-					    }})
+					    }, props: props})
 					} else {
 					    manageWorkouts({type: 'edit', payload: { 
 						name: selectVal.title.toLowerCase(),
 						len: `${localHour? localHour+"h " : ""}${(localHour && localMin)? ", " : ""}${localMin? localMin+"m" : ""}`,
 						m: localMin, 
 						h: localHour,
-					    }, i: isEditing[1]}) //TODO some bug here where a space gets added after the comma?
+					    }, i: isEditing[1], props: props}) //TODO some bug here where a space gets added after the comma?
 					}
 
 

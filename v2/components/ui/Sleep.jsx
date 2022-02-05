@@ -20,7 +20,7 @@ import { ReactComponent as GreenBlob } from '../../public/green_blob.svg';
 import React, { useState, useRef, useEffect } from 'react';
 
 
-const Sleep = () => {
+const Sleep = props => {
     const history = useHistory()
     const sliderRef = useRef()
     const [sliderVal, setSlider] = useState();
@@ -93,6 +93,11 @@ const Sleep = () => {
 			setSlider(e.target.value);
 			//console.log(sliderVal)
 		    }}
+
+		    onChangeCommitted={(e, v) => {
+			props.setLoggingData("sleep", v)
+		    }}
+
 		    max={11} 
 		    min={0}
 		    step={0.01} // bleh convert to actual time later

@@ -31,8 +31,16 @@ const Sub = props => {
     const history = useHistory();
     const [loggingData, setLoggingData] = useState({})
 
+    const updateLoggingData = (name, v) => {
+	let localLog = loggingData
+	localLog[name] = v
+	setLoggingData(localLog)
+	console.log(loggingData)
+    }
+
+
     useEffect(() => {
-	console.log('mounting sliders');
+	//console.log('mounting sliders');
 	if (swiperRef.current) {
 	    swiperRef.current.swiper.slideTo(global.targetSubPage);
 	}
@@ -42,11 +50,11 @@ const Sub = props => {
     const swiperRef = useRef(null);
     //const
     const tracks = [
-	<Mood color={'#b2d4a7'} />,
-	<Sleep color={'#a7aed4'} />,
-	<Exercise color={'#d4a7a7'} />,
-	<ScreenTime color={'#a7d4cf'} />,
-	<Activities color={'#d4a7d0'} />,
+	<Mood color={'#b2d4a7'} setLoggingData={updateLoggingData}/>,
+	<Sleep color={'#a7aed4'} setLoggingData={updateLoggingData}/>,
+	<Exercise color={'#d4a7a7'} setLoggingData={updateLoggingData}/>,
+	<ScreenTime color={'#a7d4cf'} setLoggingData={updateLoggingData}/>,
+	<Activities color={'#d4a7d0'} setLoggingData={updateLoggingData}/>,
     ];
 
     return (

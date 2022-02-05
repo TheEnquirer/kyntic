@@ -20,10 +20,20 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { useRouter } from 'next/router';
 import styles from '../styles/Home.module.css'
 import SignIn from './sign-in'
+import GlobalContext from '../utils/global-context';
 
 function MyApp({ Component, pageProps }) {
+    const [state, setState] = useState({
+	count: 0,
+	targetSubPage: 0,
+	update
+    })
+    function update(data) {
+	setState(Object.assign({}, state, data));
+    }
     const [authenticatedState, setAuthenticatedState] = useState('not-authenticated')
     const router = useRouter()
+    const [subPage, setSubPage] = useState(0)
     //console.log("history!!", router)
 
     useEffect(() => {
@@ -64,19 +74,21 @@ function MyApp({ Component, pageProps }) {
 
     return (
 	<>
-	    <Head> <meta
-		name="viewport"
-		content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-	    ></meta> </Head>
-	    <div>
-		{(authenticatedState === 'not-authenticated')? (
-		    <> <SignIn /> </>
-		) : (
-		    <> <Component {...pageProps} /> </>
-		)}
+	    <GlobalContext.Provider value={state}>
+		<Head> <meta
+		    name="viewport"
+		    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+		></meta> </Head>
+		<div>
+		    {(authenticatedState === 'not-authenticated')? (
+			<> <SignIn /> </>
+		    ) : (
+			<> <Component {...pageProps} /> </>
+		    )}
 
-	    </div>
-	    <Script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></Script>
+		</div>
+		<Script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></Script>
+	    </GlobalContext.Provider>
 	</>
     );
 }

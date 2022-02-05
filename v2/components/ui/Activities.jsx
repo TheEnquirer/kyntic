@@ -54,6 +54,7 @@ const Activities = (props) => {
 			    if (reason == "createOption") {
 				setActivitieOptions([...activitieOptions, { title: value.at(-1) }])
 			    }
+			    props.setLoggingData("activities", value)
 			}}
 
 			sx={{
@@ -111,7 +112,10 @@ const Activities = (props) => {
 		    <textarea
 			type="text"
 			value={noteValue.target.value}
-			onChange={setNoteValue}
+			onChange={(e) => {
+			    setNoteValue(e)
+			    props.setLoggingData("notes", e.target.value)
+			}}
 			className={subStyles.noteBox}
 			placeholder={"any notes about today?"}
 		    />

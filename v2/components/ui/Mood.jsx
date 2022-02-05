@@ -20,7 +20,7 @@ import { ReactComponent as GreenBlob } from '../../public/green_blob.svg';
 import React, { useState, useRef, useEffect } from 'react';
 
 
-const Mood = () => {
+const Mood = (props) => {
     const history = useHistory()
     const sliderRef = useRef()
     const [sliderVal, setSlider] = useState();
@@ -77,6 +77,10 @@ const Mood = () => {
 		    onChange={(e) => {
 			setSlider(e.target.value);
 			//console.log(sliderVal)
+		    }}
+
+		    onChangeCommitted={(e, v) => {
+			props.setLoggingData("mood", v)
 		    }}
 
 		    //size="small"

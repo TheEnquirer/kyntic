@@ -98,6 +98,11 @@ const ScreenTime = (props) => {
 			setSlider(e.target.value);
 			//console.log(sliderVal)
 		    }}
+
+		    onChangeCommitted={(e, v) => {
+			props.setLoggingData("screenTime", v) // in raw val rn
+		    }}
+
 		    max={16}
 		    min={0}
 		    step={0.01} // bleh convert to actual time later
