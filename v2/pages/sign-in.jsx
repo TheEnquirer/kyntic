@@ -46,7 +46,10 @@ export default function SignIn() {
 	    email
 	})
 
-	if (error) { console.log({error})}
+	if (error) {
+	    console.log({error})
+	    setError({error})
+	}
 	else { setSubmitted(true) }
     }
 

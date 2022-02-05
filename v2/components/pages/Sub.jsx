@@ -29,6 +29,7 @@ import Activities from '../ui/Activities';
 const Sub = props => {
     const global = useContext(GlobalContext);
     const history = useHistory();
+    const [loggingData, setLoggingData] = useState({})
 
     useEffect(() => {
 	console.log('mounting sliders');
@@ -39,6 +40,7 @@ const Sub = props => {
 
     const [controlledSwiper, setControlledSwiper] = useState(null);
     const swiperRef = useRef(null);
+    //const
     const tracks = [
 	<Mood color={'#b2d4a7'} />,
 	<Sleep color={'#a7aed4'} />,

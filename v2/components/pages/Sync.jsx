@@ -13,7 +13,7 @@ import { useState } from 'react';
 import pageStyles from '../../styles/Pages.module.css';
 import { MetawearCapacitor } from 'metawear-capacitor';
 
-let connectedListenerMade = false; // when we have made a listener to listen if we have successfully connected 
+let connectedListenerMade = false; // when we have made a listener to listen if we have successfully connected
 let connectCalled = false; // have we asked the plugin to connect?
 let connected = false; // have we been told by the plugin that we have successfully connected?
 
@@ -43,23 +43,23 @@ const Sync = () => {
 	}
 	createConnectedListener(); // listens to see if we have successfully connected
 
-	return (
-		<IonPage>
-			<IonToolbar>
-				<IonTitle>
-					<div className={pageStyles.title}> sync </div>
-					<hr className={pageStyles.sep} />
-				</IonTitle>
-			</IonToolbar>
-			<IonContent className="ion-padding" fullscreen>
-				<IonHeader collapse="condense">
-					<IonToolbar>
-						<IonTitle size="large">sync</IonTitle>
-					</IonToolbar>
-				</IonHeader>
-				syncing to the sensor! do it, sense.
-			</IonContent>
-		</IonPage>
+    return (
+	<IonPage>
+	    <IonToolbar>
+		<IonTitle>
+		    <div className={pageStyles.title}> sync </div>
+		    <hr className={pageStyles.sep} />
+		</IonTitle>
+	    </IonToolbar>
+	    <IonContent className="ion-padding" fullscreen>
+		<IonHeader collapse="condense">
+		    <IonToolbar>
+			<IonTitle size="large">sync</IonTitle>
+		    </IonToolbar>
+		</IonHeader>
+		syncing to the sensor! do it, sense.
+	    </IonContent>
+	</IonPage>
 	);
 };
 
