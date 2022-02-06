@@ -18,19 +18,26 @@ import Slider from '@mui/material/Slider';
 import ReactDOM from 'react-dom';
 import { ReactComponent as GreenBlob } from '../../public/green_blob.svg';
 import React, { useState, useRef, useEffect } from 'react';
+import db from '../../lib/db'
 
 
 const Sleep = props => {
     const history = useHistory()
     const sliderRef = useRef()
     const [sliderVal, setSlider] = useState();
-    //useEffect(() => {
-    //    console.log(sliderRef.current)
-    //})
+
+    useEffect(() => {
+	db();
+	db.getTodaysData().then((e) => {
+	    if (e !== false) {
+		setSlider(e.sleep)
+	    }
+	})
+    }, [])
+
     const handleScale = (v) => {
 	return decToTime(v)
     }
-    
     const decToTime = (num) => {
 	return ('0' + Math.floor(num) % 24).slice(-2) + ':' + ((num % 1)*60 + '0').slice(0, 2);
     }
@@ -87,6 +94,7 @@ const Sleep = props => {
 			},
 			//MuiSlider-valueLabel.MuiSlider-valueLabelOpen
 		    }}
+		    value={sliderVal? sliderVal : 7}
 		    track="inverted"
 		    ref={sliderRef}
 		    onChange={(e) => {

@@ -27,6 +27,7 @@ import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import db from '../../lib/db'
 
 const filter = createFilterOptions();
 
@@ -115,6 +116,8 @@ const reducer = (state, action) => {
 	    //    return {count: state.count - 1};
 	case 'reset':
 	    return TEST;
+	case 'set':
+	    return action.payload
 	default:
 	    throw new Error();
     }
@@ -123,7 +126,7 @@ const reducer = (state, action) => {
 const Exercise = (props) => {
 
 
-    const [workouts, manageWorkouts] = useReducer(reducer, TEST)
+    const [workouts, manageWorkouts] = useReducer(reducer, [])
     const [modal, toggleModal] = useState(false)
     const [selectVal, setSelectVal] = React.useState(null);
 
@@ -149,6 +152,17 @@ const Exercise = (props) => {
 	}
 	return false;
     }
+
+    useEffect(() => {
+	db();
+	db.getTodaysData().then((e) => {
+	    if (e !== false) {
+		if (e.exercise) {
+		    manageWorkouts({type: 'set', payload: e.exercise})
+		}
+	    }
+	})
+    }, [])
 
     return (
 	<div className="w-screen h-screen border-0 border-red-500">

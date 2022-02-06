@@ -18,15 +18,23 @@ import Slider from '@mui/material/Slider';
 import ReactDOM from 'react-dom';
 import { ReactComponent as GreenBlob } from '../../public/green_blob.svg';
 import React, { useState, useRef, useEffect } from 'react';
+import db from '../../lib/db'
 
 
 const Mood = (props) => {
     const history = useHistory()
     const sliderRef = useRef()
     const [sliderVal, setSlider] = useState();
-    //useEffect(() => {
-    //    console.log(sliderRef.current)
-    //})
+
+
+    useEffect(() => {
+	db();
+	db.getTodaysData().then((e) => {
+	    if (e !== false) {
+		setSlider(e.mood)
+	    }
+	})
+    }, [])
 
 
     return (
@@ -72,8 +80,10 @@ const Mood = (props) => {
 			    border: "none",
 			},
 		    }}
+		    value={sliderVal? sliderVal : 50}
 		    track="inverted"
-		    ref={sliderRef}
+		    //ref={sliderRef}
+		    //defaultValue={sliderVal}
 		    onChange={(e) => {
 			setSlider(e.target.value);
 			//console.log(sliderVal)
@@ -84,7 +94,7 @@ const Mood = (props) => {
 		    }}
 
 		    //size="small"
-		    defaultValue={50}
+		    //defaultValue={50}
 		    //aria-label="Small"
 		    valueLabelDisplay="off"
 		    orientation="vertical"

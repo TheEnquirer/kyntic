@@ -20,7 +20,6 @@ import db from '../../lib/db'
 const Slide = ({ children, props }) => {
     useEffect(() => {
 	db();
-
     }, [])
     const global = useContext(GlobalContext)
     const history = useHistory()

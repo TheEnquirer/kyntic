@@ -37,19 +37,20 @@ const Sub = props => {
 	let localLog = loggingData
 	localLog[name] = v
 	setLoggingData(localLog)
-	console.log(loggingData)
+	//console.log(loggingData)
     }
 
     const pushLoggingData = () => {
-	console.log("pushing data")
 	db.logData(loggingData);
     }
 
     useEffect(() => {
 	db();
-	//db.test("whee");
-	//console.log(db.getUser())
-	//db.logData(loggingData);
+	let startingData = db.getTodaysData().then((e) => {
+	    if (e !== false) {
+		setLoggingData(e)
+	    }
+	})
     }, [])
 
 
@@ -64,11 +65,11 @@ const Sub = props => {
     const swiperRef = useRef(null);
     //const
     const tracks = [
-	<Mood color={'#b2d4a7'} setLoggingData={updateLoggingData}/>,
-	<Sleep color={'#a7aed4'} setLoggingData={updateLoggingData}/>,
-	<Exercise color={'#d4a7a7'} setLoggingData={updateLoggingData}/>,
-	<ScreenTime color={'#a7d4cf'} setLoggingData={updateLoggingData}/>,
-	<Activities color={'#d4a7d0'} setLoggingData={updateLoggingData}/>,
+	<Mood color={'#b2d4a7'} setLoggingData={updateLoggingData} />,
+	<Sleep color={'#a7aed4'} setLoggingData={updateLoggingData} />,
+	<Exercise color={'#d4a7a7'} setLoggingData={updateLoggingData} />,
+	<ScreenTime color={'#a7d4cf'} setLoggingData={updateLoggingData} />,
+	<Activities color={'#d4a7d0'} setLoggingData={updateLoggingData} />,
     ];
 
     return (

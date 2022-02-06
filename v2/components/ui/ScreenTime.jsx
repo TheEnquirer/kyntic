@@ -19,12 +19,24 @@ import Slider from '@mui/material/Slider';
 import ReactDOM from 'react-dom';
 import { ReactComponent as GreenBlob } from '../../public/green_blob.svg';
 import React, { useState, useRef, useEffect } from 'react';
+import db from '../../lib/db'
+
 
 
 const ScreenTime = (props) => {
     const history = useHistory()
     const sliderRef = useRef()
     const [sliderVal, setSlider] = useState();
+
+    useEffect(() => {
+	db();
+	db.getTodaysData().then((e) => {
+	    if (e !== false) {
+		setSlider(e.screenTime)
+	    }
+	})
+    }, [])
+
     //useEffect(() => {
     //    console.log(sliderRef.current)
     //})
@@ -59,19 +71,8 @@ const ScreenTime = (props) => {
 		<Slider
 		    sx={{
 			color: "rgba(255, 255, 255, 0)",
-			//background: rgb(167,212,207);
-
-			//alignItems: "center",
-			//justifyContent: "center",
-			//display: "flex",
-			//border: "1px solid red",
-			//background: "linear-gradient(180deg, rgba(171,197,197,1) 0%, rgba(199,196,225,1) 50%, rgba(163,115,144,1) 100%)",
-			//background: "linear-gradient(180deg, rgba(178,212,167,1) 0%, rgba(196,209,225,1) 50%, rgba(167,174,212,1) 100%)",
 			background: "linear-gradient(180deg, rgba(167,212,207,1) 0%, rgba(224,175,220,1) 100%);",
-
-			//width: "0.01rem",
 			padding: "5px !important",
-			//maxWidth: "1px",
 			'& input[type="range"]': {
 			    WebkitAppearance: 'slider-vertical',
 			},
@@ -85,13 +86,11 @@ const ScreenTime = (props) => {
 			    border: "none",
 			},
 			'& .MuiSlider-valueLabel': {
-			    //backgroundColor: "rgba(255, 255, 255, 0)",
-			    //border: "none",
 			    borderRadius: "10px",
-			    //border: "none",
 			    backgroundColor: "#292929",
 			},
 		    }}
+		    value={sliderVal? sliderVal : 8}
 		    track="inverted"
 		    ref={sliderRef}
 		    onChange={(e) => {
@@ -107,15 +106,11 @@ const ScreenTime = (props) => {
 		    min={0}
 		    step={0.01} // bleh convert to actual time later
 		    scale={handleScale}
-
-		    //size="small"
 		    defaultValue={50}
-		    //aria-label="Small"
 		    valueLabelDisplay="on"
 		    orientation="vertical"
 		/>
 		<p className={subStyles.infoTag}
-		    //style={{marginBottom: "-20px"}}
 		>0h</p>
 	    </div>
 	</div>

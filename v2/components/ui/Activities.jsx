@@ -27,13 +27,25 @@ import Backdrop from '@mui/material/Backdrop';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-
+import db from '../../lib/db'
 
 
 const Activities = (props) => {
     const [activitieOptions, setActivitieOptions] = useState(starterOptions)
+    const [value, setValue] = useState();
     //const [noteValue, setNoteValue] = useState({ target: {value: ""}})
     const [noteValue, setNoteValue] = useState({target: ""})
+
+    useEffect(() => {
+	db();
+	db.getTodaysData().then((e) => {
+	    if (e !== false) {
+		setNoteValue({target: {value: e.notes}})
+		setValue(e.activities)
+	    }
+	})
+    }, [])
+
 
     return (
 	<div className="w-screen h-screen border-0 border-red-500">
@@ -55,7 +67,10 @@ const Activities = (props) => {
 				setActivitieOptions([...activitieOptions, { title: value.at(-1) }])
 			    }
 			    props.setLoggingData("activities", value)
+			    setValue(value)
 			}}
+			value={value? value : []}
+			//value={[]
 
 			sx={{
 			    //background: "#ffffff",

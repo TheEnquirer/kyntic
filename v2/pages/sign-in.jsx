@@ -48,7 +48,7 @@ export default function SignIn() {
 
 	if (error) {
 	    console.log({error})
-	    setError({error})
+	    setError(error.message)
 	}
 	else { setSubmitted(true) }
     }

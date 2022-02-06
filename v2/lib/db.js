@@ -18,6 +18,25 @@ const db = (props) => {
 	return user;
     }, "getUser")
 
+    fn(async () => {
+	const { data, error } = await supabaseClient
+	    .from('data')
+	    .select()
+	//data.then(() => { console.log("woah") })
+
+	if (error) { console.log(error) }
+
+	let toEdit = data.filter((i) => {
+	    let g = moment(i.created_at)
+	    let current = moment().startOf('day');
+	    return g.isSame(current, 'day')
+	})
+
+	if (toEdit.length == 0) { return false }
+	else { return toEdit[0] }
+
+    }, "getTodaysData")
+
     fn(async (dataObject) => {
 
 	const { data, error } = await supabaseClient
