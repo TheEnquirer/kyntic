@@ -76,29 +76,28 @@ const style = {
     fontWeight: "900",
 };
 
-let workoutOptions = [
-    { title: "outdoor run" },
-    { title: "indoor run" },
-    { title: "outdoor walk" },
-    { title: "indoor walk" },
-    { title: "outdoor cycle" },
-    { title: "indoor cycle" },
-    { title: "swim" },
-    { title: "yoga" },
-    { title: "strength training" },
-    { title: "soccer" },
-    { title: "footbal" },
-    { title: "tennis" },
-    { title: "volleyball" },
-    { title: "baseball" },
-    { title: "basketball" },
-    { title: "hiking" },
-];
+//let workoutOptions = [
+//    { title: "outdoor run" },
+//    { title: "indoor run" },
+//    { title: "outdoor walk" },
+//    { title: "indoor walk" },
+//    { title: "outdoor cycle" },
+//    { title: "indoor cycle" },
+//    { title: "swim" },
+//    { title: "yoga" },
+//    { title: "strength training" },
+//    { title: "soccer" },
+//    { title: "footbal" },
+//    { title: "tennis" },
+//    { title: "volleyball" },
+//    { title: "baseball" },
+//    { title: "basketball" },
+//    { title: "hiking" },
+//];
 
 const reducer = (state, action) => {
     switch (action.type) {
 	case 'append':
-	    //return state.append(action.payload)
 	    let newval = [action.payload, ...state]
 	    action.props.setLoggingData("exercise", newval)
 	    return newval
@@ -112,8 +111,6 @@ const reducer = (state, action) => {
 	    localState.splice(action.i, 1)
 	    action.props.setLoggingData("exercise", localState)
 	    return localState
-	    //case 'decrement':
-	    //    return {count: state.count - 1};
 	case 'reset':
 	    return TEST;
 	case 'set':
@@ -128,7 +125,8 @@ const Exercise = (props) => {
 
     const [workouts, manageWorkouts] = useReducer(reducer, [])
     const [modal, toggleModal] = useState(false)
-    const [selectVal, setSelectVal] = React.useState(null);
+    const [selectVal, setSelectVal] = useState(null);
+    const [workoutOptions, setWorkoutOptions] = useState([]);
 
     const [hourVal, setHourVal] = React.useState("");
     const [minVal, setMinVal] = React.useState("");
@@ -162,6 +160,9 @@ const Exercise = (props) => {
 		}
 	    }
 	})
+	db.getUserData().then(e => {
+	    setWorkoutOptions(e.workoutOptions)
+	})
     }, [])
 
     return (
@@ -181,9 +182,6 @@ const Exercise = (props) => {
 	    > 
 		<div className={subStyles.fullButton}
 		    onClick={() => {
-			//console.log("clikcking!")
-			//manageWorkouts({type: 'reset', payload: "workout!"})
-			//console.log(workouts)
 			setEditing(false)
 			toggleModal(true)
 		    }}
@@ -323,7 +321,10 @@ const Exercise = (props) => {
 					}
 
 					if (selectVal != null && !containsOption(selectVal, workoutOptions)) {
-					    workoutOptions.push({ title: selectVal.title.toLowerCase() })
+					    const newOptions = [...workoutOptions, { title: selectVal.title.toLowerCase() }]
+					    setWorkoutOptions(newOptions)
+					    //console.log("doing the pushing thing?", workoutOptions)
+					    db.setUserData({workoutOptions: newOptions})
 					}
 
 					if (!isEditing) {

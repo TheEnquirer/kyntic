@@ -34,7 +34,6 @@ function MyApp({ Component, pageProps }) {
     const [authenticatedState, setAuthenticatedState] = useState('not-authenticated')
     const router = useRouter()
     const [subPage, setSubPage] = useState(0)
-    //console.log("history!!", router)
 
     useEffect(() => {
 	/* fires when a user signs in or out */

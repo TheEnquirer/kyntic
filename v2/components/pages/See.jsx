@@ -9,10 +9,11 @@ import {
 	IonContent,
 	IonMenuButton,
 } from '@ionic/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import pageStyles from '../../styles/Pages.module.css';
 import { MetawearCapacitor } from 'metawear-capacitor';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import db from '../../lib/db'
 
 let connectedListenerMade = false; // when we have made a listener to listen if we have successfully connected 
 let connectCalled = false; // have we asked the plugin to connect?
@@ -96,43 +97,48 @@ const writeFile = () => {
 };
 
 const See = () => {
-	// connect to the sensor
-	if (!connectCalled) {
-		// this just crashes the app...
-		// writeFile.then(() => {
-		// 	console.log("lets gooooo")
-		// }).catch(err => {
-		// 	console.log("Error while trying to use cap file plugin:")
-		// 	console.log(err);
-		// });
-		MetawearCapacitor.connect()
-			.then(async () => {
-				console.log('JS: Running connection did not error.');
-			})
-			.catch(err => {
-				console.error(err);
-			});
-	}
-	createConnectedListener(); // listens to see if we have successfully connected
+    // connect to the sensor
+    if (!connectCalled) {
+	// this just crashes the app...
+	// writeFile.then(() => {
+	// 	console.log("lets gooooo")
+	// }).catch(err => {
+	// 	console.log("Error while trying to use cap file plugin:")
+	// 	console.log(err);
+	// });
+	MetawearCapacitor.connect()
+	    .then(async () => {
+		console.log('JS: Running connection did not error.');
+	    })
+	    .catch(err => {
+		console.error(err);
+	    });
+    }
+    createConnectedListener(); // listens to see if we have successfully connected
 
-	return (
-		<IonPage>
-			<IonToolbar>
-				<IonTitle>
-					<div className={pageStyles.title}> see </div>
-					<hr className={pageStyles.sep} />
-				</IonTitle>
-			</IonToolbar>
-			<IonContent className="ion-padding" fullscreen>
-				<IonHeader collapse="condense">
-					<IonToolbar>
-						<IonTitle size="large">see</IonTitle>
-					</IonToolbar>
-				</IonHeader>
-				stats, data, all the cool things!
-			</IonContent>
-		</IonPage>
-	);
+    useEffect(() => {
+	db();
+	db.checkCache();
+
+    }, [])
+    return (
+	<IonPage>
+	    <IonToolbar>
+		<IonTitle>
+		    <div className={pageStyles.title}> see </div>
+		    <hr className={pageStyles.sep} />
+		</IonTitle>
+	    </IonToolbar>
+	    <IonContent className="ion-padding" fullscreen>
+		<IonHeader collapse="condense">
+		    <IonToolbar>
+			<IonTitle size="large">see</IonTitle>
+		    </IonToolbar>
+		</IonHeader>
+		stats, data, all the cool things!
+	    </IonContent>
+	</IonPage>
+    );
 };
 
 export default See;

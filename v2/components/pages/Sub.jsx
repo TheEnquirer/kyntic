@@ -46,6 +46,8 @@ const Sub = props => {
 
     useEffect(() => {
 	db();
+	db.updateCache("yeetus")
+	//db.checkCache()
 	let startingData = db.getTodaysData().then((e) => {
 	    if (e !== false) {
 		setLoggingData(e)

@@ -31,7 +31,7 @@ import db from '../../lib/db'
 
 
 const Activities = (props) => {
-    const [activitieOptions, setActivitieOptions] = useState(starterOptions)
+    const [activitieOptions, setActivitieOptions] = useState([])
     const [value, setValue] = useState();
     //const [noteValue, setNoteValue] = useState({ target: {value: ""}})
     const [noteValue, setNoteValue] = useState({target: ""})
@@ -43,6 +43,9 @@ const Activities = (props) => {
 		setNoteValue({target: {value: e.notes}})
 		setValue(e.activities)
 	    }
+	})
+	db.getUserData().then(e => {
+	    setActivitieOptions(e.activitieOptions)
 	})
     }, [])
 
@@ -64,7 +67,9 @@ const Activities = (props) => {
 
 			onChange={(event, value, reason) => {
 			    if (reason == "createOption") {
-				setActivitieOptions([...activitieOptions, { title: value.at(-1) }])
+				const newOptions = [...activitieOptions, { title: value.at(-1) }]
+				db.setUserData({activitieOptions: newOptions})
+				setActivitieOptions(newOptions)
 			    }
 			    props.setLoggingData("activities", value)
 			    setValue(value)
@@ -135,7 +140,7 @@ const Activities = (props) => {
 			placeholder={"any notes about today?"}
 		    />
 		</div>
-		<div className="h-screen border-0 border-red-500"> 
+		<div className="h-screen border-0 border-red-500">
 		</div>
 	    </div>
 	</div>
@@ -154,6 +159,4 @@ export default Activities;
 const starterOptions = [
     { title: 'school' },
     { title: 'reading' },
-    { title: 'swimming' },
-    { title: "uht-" },
 ];

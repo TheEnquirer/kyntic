@@ -5,6 +5,8 @@ import moment from 'moment'
 
 const db = (props) => {
 
+    //let cache = false
+
     const fn = (f, name) => {
 	db[name] = f
     }
@@ -14,15 +16,22 @@ const db = (props) => {
     }, "test")
 
     fn(() => {
-	const user = supabaseClient.auth.user();
+	const user = supabaseClient.auth.user(); // TODO: make this stuff cache
 	return user;
     }, "getUser")
+
+    fn((m) => {
+	//cache = m
+    }, "updateCache")
+
+    fn(() => {
+	//console.log(cache)
+    }, "checkCache")
 
     fn(async () => {
 	const { data, error } = await supabaseClient
 	    .from('data')
 	    .select()
-	//data.then(() => { console.log("woah") })
 
 	if (error) { console.log(error) }
 
@@ -72,6 +81,55 @@ const db = (props) => {
 
     }, "logData")
 
+    fn(async (dataObject) => {
+	const { data, error } = await supabaseClient
+	    .from('users')
+	    .update({ id: db.getUser().id, ...dataObject })
+	if (error) console.log(error)
+    }, "setUserData")
+
+    fn(async () => {
+	const { data, error } = await supabaseClient
+	    .from('users')
+	    .select()
+
+	if (error) console.log(error)
+
+	if (data.length == 0) {
+	    const obj = {
+		id: db.getUser().id,
+		activitieOptions: [
+		    { title: 'school' },
+		    { title: 'reading' },
+		],
+		workoutOptions: [
+		    { title: "outdoor run" },
+		    { title: "indoor run" },
+		    { title: "outdoor walk" },
+		    { title: "indoor walk" },
+		    { title: "outdoor cycle" },
+		    { title: "indoor cycle" },
+		    { title: "swim" },
+		    { title: "yoga" },
+		    { title: "strength training" },
+		    { title: "soccer" },
+		    { title: "footbal" },
+		    { title: "tennis" },
+		    { title: "volleyball" },
+		    { title: "baseball" },
+		    { title: "basketball" },
+		    { title: "hiking" },
+		]
+	    }
+	    const { data, error } = await supabaseClient
+		.from('users')
+		.insert([ obj ])
+	    return obj
+	} else {
+	    return data[0]
+	}
+
+    }, "getUserData")
 }
 
 export default db;
