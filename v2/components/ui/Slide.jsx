@@ -15,14 +15,17 @@ import GlobalContext from '../../utils/global-context'
 import pageStyles from "../../styles/Pages.module.css"
 import { arrowBackOutline } from 'ionicons/icons';
 import { useHistory } from "react-router-dom";
-
-
-
+import db from '../../lib/db'
 
 const Slide = ({ children, props }) => {
+    useEffect(() => {
+	db();
+
+    }, [])
     const global = useContext(GlobalContext)
     const history = useHistory()
     const handleFinish = () => {
+	children[3]()
 	if (children[2] != 4) {
 	    children[1].current.swiper.slideTo(children[2] + 1); // lmaoo
 	} else { history.push("/tabs/log") }

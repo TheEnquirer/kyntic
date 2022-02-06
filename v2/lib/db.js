@@ -19,19 +19,6 @@ const db = (props) => {
     }, "getUser")
 
     fn(async (dataObject) => {
-	//console.log(db.getUser())
-
-	//const { data, error } = await supabaseClient
-	//    .from('data')
-	//    .insert([
-	//        { user_id: db.getUser().id }
-	//    ])
-
-	//var given = moment("2018-03-10", "YYYY-MM-DD");
-	//var current = moment().startOf('day');
-
-	//Difference in number of days
-
 
 	const { data, error } = await supabaseClient
 	    .from('data')
@@ -46,23 +33,22 @@ const db = (props) => {
 	    let current = moment().startOf('day');
 	    return g.isSame(current, 'day')
 	})
-	console.log(toEdit)
 
 	if (toEdit.length === 0) {
 	    // push a new log object
 	    const { data, error } = await supabaseClient
 		.from('data')
 		.insert([
-		    { user_id: db.getUser().id, debug: "new object" }
+		    { user_id: db.getUser().id, debug: "new object", ...dataObject }
 		])
 	} else {
+	    // update the old object
 	    const { data, error } = await supabaseClient
 		.from('data')
 		.update([
-		    { user_id: db.getUser().id, debug: "updated object" }
+		    { user_id: db.getUser().id, debug: "updated object", ...dataObject }
 		])
 		.match({ created_at: toEdit[0].created_at })
-	    //console.log(data, error, "returned")
 	}
 
     }, "logData")

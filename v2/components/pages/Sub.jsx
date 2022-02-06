@@ -40,11 +40,16 @@ const Sub = props => {
 	console.log(loggingData)
     }
 
+    const pushLoggingData = () => {
+	console.log("pushing data")
+	db.logData(loggingData);
+    }
+
     useEffect(() => {
 	db();
 	//db.test("whee");
 	//console.log(db.getUser())
-	db.logData({});
+	//db.logData(loggingData);
     }, [])
 
 
@@ -89,6 +94,7 @@ const Sub = props => {
 				    {v}
 				    {swiperRef}
 				    {i}
+				    {pushLoggingData}
 				</Slide>
 			    </SwiperSlide>
 			);
