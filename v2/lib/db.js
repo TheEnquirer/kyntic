@@ -1,5 +1,6 @@
 import supabaseClient from './supabase'
 import { useContext } from "react"
+import moment from 'moment'
 
 
 const db = (props) => {
@@ -26,6 +27,11 @@ const db = (props) => {
 	//        { user_id: db.getUser().id }
 	//    ])
 
+	//var given = moment("2018-03-10", "YYYY-MM-DD");
+	//var current = moment().startOf('day');
+
+	//Difference in number of days
+
 
 	const { data, error } = await supabaseClient
 	    .from('data')
@@ -35,7 +41,30 @@ const db = (props) => {
 	    console.log(error)
 	}
 
-	console.log(data, "data")
+	let toEdit = data.filter((i) => {
+	    let g = moment(i.created_at)
+	    let current = moment().startOf('day');
+	    return g.isSame(current, 'day')
+	})
+	console.log(toEdit)
+
+	if (toEdit.length === 0) {
+	    // push a new log object
+	    const { data, error } = await supabaseClient
+		.from('data')
+		.insert([
+		    { user_id: db.getUser().id, debug: "new object" }
+		])
+	} else {
+	    const { data, error } = await supabaseClient
+		.from('data')
+		.update([
+		    { user_id: db.getUser().id, debug: "updated object" }
+		])
+		.match({ created_at: toEdit[0].created_at })
+	    //console.log(data, error, "returned")
+	}
+
     }, "logData")
 
 }
