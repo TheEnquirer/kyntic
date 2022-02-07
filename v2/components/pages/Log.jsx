@@ -73,8 +73,13 @@ const Items = [
     {
 	title: 'activities',
 	color: '#d4a7d0',
-	//color: "#e0afdc",
 	desc: 'what activities did you do?',
+	target: '/tabs/log/sleep',
+    },
+    {
+	title: 'severity',
+	color: '#E5CD8F',
+	desc: 'how severe were your symptoms?',
 	target: '/tabs/log/sleep',
     },
 ];

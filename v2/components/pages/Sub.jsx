@@ -25,6 +25,7 @@ import Sleep from '../ui/Sleep';
 import Exercise from '../ui/Exercise';
 import ScreenTime from '../ui/ScreenTime';
 import Activities from '../ui/Activities';
+import Perceived from '../ui/Perceived';
 import db from '../../lib/db'
 
 const Sub = props => {
@@ -72,6 +73,7 @@ const Sub = props => {
 	<Exercise color={'#d4a7a7'} setLoggingData={updateLoggingData} />,
 	<ScreenTime color={'#a7d4cf'} setLoggingData={updateLoggingData} />,
 	<Activities color={'#d4a7d0'} setLoggingData={updateLoggingData} />,
+	<Perceived color={'#e5cd8f'} setLoggingData={updateLoggingData} />,
     ];
 
     return (

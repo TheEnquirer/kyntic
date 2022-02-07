@@ -25,7 +25,7 @@ const Slide = ({ children, props }) => {
     const history = useHistory()
     const handleFinish = () => {
 	children[3]()
-	if (children[2] != 4) {
+	if (children[2] != 5) {
 	    children[1].current.swiper.slideTo(children[2] + 1); // lmaoo
 	} else { history.push("/tabs/log") }
     }
