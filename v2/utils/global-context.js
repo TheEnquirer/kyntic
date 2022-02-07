@@ -1,5 +1,4 @@
 import React from 'react';
-//import { useContext } from 'react';
 
 const GlobalContext = React.createContext({
     count: 0,
@@ -7,6 +6,5 @@ const GlobalContext = React.createContext({
     globalSwiperRef: null,
     update: (data) => {}
 })
-
 
 export default GlobalContext

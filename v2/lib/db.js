@@ -1,15 +1,23 @@
 import supabaseClient from './supabase'
 import { useContext } from "react"
 import moment from 'moment'
+import GlobalContext from '../utils/global-context'
 
 
 const db = (props) => {
+    //console.log(
+    //global.
 
     //let cache = false
 
     const fn = (f, name) => {
 	db[name] = f
     }
+
+    fn(async (e) => {
+	if (e) console.log(e)
+	if (e == {message: 'JWT expired'}) { db.signOut() }
+    }, "checkErrors")
 
     fn((m) => {
 	console.log("whooo", m)
@@ -19,6 +27,10 @@ const db = (props) => {
 	const user = supabaseClient.auth.user(); // TODO: make this stuff cache
 	return user;
     }, "getUser")
+
+    fn(async () => {
+	const { error } = await supabaseClient.auth.signOut()
+    }, "signOut")
 
     fn((m) => {
 	//cache = m
@@ -33,7 +45,10 @@ const db = (props) => {
 	    .from('data')
 	    .select()
 
-	if (error || !data) { console.log(error) }
+	//if (error || !data) {
+	//    console.log(error)
+	//}
+	db.checkErrors(error)
 
 	let toEdit = data.filter((i) => {
 	    let g = moment(i.created_at)
@@ -52,9 +67,10 @@ const db = (props) => {
 	    .from('data')
 	    .select()
 
-	if (error) {
-	    console.log(error)
-	}
+	//if (error) {
+	//    console.log(error)
+	//}
+	db.checkErrors(error)
 
 	let toEdit = data.filter((i) => {
 	    let g = moment(i.created_at)
@@ -69,6 +85,7 @@ const db = (props) => {
 		.insert([
 		    { user_id: db.getUser().id, debug: "new object", ...dataObject }
 		])
+	    db.checkErrors(error)
 	} else {
 	    // update the old object
 	    const { data, error } = await supabaseClient
@@ -77,6 +94,7 @@ const db = (props) => {
 		    { user_id: db.getUser().id, debug: "updated object", ...dataObject }
 		])
 		.match({ created_at: toEdit[0].created_at })
+	    db.checkErrors(error)
 	}
 
     }, "logData")
@@ -85,7 +103,8 @@ const db = (props) => {
 	const { data, error } = await supabaseClient
 	    .from('users')
 	    .update({ id: db.getUser().id, ...dataObject })
-	if (error) console.log(error)
+	//if (error) console.log(error)
+	db.checkErrors(error)
     }, "setUserData")
 
     fn(async () => {
@@ -93,7 +112,7 @@ const db = (props) => {
 	    .from('users')
 	    .select()
 
-	if (error) console.log(error)
+	db.checkErrors(error)
 
 	if (!data || data.length == 0) {
 	    const obj = {
