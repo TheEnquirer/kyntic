@@ -19,18 +19,16 @@ import db from '../../lib/db'
 
 const Item = (props) => {
     const history = useHistory()
-    //console.log("over here bro", history)
+    const [localTracked, setTracked] = useState(props.tracked)
     const global = useContext(GlobalContext)
     const handleNav = () => {
+	setTracked(true)
 	global.update({
-	    //count: global.count + 1
-	    targetSubPage: props.idx
+	    localTracked: (global.localTracked? global.localTracked: Array(6).fill(false)),
+	    targetSubPage: props.idx,
 	})
+	console.log("global", global)
     }
-
-    //useEffect(() => {
-    //    db();
-    //}, [])
 
     return (
 	<div className="p-4 ml-4 mr-4 h-28 rounded-2xl" style={{backgroundColor: props.obj.color}}
@@ -45,7 +43,7 @@ const Item = (props) => {
 	    <div className={itemStyles.desc}>
 		<div className="flex flex-col">
 		    {props.obj.desc}
-		    {props.tracked?
+		    {(localTracked || (global.localTracked && global.localTracked[props.idx]))?
 			( <p><span className="font-extrabold">tracked</span> today!</p> )
 			:
 			( <p><span className="font-extrabold">untracked</span> so far.</p> )

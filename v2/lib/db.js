@@ -33,7 +33,7 @@ const db = (props) => {
 	    .from('data')
 	    .select()
 
-	if (error) { console.log(error) }
+	if (error || !data) { console.log(error) }
 
 	let toEdit = data.filter((i) => {
 	    let g = moment(i.created_at)
@@ -95,7 +95,7 @@ const db = (props) => {
 
 	if (error) console.log(error)
 
-	if (data.length == 0) {
+	if (!data || data.length == 0) {
 	    const obj = {
 		id: db.getUser().id,
 		activitieOptions: [

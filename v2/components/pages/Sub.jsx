@@ -43,6 +43,7 @@ const Sub = props => {
 
     const pushLoggingData = () => {
 	db.logData(loggingData);
+	//console.log(loggingData, "logging data")
     }
 
     useEffect(() => {
@@ -84,11 +85,20 @@ const Sub = props => {
 		    className="absolute h-screen border-0 border-blue-500"
 		    modules={[Controller]}
 		    ref={swiperRef}
-		    onSwipe={setControlledSwiper}
+		    //onSwipe={() => console.log(controlledSwiper, "whee")}
 		    spaceBetween={30}
 		    //spaceBetween={0}
 		    slidesPerView={1}
-		    onSlideChange={() => console.log('slide change')}
+		    onSlideChange={(e) => {
+			//setLoggingData(e)
+			console.log(e.activeIndex)
+			let l = global
+			//console.log(l)
+			l.localTracked[e.activeIndex] = true
+			l.targetSubPage = e.activeIndex
+			//l[e.activeIndex] = true
+			global.update(l)
+		    }}
 		    hashNavigation={{ replaceState: true }}
 		    history={true}
 		>

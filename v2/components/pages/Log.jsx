@@ -9,19 +9,31 @@ import {
 	IonContent,
 	IonMenuButton,
 } from '@ionic/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import pageStyles from '../../styles/Pages.module.css';
 import Item from '../ui/Item';
 import { useHistory } from 'react-router-dom';
 import db from '../../lib/db'
+import GlobalContext from '../../utils/global-context'
+
 
 const Log = () => {
 
     const [trackedData, setTrackedData] = useState(false)
+    const global = useContext(GlobalContext)
+
 
     useEffect(() => {
+
 	db();
-	db.getTodaysData().then((e) => { setTrackedData(e) })
+	db.getTodaysData().then((e) => {
+	    setTrackedData(e)
+	    console.log(e)
+	    let globalData = global
+	    let localTrackedVals = [!!e.mood, !!e.sleep, !!e.exercise, !!e.screenTime, !!e.activities, !!e.perceived]
+	    globalData.localTracked = localTrackedVals
+	    global.update(globalData)
+	})
     }, [])
 
     return (
@@ -45,7 +57,6 @@ const Log = () => {
 				obj={e}
 				idx={i}
 				tracked={trackedData && trackedData[e.dbName] != null}
-				//className="cursor-pointer"
 			    />
 			);
 		    })}
