@@ -15,8 +15,9 @@ import { MetawearCapacitor } from 'metawear-capacitor';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import db from '../../lib/db'
 import moment from "moment";
+import DayGraph from '../ui/DayGraph';
 
-let connectedListenerMade = false; // when we have made a listener to listen if we have successfully connected 
+let connectedListenerMade = false; // when we have made a listener to listen if we have successfully connected
 let connectCalled = false; // have we asked the plugin to connect?
 let connected = false; // have we been told by the plugin that we have successfully connected?
 let startedLogging = false; // have we started to log data?
@@ -119,9 +120,9 @@ const See = () => {
 
     useEffect(() => {
 	db();
-	db.getDataFromRange([moment().subtract(2, 'days').format(), moment().subtract(1, 'days').format()]).then(e => {
-	    console.log(e)
-	})
+	//db.getDataFromRange([moment().subtract(2, 'days').format(), moment().subtract(1, 'days').format()]).then(e => {
+	//    console.log(e[0])
+	//})
     }, [])
 
     return (
@@ -142,6 +143,7 @@ const See = () => {
 		    <span className="">day</span> <span className="p-1 ml-1 mr-3 text-sm font-black bg-gray-600 rounded">/</span>
 		    <span className="font-thin">{moment().format("dddd, MMM Do YY").toLowerCase()}</span>
 		</div>
+		<DayGraph />
 	    </IonContent>
 	</IonPage>
     );

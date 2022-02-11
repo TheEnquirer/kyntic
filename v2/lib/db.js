@@ -85,9 +85,6 @@ const db = (props) => {
 	    .from('data')
 	    .select()
 
-	//if (error) {
-	//    console.log(error)
-	//}
 	db.checkErrors(error)
 
 	let toEdit = data.filter((i) => {
