@@ -14,6 +14,7 @@ import pageStyles from '../../styles/Pages.module.css';
 import { MetawearCapacitor } from 'metawear-capacitor';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import db from '../../lib/db'
+import moment from "moment";
 
 let connectedListenerMade = false; // when we have made a listener to listen if we have successfully connected 
 let connectCalled = false; // have we asked the plugin to connect?
@@ -117,9 +118,9 @@ const See = () => {
     createConnectedListener(); // listens to see if we have successfully connected
 
     useEffect(() => {
-	db();
-	db.checkCache();
-
+	//db();
+	//db.checkCache();
+	console.log(moment().format("dddd, MMM Do YY"))
     }, [])
     return (
 	<IonPage>
@@ -130,12 +131,15 @@ const See = () => {
 		</IonTitle>
 	    </IonToolbar>
 	    <IonContent className="ion-padding" fullscreen>
-		<IonHeader collapse="condense">
+		{/*<IonHeader collapse="condense">
 		    <IonToolbar>
-			<IonTitle size="large">see</IonTitle>
+			<IonTitle size="large">see?</IonTitle>
 		    </IonToolbar>
-		</IonHeader>
-		stats, data, all the cool things!
+		</IonHeader>*/}
+		<div className={pageStyles.date}>
+		    <span className="">day</span> <span className="p-1 ml-1 mr-3 text-sm font-black bg-gray-600 rounded">/</span>
+		    <span className="font-thin">{moment().format("dddd, MMM Do YY").toLowerCase()}</span>
+		</div>
 	    </IonContent>
 	</IonPage>
     );
