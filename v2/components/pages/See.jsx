@@ -118,10 +118,12 @@ const See = () => {
     createConnectedListener(); // listens to see if we have successfully connected
 
     useEffect(() => {
-	//db();
-	//db.checkCache();
-	console.log(moment().format("dddd, MMM Do YY"))
+	db();
+	db.getDataFromRange([moment().subtract(2, 'days').format(), moment().subtract(1, 'days').format()]).then(e => {
+	    console.log(e)
+	})
     }, [])
+
     return (
 	<IonPage>
 	    <IonToolbar>

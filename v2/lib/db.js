@@ -61,6 +61,24 @@ const db = (props) => {
 
     }, "getTodaysData")
 
+    fn(async (dates) => {
+	const { data, error } = await supabaseClient
+	    .from('data')
+	    .select()
+
+	db.checkErrors(error)
+	data.sort((a, b) => {
+	    return -moment(a.created_at).diff(moment(b.created_at))
+	})
+
+	let rangedData = data.filter((i) => {
+	    return (moment(i.created_at).isAfter(dates[0]) && moment(i.created_at).isBefore(dates[1]))
+	})
+
+	return rangedData
+
+    }, "getDataFromRange")
+
     fn(async (dataObject) => {
 
 	const { data, error } = await supabaseClient
