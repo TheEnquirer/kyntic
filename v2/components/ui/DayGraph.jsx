@@ -30,6 +30,7 @@ export const data = {
 	    borderWidth: 1,
 	},
     ],
+    options,
     //options: {
     //    legend: {
     //        display: false
@@ -44,21 +45,6 @@ export const data = {
     //},
 };
 
-//export const options = {
-//    legend: {
-//        display: false,
-//    },
-//    options: {
-//        plugins: {
-//            legend: {
-//                display: false
-//            }
-//        },
-//        legend: {
-//            display: false,
-//        },
-//    }
-//}
 
 export const options = {
     //indexAxis: 'y',
@@ -103,7 +89,7 @@ export const options = {
 		display: false
 	    },
 	    ticks: {
-		display:false // it should work
+		display:false
 	    }
 	}],
     },
@@ -112,19 +98,3 @@ export const options = {
 export default function DayGraph(props) {
     return <Radar data={data} options={options}/>;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
