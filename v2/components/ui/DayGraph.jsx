@@ -31,29 +31,10 @@ export const data = {
 	},
     ],
     options,
-    //options: {
-    //    legend: {
-    //        display: false
-    //    },
-    //    tooltips: {
-    //        callbacks: {
-    //            label: function(tooltipItem) {
-    //                return tooltipItem.yLabel;
-    //            }
-    //        }
-    //    }
-    //},
 };
 
 
 export const options = {
-    //indexAxis: 'y',
-    //elements: {
-    //    bar: {
-    //        borderWidth: 2,
-    //    },
-    //},
-    //responsive: true,
     plugins: {
 	legend: {
 	    display: false,
@@ -61,40 +42,13 @@ export const options = {
 	title: {
 	    display: false,
 	},
-	//ticks: {
-	//    display: false,
-	//}
-	//scale: {
-	//    display: false,
-	//    ticks: {
-	//        display: false,
-	//    }
-	//}
     },
-    //scale: {
-    //    ticks: {
-    //        //callback: function() {return ""},
-    //        //backdropColor: "rgba(0, 0, 0, 0)"
-    //    }
-    //}
-    //scale: {
-    //    ticks: {
-    //        display: false,
-    //    }
-    //}
-    //scales: { yAxes: [{ ticks: { display: false } }] },
-    //scales:{
-    //    yAxes:[{
-    //        scaleLabel:{
-    //            display: false
-    //        },
-    //        ticks: {
-    //            display:false
-    //        }
-    //    }],
-    //},
 };
 
 export default function DayGraph(props) {
-    return <Radar data={data} options={options}/>;
+    return (
+	<div>
+	    <Radar data={data} options={options}/>
+	</div>
+    )
 }
