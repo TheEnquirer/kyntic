@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Chart as ChartJS,
     RadialLinearScale,
@@ -28,7 +28,10 @@ export const data = {
 	    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 	    //backgroundColor: 'red',
 	    borderColor: 'rgba(255, 99, 132, 1)',
+	    //borderColor: 'rgba(31, 40, 145, 0.8)',
+	    //borderColor: 'blue',
 	    borderWidth: 1,
+
 	},
     ],
     options,
@@ -44,55 +47,55 @@ export const options = {
 	    display: false,
 	},
     },
-    //gridLines: {
-    //    display: false
-    //},
-    //scale: {
-    //    ticks: {
-    //        display: false
+
+    //scales: {
+    //    y: {
+    //        ticks: {
+    //            display: false
+    //        }
     //    }
     //},
-    //scale: {
-    //    //x: {
-    //        ticks: {
-    //            // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-    //            callback: function(val, index) {
-    //                // Hide every 2nd tick label
-    //                //return index % 2 === 0 ? this.getLabelForValue(val) : '';
-    //                return "whee"
-    //            },
-    //            color: 'red',
-    //        }
-    //    //}
-    //}
-
-    scales: {
-	r: {
-	    //angleLines: {
-		//display: false
-	    //},
-	    //suggestedMin: 50,
-	    //suggestedMax: 100
-	    ticks: {
-		display: false
-
-	    }
-	}
-    }
-
 
     //scale: {
     //    ticks: {
-    //        display: false,
-    //        maxTicksLimit: 3
+    //        maxTicksLimit: 4
     //    }
     //}
 };
 
 export default function DayGraph(props) {
+    const [localdata, setLocalData] = useState(data)
+
+    const radarRef = useRef(null)
+    useEffect(() => {
+	if (radarRef.current) {
+	    let ctx = radarRef.current.ctx
+	    var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+	    gradientStroke.addColorStop(0, "#80b6f4");
+	    gradientStroke.addColorStop(1, "#f49080");
+
+	    let tempLocaldata = localdata
+	    tempLocaldata.datasets[0].borderColor = "borderColor: 'rgba(31, 40, 145, 0.8)',"
+	    tempLocaldata.datasets[0].pointBorderColor = gradientStroke
+	    tempLocaldata.datasets[0].pointBackgroundColor = gradientStroke
+	    tempLocaldata.datasets[0].pointHoverBorderColor = gradientStroke
+	    tempLocaldata.datasets[0].pointHoverBackgroundColor = gradientStroke
+
+	    setLocalData(tempLocaldata)
+	    console.log("setting", tempLocaldata)
+	}
+
+    }, [radarRef])
+    //var ctx = document.getElementById('myChart').getContext("2d");
+    //console.log(ctx)
+
     return (
 	<div>
-	    <Radar data={data} options={options}/>
+	    <Radar data={localdata} options={options} ref={radarRef}/>
 	</div>
     )
 }
+
+
+
+
