@@ -72,35 +72,13 @@ export default function DayGraph(props) {
     const [localdata, setLocalData] = useState(data)
     const [loaded, setLoaded] = useState(false)
 
-    const radarRef = useRef(null)
     useEffect(() => {
 	setLoaded(true)
     }, [])
-    //useEffect(() => {
-    //    if (radarRef.current) {
-    //        let ctx = radarRef.current.ctx
-    //        var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-    //        gradientStroke.addColorStop(0, "#80b6f4");
-    //        gradientStroke.addColorStop(1, "#f49080");
-
-    //        let tempLocaldata = localdata
-    //        tempLocaldata.datasets[0].borderColor = "borderColor: 'rgba(31, 40, 145, 0.8)',"
-    //        tempLocaldata.datasets[0].pointBorderColor = gradientStroke
-    //        tempLocaldata.datasets[0].pointBackgroundColor = gradientStroke
-    //        tempLocaldata.datasets[0].pointHoverBorderColor = gradientStroke
-    //        tempLocaldata.datasets[0].pointHoverBackgroundColor = gradientStroke
-
-    //        setLocalData(tempLocaldata)
-    //        console.log("setting", tempLocaldata)
-    //    }
-
-    //}, [radarRef])
-    //var ctx = document.getElementById('myChart').getContext("2d");
-    //console.log(ctx)
 
     return (
 	<div class="border-0 border-red-500">
-	    {loaded && <Radar data={localdata} options={options} ref={radarRef}/>}
+	    {loaded && <Radar data={localdata} options={options} />}
 	</div>
     )
 }
