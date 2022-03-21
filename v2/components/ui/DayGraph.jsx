@@ -25,12 +25,12 @@ export const data = {
 	{
 	    label: [],
 	    data: [1, 1.2, 1.3, 1.4, 1.5],
-	    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+	    backgroundColor: 'rgba(178, 212, 167, 0.5)',
 	    //backgroundColor: 'red',
-	    borderColor: 'rgba(255, 99, 132, 1)',
+	    borderColor: 'rgba(178, 212, 167, 1)',
 	    //borderColor: 'rgba(31, 40, 145, 0.8)',
 	    //borderColor: 'blue',
-	    borderWidth: 1,
+	    borderWidth: 3,
 
 	},
     ],
@@ -48,50 +48,59 @@ export const options = {
 	},
     },
 
-    //scales: {
-    //    y: {
-    //        ticks: {
-    //            display: false
-    //        }
-    //    }
-    //},
+    scales: {
+	r: {
+	    ticks: {
+		//display: false
+		callback: function(value, index, ticks) {
+		    return ''
+		},
+		backdropColor: 'rgba(255, 255, 255, 0)'
 
-    //scale: {
-    //    ticks: {
-    //        maxTicksLimit: 4
-    //    }
-    //}
+	    }
+	}
+    },
+
+    scale: {
+	ticks: {
+	    maxTicksLimit: 4
+	}
+    }
 };
 
 export default function DayGraph(props) {
     const [localdata, setLocalData] = useState(data)
+    const [loaded, setLoaded] = useState(false)
 
     const radarRef = useRef(null)
     useEffect(() => {
-	if (radarRef.current) {
-	    let ctx = radarRef.current.ctx
-	    var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-	    gradientStroke.addColorStop(0, "#80b6f4");
-	    gradientStroke.addColorStop(1, "#f49080");
+	setLoaded(true)
+    }, [])
+    //useEffect(() => {
+    //    if (radarRef.current) {
+    //        let ctx = radarRef.current.ctx
+    //        var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+    //        gradientStroke.addColorStop(0, "#80b6f4");
+    //        gradientStroke.addColorStop(1, "#f49080");
 
-	    let tempLocaldata = localdata
-	    tempLocaldata.datasets[0].borderColor = "borderColor: 'rgba(31, 40, 145, 0.8)',"
-	    tempLocaldata.datasets[0].pointBorderColor = gradientStroke
-	    tempLocaldata.datasets[0].pointBackgroundColor = gradientStroke
-	    tempLocaldata.datasets[0].pointHoverBorderColor = gradientStroke
-	    tempLocaldata.datasets[0].pointHoverBackgroundColor = gradientStroke
+    //        let tempLocaldata = localdata
+    //        tempLocaldata.datasets[0].borderColor = "borderColor: 'rgba(31, 40, 145, 0.8)',"
+    //        tempLocaldata.datasets[0].pointBorderColor = gradientStroke
+    //        tempLocaldata.datasets[0].pointBackgroundColor = gradientStroke
+    //        tempLocaldata.datasets[0].pointHoverBorderColor = gradientStroke
+    //        tempLocaldata.datasets[0].pointHoverBackgroundColor = gradientStroke
 
-	    setLocalData(tempLocaldata)
-	    console.log("setting", tempLocaldata)
-	}
+    //        setLocalData(tempLocaldata)
+    //        console.log("setting", tempLocaldata)
+    //    }
 
-    }, [radarRef])
+    //}, [radarRef])
     //var ctx = document.getElementById('myChart').getContext("2d");
     //console.log(ctx)
 
     return (
-	<div>
-	    <Radar data={localdata} options={options} ref={radarRef}/>
+	<div class="border-0 border-red-500">
+	    {loaded && <Radar data={localdata} options={options} ref={radarRef}/>}
 	</div>
     )
 }
