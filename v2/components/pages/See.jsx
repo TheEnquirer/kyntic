@@ -120,9 +120,10 @@ const See = () => {
 
     useEffect(() => {
 	db();
-	//db.getDataFromRange([moment().subtract(2, 'days').format(), moment().subtract(1, 'days').format()]).then(e => {
-	//    console.log(e[0])
+	//db.getDataFromRange([moment().subtract(1, 'days').format(), moment().subtract(0, 'days').format()]).then(e => {
+	//    console.log(e)
 	//})
+	
     }, [])
 
     return (

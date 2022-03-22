@@ -9,6 +9,9 @@ import {
     Legend,
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
+import db from '../../lib/db'
+import moment from "moment"
+
 
 ChartJS.register(
     RadialLinearScale,
@@ -19,23 +22,6 @@ ChartJS.register(
     Legend
 );
 
-export const data = {
-    labels: ['severity', 'mood', 'sleep', 'screen-time', 'exercise'],
-    datasets: [
-	{
-	    label: [],
-	    data: [1, 1.2, 1.3, 1.4, 1.5],
-	    backgroundColor: 'rgba(178, 212, 167, 0.5)',
-	    //backgroundColor: 'red',
-	    borderColor: 'rgba(178, 212, 167, 1)',
-	    //borderColor: 'rgba(31, 40, 145, 0.8)',
-	    //borderColor: 'blue',
-	    borderWidth: 3,
-
-	},
-    ],
-    options,
-};
 
 
 export const options = {
@@ -51,7 +37,7 @@ export const options = {
     scales: {
 	r: {
 	    ticks: {
-		//display: false
+		//display: false // this breaks it, sometimes! for some reason!
 		callback: function(value, index, ticks) {
 		    return ''
 		},
@@ -72,17 +58,47 @@ export default function DayGraph(props) {
     const [localdata, setLocalData] = useState(data)
     const [loaded, setLoaded] = useState(false)
 
+    useEffect(() => { // load the data
+	db()
+	let ldata = false
+	db.getDataFromRange(
+	    [
+		moment().subtract(1, 'days').format(),
+		moment().subtract(0, 'days').format()
+	    ]).then(e => {
+		ldata = e
+		console.log(e)
+	    })
+	if (ldata.length == 0) { console.log("no data today!"); return } // deal with this later
+	console.log(ldata, "tf?")
+
+    }, [])
+
+    const data = {
+	labels: ['severity', 'mood', 'sleep', 'screen-time', 'exercise'],
+	datasets: [
+	    {
+		label: [],
+		data: [1, 1.2, 1.3, 1.4, 1.5],
+		backgroundColor: 'rgba(178, 212, 167, 0.5)',
+		//backgroundColor: 'red',
+		borderColor: 'rgba(178, 212, 167, 1)',
+		//borderColor: 'rgba(31, 40, 145, 0.8)',
+		//borderColor: 'blue',
+		borderWidth: 3,
+
+	    },
+	],
+	options,
+    };
+
     useEffect(() => {
 	setLoaded(true)
     }, [])
 
     return (
 	<div class="border-0 border-red-500">
-	    {loaded && <Radar data={localdata} options={options} />}
+	    <Radar data={data} options={options} />
 	</div>
     )
 }
-
-
-
-
