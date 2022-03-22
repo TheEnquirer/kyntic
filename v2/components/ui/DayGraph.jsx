@@ -41,21 +41,28 @@ export const options = {
 		callback: function(value, index, ticks) {
 		    return ''
 		},
-		backdropColor: 'rgba(255, 255, 255, 0)'
-
+		beginAtZero: true,
+		max: 100,
+		min: 0,
+		suggestedMin: 0,
+		suggestedMax: 100,
+		backdropColor: 'rgba(255, 255, 255, 0)',
+		stepSize: 50,
 	    }
 	}
     },
 
     scale: {
 	ticks: {
-	    maxTicksLimit: 4
-	}
+	    //maxTicksLimit: 4,
+	},
+	min: 0,
+	max: 100,
     }
 };
 
 export default function DayGraph(props) {
-    const [localdata, setLocalData] = useState(data)
+    const [localdata, setLocalData] = useState([0, 0, 0, 0, 0, 0])
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => { // load the data
@@ -66,20 +73,46 @@ export default function DayGraph(props) {
 		moment().subtract(1, 'days').format(),
 		moment().subtract(0, 'days').format()
 	    ]).then(e => {
-		ldata = e
-		console.log(e)
+		ldata = e[0]
+		console.log(ldata, "wheee")
+		let normData = dataNormalizer(ldata)
+		setLocalData(normData)
 	    })
 	if (ldata.length == 0) { console.log("no data today!"); return } // deal with this later
 	console.log(ldata, "tf?")
 
     }, [])
 
+    const dataNormalizer = (d) => {
+	let normed = []
+	normed.push(d.perceived)
+	normed.push(d.mood)
+	normed.push(d.sleep * (100/11))
+	normed.push(d.screenTime * (100/16))
+
+	let etime = 0
+	for (let i = 0; i < d.exercise.length; i++) {
+	    etime += parseInt(d.exercise[i].h? d.exercise[i].h : 0) * 60 + parseInt(d.exercise[i].m? d.exercise[i].m : 0)
+	}
+
+	normed.push(90) // normalize this!
+	//normed.push(etime) // normalize this!
+	//normed.push(0) // this is **incredibally* janky but it will work for now
+	//normed.push(0) //
+	//normed.push(0) //
+	//normed.push(0) //
+	//normed.push(0) //
+	console.log(normed)
+	return normed
+    }
+
     const data = {
 	labels: ['severity', 'mood', 'sleep', 'screen-time', 'exercise'],
 	datasets: [
 	    {
 		label: [],
-		data: [1, 1.2, 1.3, 1.4, 1.5],
+		//data: [1, 1.2, 1.3, 1.4, 1.5],
+		data: localdata,
 		backgroundColor: 'rgba(178, 212, 167, 0.5)',
 		//backgroundColor: 'red',
 		borderColor: 'rgba(178, 212, 167, 1)',
