@@ -85,7 +85,7 @@ export default function DayGraph(props) {
 
     const dataNormalizer = (d) => {
 	let normed = []
-	normed.push(d.perceived)
+	normed.push(100 - d.perceived)
 	normed.push(d.mood)
 	normed.push(d.sleep * (100/11))
 	normed.push(d.screenTime * (100/16))
