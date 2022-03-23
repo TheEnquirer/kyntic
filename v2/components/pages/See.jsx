@@ -126,6 +126,8 @@ const See = () => {
 	
     }, [])
 
+    let target = [moment(), moment()]
+
     return (
 	<IonPage>
 	    <IonToolbar>
@@ -142,9 +144,9 @@ const See = () => {
 		</IonHeader>*/}
 		<div className={pageStyles.date}>
 		    <span className="">day</span> <span className="p-1 ml-1 mr-3 text-sm font-black bg-gray-600 rounded">/</span>
-		    <span className="font-thin">{moment().format("dddd, MMM Do YY").toLowerCase()}</span>
+		    <span className="font-thin">{moment().format("dddd, MMM Do").toLowerCase()}</span>
 		</div>
-		<DayGraph />
+		<DayGraph date={target}/>
 	    </IonContent>
 	</IonPage>
     );

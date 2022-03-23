@@ -58,11 +58,16 @@ export const options = {
 	},
 	min: 0,
 	max: 100,
+
+	pointLabels :{
+	    fontStyle: "bold",
+	}
     }
 };
 
 export default function DayGraph(props) {
-    const [localdata, setLocalData] = useState([0, 0, 0, 0, 0, 0])
+    const [normedLocal, setNormedLocal] = useState([0, 0, 0, 0, 0, 0])
+    const [localData, setLocalData] = useState(null)
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => { // load the data
@@ -74,12 +79,11 @@ export default function DayGraph(props) {
 		moment().subtract(0, 'days').format()
 	    ]).then(e => {
 		ldata = e[0]
-		console.log(ldata, "wheee")
 		let normData = dataNormalizer(ldata)
-		setLocalData(normData)
+		setNormedLocal(normData)
+		setLocalData(ldata)
 	    })
 	if (ldata.length == 0) { console.log("no data today!"); return } // deal with this later
-	console.log(ldata, "tf?")
 
     }, [])
 
@@ -91,18 +95,14 @@ export default function DayGraph(props) {
 	normed.push(d.screenTime * (100/16))
 
 	let etime = 0
-	for (let i = 0; i < d.exercise.length; i++) {
-	    etime += parseInt(d.exercise[i].h? d.exercise[i].h : 0) * 60 + parseInt(d.exercise[i].m? d.exercise[i].m : 0)
+	if (d.exercise) {
+	    for (let i = 0; i < d.exercise.length; i++) {
+		etime += parseInt(d.exercise[i].h? d.exercise[i].h : 0) * 60 + parseInt(d.exercise[i].m? d.exercise[i].m : 0)
+	    }
 	}
 
-	normed.push(90) // normalize this!
-	//normed.push(etime) // normalize this!
-	//normed.push(0) // this is **incredibally* janky but it will work for now
-	//normed.push(0) //
-	//normed.push(0) //
-	//normed.push(0) //
-	//normed.push(0) //
-	console.log(normed)
+	etime = Math.min(etime, 100)
+	normed.push(etime) // normalize this!
 	return normed
     }
 
@@ -111,13 +111,13 @@ export default function DayGraph(props) {
 	datasets: [
 	    {
 		label: [],
-		//data: [1, 1.2, 1.3, 1.4, 1.5],
-		data: localdata,
+		data: normedLocal,
 		backgroundColor: 'rgba(178, 212, 167, 0.5)',
-		//backgroundColor: 'red',
 		borderColor: 'rgba(178, 212, 167, 1)',
-		//borderColor: 'rgba(31, 40, 145, 0.8)',
-		//borderColor: 'blue',
+
+		//backgroundColor: 'rgba(62,180,137, 0.5)',
+		//borderColor: 'rgba(62,180,137,1)',
+
 		borderWidth: 3,
 
 	    },
@@ -129,9 +129,18 @@ export default function DayGraph(props) {
 	setLoaded(true)
     }, [])
 
+    let temp = ["activity1", "activity2", "activity4", 'activity3', 'activity3', 'activity3']
+
     return (
-	<div class="border-0 border-red-500">
+	<div class="border-0 border-red-500 ">
 	    <Radar data={data} options={options} />
+	    <div class="flex flex-row justify-center space-x-3 flex-wrap bg-pink-200 pt-3 rounded-lg">
+	    {/*{localData && localData.activities && localData.activities.map((e) =>*/}
+	    {temp.map((e) =>
+		<div class="text-gray-900 p-1 bg-gray-100 rounded-lg mb-3">{e}</div>
+	    )}
+	    </div>
+
 	</div>
     )
 }
