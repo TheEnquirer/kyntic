@@ -28,7 +28,7 @@ const ExerciseBlock = (props) => {
 	    className={subStyles.workoutItem}
 	    //className="text-black border-0 border-red-500"
 	> 
-	    <div className="flex flex-row items-center">
+	    <div className="flex flex-row items-center w-full">
 		<Avatar
 		    size={40}
 		    name={props.name}

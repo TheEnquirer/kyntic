@@ -69,6 +69,6 @@
     background-color: #F5F0E6;
     /*background-color: #e2ded7;*/
     /*background-color: #fcf7ee;*/
-    @apply p-4 text-gray-600 border-0 border-red-400 rounded-lg outline-none mt-11;
+    @apply p-4 mt-8 text-gray-600 border-0 border-red-400 rounded-lg outline-none;
 
 }

@@ -12,6 +12,7 @@ import { Radar } from 'react-chartjs-2';
 import db from '../../lib/db'
 import moment from "moment"
 import subStyles from "../../styles/Sub.module.css"
+import ExerciseBlock from "./ExerciseBlock";
 
 
 
@@ -140,9 +141,11 @@ export default function DayGraph(props) {
 	<div class="border-0 border-red-500 ">
 	    <Radar data={data} options={options} />
 	    <div class="flex flex-col h-full">
+		    <p class="text-black">activities</p>
 		    {/*<div class="bg-gray-900 h-full"> asdfafd </div>*/}
 		<div class="flex flex-row justify-center border-dashed border-purple-300 space-x-3 flex-wrap pt-3 rounded-lg border-2 w-full">
 		{/*{localData && localData.activities && localData.activities.map((e) =>*/}
+
 		{(localData && localData.activities) && localData.activities.map((e) =>
 		    <div class="text-gray-700 font-bold p-1 border-4 border-purple-100 rounded-lg mb-3">{e}</div>
 		)}
@@ -151,7 +154,8 @@ export default function DayGraph(props) {
 		{/*//exercise*/}
 		</div>
 
-		<div className="flex flex-col m-4 -mt-2 border-0 border-red-300">
+		    <p class="text-black">notes</p>
+		<div className="flex flex-col -mt-2 border-0 border-red-300">
 		    <textarea
 			type="text"
 			value={(localData && localData.notes) && localData.notes}
@@ -164,6 +168,17 @@ export default function DayGraph(props) {
 			placeholder={"any notes about today?"}
 		    />
 		</div>
+		    <p class="text-black">exercise</p>
+		{(localData && localData.exercise) && localData.exercise.map((e, i) => {
+		    return (
+			<div
+			    class="text-black border-0 border-red-500 flex center content-center align-center items-center justify-center justify-items-center"
+			>
+			    <ExerciseBlock name={e.name} idx={i} edit={() => {}} len={ e.len } color={"red"}/>
+
+			</div>
+		    )
+		})}
 	    </div>
 	</div>
     )
