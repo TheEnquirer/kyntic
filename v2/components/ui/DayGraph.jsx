@@ -11,6 +11,8 @@ import {
 import { Radar } from 'react-chartjs-2';
 import db from '../../lib/db'
 import moment from "moment"
+import subStyles from "../../styles/Sub.module.css"
+
 
 
 ChartJS.register(
@@ -82,6 +84,7 @@ export default function DayGraph(props) {
 		let normData = dataNormalizer(ldata)
 		setNormedLocal(normData)
 		setLocalData(ldata)
+		//console.log(ldata)
 	    })
 	if (ldata.length == 0) { console.log("no data today!"); return } // deal with this later
 
@@ -136,16 +139,32 @@ export default function DayGraph(props) {
     return (
 	<div class="border-0 border-red-500 ">
 	    <Radar data={data} options={options} />
-	    <div class="flex flex-row h-full">
+	    <div class="flex flex-col h-full">
 		    {/*<div class="bg-gray-900 h-full"> asdfafd </div>*/}
 		<div class="flex flex-row justify-center border-dashed border-purple-300 space-x-3 flex-wrap pt-3 rounded-lg border-2 w-full">
 		{/*{localData && localData.activities && localData.activities.map((e) =>*/}
 		{(localData && localData.activities) && localData.activities.map((e) =>
 		    <div class="text-gray-700 font-bold p-1 border-4 border-purple-100 rounded-lg mb-3">{e}</div>
 		)}
+
+		{/*notes*/}
+		{/*//exercise*/}
+		</div>
+
+		<div className="flex flex-col m-4 -mt-2 border-0 border-red-300">
+		    <textarea
+			type="text"
+			value={(localData && localData.notes) && localData.notes}
+			onChange={(e) => {
+			    //setNoteValue(e)
+			    //props.setLoggingData("notes", e.target.value)
+			}}
+			class={subStyles.displayNoteBox}
+			readOnly={true}
+			placeholder={"any notes about today?"}
+		    />
 		</div>
 	    </div>
-
 	</div>
     )
 }
