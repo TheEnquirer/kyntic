@@ -88,22 +88,24 @@ export default function DayGraph(props) {
     }, [])
 
     const dataNormalizer = (d) => {
-	let normed = []
-	normed.push(100 - d.perceived)
-	normed.push(d.mood)
-	normed.push(d.sleep * (100/11))
-	normed.push(d.screenTime * (100/16))
+	if (d) {
+	    let normed = []
+	    normed.push(100 - d.perceived)
+	    normed.push(d.mood)
+	    normed.push(d.sleep * (100/11))
+	    normed.push(d.screenTime * (100/16))
 
-	let etime = 0
-	if (d.exercise) {
-	    for (let i = 0; i < d.exercise.length; i++) {
-		etime += parseInt(d.exercise[i].h? d.exercise[i].h : 0) * 60 + parseInt(d.exercise[i].m? d.exercise[i].m : 0)
+	    let etime = 0
+	    if (d.exercise) {
+		for (let i = 0; i < d.exercise.length; i++) {
+		    etime += parseInt(d.exercise[i].h? d.exercise[i].h : 0) * 60 + parseInt(d.exercise[i].m? d.exercise[i].m : 0)
+		}
 	    }
-	}
 
-	etime = Math.min(etime, 100)
-	normed.push(etime) // normalize this!
-	return normed
+	    etime = Math.min(etime, 100)
+	    normed.push(etime) // normalize this!
+	    return normed
+	}
     }
 
     const data = {
@@ -134,11 +136,14 @@ export default function DayGraph(props) {
     return (
 	<div class="border-0 border-red-500 ">
 	    <Radar data={data} options={options} />
-	    <div class="flex flex-row justify-center space-x-3 flex-wrap bg-pink-200 pt-3 rounded-lg">
-	    {/*{localData && localData.activities && localData.activities.map((e) =>*/}
-	    {temp.map((e) =>
-		<div class="text-gray-900 p-1 bg-gray-100 rounded-lg mb-3">{e}</div>
-	    )}
+	    <div class="flex flex-row h-full">
+		    {/*<div class="bg-gray-900 h-full"> asdfafd </div>*/}
+		<div class="flex flex-row justify-center border-dashed border-purple-300 space-x-3 flex-wrap pt-3 rounded-lg border-2 w-full">
+		{/*{localData && localData.activities && localData.activities.map((e) =>*/}
+		{(localData && localData.activities) && localData.activities.map((e) =>
+		    <div class="text-gray-700 font-bold p-1 border-4 border-purple-100 rounded-lg mb-3">{e}</div>
+		)}
+		</div>
 	    </div>
 
 	</div>
