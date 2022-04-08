@@ -141,7 +141,10 @@ export default function DayGraph(props) {
 	<div class="border-0 border-red-500 ">
 	    <Radar data={data} options={options} />
 	    <div class="flex flex-col h-full">
-		    <p class="text-black">activities</p>
+		<div class="flex flex-row w-full items-center">
+		    <p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">activities</p>
+		    <hr class='border border-gray-400 w-full'/>
+		</div>
 		    {/*<div class="bg-gray-900 h-full"> asdfafd </div>*/}
 		<div class="flex flex-row justify-center border-dashed border-purple-300 space-x-3 flex-wrap pt-3 rounded-lg border-2 w-full">
 		{/*{localData && localData.activities && localData.activities.map((e) =>*/}
@@ -153,9 +156,12 @@ export default function DayGraph(props) {
 		{/*notes*/}
 		{/*//exercise*/}
 		</div>
+		<div class="flex flex-row w-full items-center mt-6">
+		    <p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">notes</p>
+		    <hr class='border border-gray-400 w-full'/>
+		</div>
 
-		    <p class="text-black">notes</p>
-		<div className="flex flex-col -mt-2 border-0 border-red-300">
+		<div className="flex flex-col -mt-8 border-0 border-red-300">
 		    <textarea
 			type="text"
 			value={(localData && localData.notes) && localData.notes}
@@ -164,7 +170,10 @@ export default function DayGraph(props) {
 			placeholder={"any notes about today?"}
 		    />
 		</div>
-		    <p class="text-black">exercise</p>
+		<div class="flex flex-row w-full items-center mt-6 -mb-2">
+		    <p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">exercise</p>
+		    <hr class='border border-gray-400 w-full'/>
+		</div>
 		{(localData && localData.exercise) && localData.exercise.map((e, i) => {
 		    return (
 			<div
