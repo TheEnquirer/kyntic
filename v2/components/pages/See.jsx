@@ -16,6 +16,11 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import db from '../../lib/db'
 import moment from "moment";
 import DayGraph from '../ui/DayGraph';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRange } from 'react-date-range';
+import { useSpring, animated } from 'react-spring'
+
 
 let connectedListenerMade = false; // when we have made a listener to listen if we have successfully connected
 let connectCalled = false; // have we asked the plugin to connect?
@@ -123,10 +128,20 @@ const See = () => {
 	//db.getDataFromRange([moment().subtract(1, 'days').format(), moment().subtract(0, 'days').format()]).then(e => {
 	//    console.log(e)
 	//})
-	
+
     }, [])
 
     let target = [moment(), moment()]
+
+    const [datepickerState, setDatepickerState] = useState([
+	{
+	    startDate: new Date(),
+	    endDate: null,
+	    key: 'selection'
+	}
+    ]);
+
+    const [showPicker, setShowPicker] = useState(false)
 
     return (
 	<IonPage>
@@ -142,9 +157,31 @@ const See = () => {
 			<IonTitle size="large">see?</IonTitle>
 		    </IonToolbar>
 		</IonHeader>*/}
-		<div className={pageStyles.date}>
+		<div className={pageStyles.date}
+		    onClick={() => {
+			setShowPicker(!showPicker)
+		    }}
+		>
 		    <span className="">day</span> <span className="p-1 ml-1 mr-3 text-sm font-black bg-gray-600 rounded">/</span>
 		    <span className="font-thin">{moment().format("dddd, MMM Do").toLowerCase()}</span>
+		</div>
+		<div class="mt-4 absolute shadow-2xl rounded-sm"
+		    style={{
+			//transform: "translateY(-100px)",
+			//zIndex: "-100",
+		    }}
+		>
+		    {showPicker?
+			<DateRange
+			    editableDateInputs={true}
+			    onChange={item => setDatepickerState([item.selection])}
+			    moveRangeOnFirstSelection={false}
+			    ranges={datepickerState}
+			    disabledDay={(d) => {
+				return d > new Date()
+			    }}
+			/>
+		    : "" }
 		</div>
 		<DayGraph date={target}/>
 	    </IonContent>
@@ -153,3 +190,8 @@ const See = () => {
 };
 
 export default See;
+
+
+
+
+
