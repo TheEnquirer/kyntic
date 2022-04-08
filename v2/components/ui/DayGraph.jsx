@@ -159,10 +159,6 @@ export default function DayGraph(props) {
 		    <textarea
 			type="text"
 			value={(localData && localData.notes) && localData.notes}
-			onChange={(e) => {
-			    //setNoteValue(e)
-			    //props.setLoggingData("notes", e.target.value)
-			}}
 			class={subStyles.displayNoteBox}
 			readOnly={true}
 			placeholder={"any notes about today?"}
