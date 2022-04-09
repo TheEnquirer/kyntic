@@ -136,10 +136,12 @@ const See = () => {
     const [datepickerState, setDatepickerState] = useState([
 	{
 	    startDate: new Date(),
-	    endDate: null,
+	    endDate: new Date(),
 	    key: 'selection'
 	}
     ]);
+
+    const [dateRange, setDateRange] = useState([moment(), moment()])
 
     const [showPicker, setShowPicker] = useState(false)
 
@@ -159,6 +161,10 @@ const See = () => {
 		</IonHeader>*/}
 		<div className={pageStyles.date}
 		    onClick={() => {
+			if (showPicker) {
+			    setDateRange([datepickerState[0].startDate, datepickerState[0].endDate])
+			    console.log("showing", datepickerState)
+			}
 			setShowPicker(!showPicker)
 		    }}
 		>
@@ -171,10 +177,14 @@ const See = () => {
 			//zIndex: "-100",
 		    }}
 		>
+		    {console.log(dateRange)}
 		    {showPicker?
 			<DateRange
 			    editableDateInputs={true}
-			    onChange={item => setDatepickerState([item.selection])}
+			    onChange={item => {
+				setDatepickerState([item.selection])
+				console.log(item)
+			    }}
 			    moveRangeOnFirstSelection={false}
 			    ranges={datepickerState}
 			    disabledDay={(d) => {
