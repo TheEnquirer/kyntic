@@ -171,7 +171,7 @@ const See = () => {
 		    <span className="">day</span> <span className="p-1 ml-1 mr-3 text-sm font-black bg-gray-600 rounded">/</span>
 		    <span className="font-thin">{moment().format("dddd, MMM Do").toLowerCase()}</span>
 		</div>
-		<div class="mt-4 absolute shadow-2xl rounded-sm"
+		<div class="mt-4 absolute shadow-2xl rounded"
 		    style={{
 			//transform: "translateY(-100px)",
 			//zIndex: "-100",
@@ -179,6 +179,7 @@ const See = () => {
 		>
 		    {console.log(dateRange)}
 		    {showPicker?
+			<>
 			<DateRange
 			    editableDateInputs={true}
 			    onChange={item => {
@@ -191,7 +192,18 @@ const See = () => {
 				return d > new Date()
 			    }}
 			/>
-		    : "" }
+			    <div class="text-center bg-gray-400 p-1 font-bold"
+
+				onClick={() => {
+				    if (showPicker) {
+					setDateRange([datepickerState[0].startDate, datepickerState[0].endDate])
+					console.log("showing", datepickerState)
+				    }
+				    setShowPicker(!showPicker)
+				}}
+			    >done</div>
+			</>
+			: "" }
 		</div>
 		<DayGraph date={target}/>
 	    </IonContent>
