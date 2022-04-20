@@ -74,7 +74,7 @@ export default function DayGraph(props) {
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => { // load the data
-	console.log("this is rerunning")
+	//console.log("this is rerunning")
 	db()
 	let ldata = false
 	db.getDataFromRange(
@@ -88,7 +88,7 @@ export default function DayGraph(props) {
 		let normData = dataNormalizer(ldata)
 		setNormedLocal(normData)
 		setLocalData(ldata)
-		console.log(ldata, e, props.date, "???")
+		//console.log(ldata, e, props.date, "???")
 		//console.log(ldata)
 	    })
 	if (ldata.length == 0) { console.log("no data today!"); return } // deal with this later
@@ -139,55 +139,62 @@ export default function DayGraph(props) {
 	setLoaded(true)
     }, [])
 
-    let temp = ["activity1", "activity2", "activity4", 'activity3', 'activity3', 'activity3']
-
     return (
 	<div class="border-0 border-red-500 ">
-	    <Radar data={data} options={options} />
+	    {data.datasets[0].data? <Radar data={data} options={options} /> : <p class="font-black text-center text-gray-700 mt-3">no data to show</p>}
 	    <div class="flex flex-col h-full">
-		<div class="flex flex-row w-full items-center">
-		    <p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">activities</p>
-		    <hr class='border border-gray-400 w-full'/>
-		</div>
 		    {/*<div class="bg-gray-900 h-full"> asdfafd </div>*/}
-		<div class="flex flex-row justify-center border-dashed border-purple-300 space-x-3 flex-wrap pt-3 rounded-lg border-2 w-full">
-		{/*{localData && localData.activities && localData.activities.map((e) =>*/}
+		{(localData && localData.activities) &&
+		    <>
+		    <div class="flex flex-row w-full items-center">
+			<p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">activities</p>
+			<hr class='border border-gray-400 w-full'/>
+		    </div>
+		    <div class="flex flex-row justify-center border-dashed border-purple-300 space-x-3 flex-wrap pt-3 rounded-lg border-2 w-full">
+		    {/*{localData && localData.activities && localData.activities.map((e) =>*/}
 
-		{(localData && localData.activities) && localData.activities.map((e) =>
-		    <div class="text-gray-700 font-bold p-1 border-4 border-purple-100 rounded-lg mb-3">{e}</div>
-		)}
+		    {(localData && localData.activities) && localData.activities.map((e) =>
+			<div class="text-gray-700 font-bold p-1 border-4 border-purple-100 rounded-lg mb-3">{e}</div>
+		    )}
 
-		{/*notes*/}
-		{/*//exercise*/}
-		</div>
-		<div class="flex flex-row w-full items-center mt-6">
-		    <p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">notes</p>
-		    <hr class='border border-gray-400 w-full'/>
-		</div>
+		    {/*notes*/}
+		    {/*//exercise*/}
+		    </div>
+		    </>
+		}
+		{(localData && localData.notes) && <>
+		    <div class="flex flex-row w-full items-center mt-6">
+			<p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">notes</p>
+			<hr class='border border-gray-400 w-full'/>
+		    </div>
 
-		<div className="flex flex-col -mt-8 border-0 border-red-300">
-		    <textarea
-			type="text"
-			value={(localData && localData.notes) && localData.notes}
-			class={subStyles.displayNoteBox}
-			readOnly={true}
-			placeholder={"any notes about today?"}
-		    />
-		</div>
-		<div class="flex flex-row w-full items-center mt-6 -mb-2">
-		    <p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">exercise</p>
-		    <hr class='border border-gray-400 w-full'/>
-		</div>
-		{(localData && localData.exercise) && localData.exercise.map((e, i) => {
-		    return (
-			<div
-			    class="text-black border-0 border-red-500 flex center content-center align-center items-center justify-center justify-items-center"
-			>
-			    <ExerciseBlock name={e.name} idx={i} edit={() => {}} len={ e.len } color={"red"}/>
+		    <div className="flex flex-col -mt-8 border-0 border-red-300">
+			<textarea
+			    type="text"
+			    value={(localData && localData.notes) && localData.notes}
+			    class={subStyles.displayNoteBox}
+			    readOnly={true}
+			    placeholder={"any notes about today?"}
+			/>
+		    </div>
+		</>}
 
-			</div>
-		    )
-		})}
+		{(localData && localData.exercise) && <>
+		    <div class="flex flex-row w-full items-center mt-6 -mb-2">
+			<p class="text-gray-500 text-2xl p-1 pb-3 font-bold pr-2">exercise</p>
+			<hr class='border border-gray-400 w-full'/>
+		    </div>
+		    {(localData && localData.exercise) && localData.exercise.map((e, i) => {
+			return (
+			    <div
+				class="text-black border-0 border-red-500 flex center content-center align-center items-center justify-center justify-items-center"
+			    >
+				<ExerciseBlock name={e.name} idx={i} edit={() => {}} len={ e.len } color={"red"}/>
+
+			    </div>
+			)
+		    })}
+		</> }
 	    </div>
 	</div>
     )

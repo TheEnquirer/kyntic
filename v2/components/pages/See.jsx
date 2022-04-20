@@ -147,9 +147,8 @@ const See = () => {
     const [showPicker, setShowPicker] = useState(false)
 
     const handleNewDates = (startDate, endDate) => {
-
 	// check for a day
-	if (startDate == endDate) {
+	if (startDate.getTime() == endDate.getTime()) {
 	    setRangeText(["day", moment(startDate).format("dddd, MMM Do").toLowerCase()])
 	} else {
 	    setRangeText(["range", moment(startDate).format("MMM Do").toLowerCase() + " - " + moment(endDate).format("MMM Do").toLowerCase()])
