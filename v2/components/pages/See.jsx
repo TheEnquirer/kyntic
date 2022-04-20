@@ -142,8 +142,19 @@ const See = () => {
     ]);
 
     const [dateRange, setDateRange] = useState([moment(), moment()])
+    const [rangeText, setRangeText] = useState(["day", moment().format("dddd, MMM Do").toLowerCase()])
 
     const [showPicker, setShowPicker] = useState(false)
+
+    const handleNewDates = (startDate, endDate) => {
+
+	// check for a day
+	if (startDate == endDate) {
+	    setRangeText(["day", moment(startDate).format("dddd, MMM Do").toLowerCase()])
+	} else {
+	    setRangeText(["range", moment(startDate).format("MMM Do").toLowerCase() + " - " + moment(endDate).format("MMM Do").toLowerCase()])
+	}
+    }
 
     return (
 	<IonPage>
@@ -163,13 +174,14 @@ const See = () => {
 		    onClick={() => {
 			if (showPicker) {
 			    setDateRange([datepickerState[0].startDate, datepickerState[0].endDate])
+			    handleNewDates(datepickerState[0].startDate, datepickerState[0].endDate)
 			    console.log("showing", datepickerState)
 			}
 			setShowPicker(!showPicker)
 		    }}
 		>
-		    <span className="">day</span> <span className="p-1 ml-1 mr-3 text-sm font-black bg-gray-600 rounded">/</span>
-		    <span className="font-thin">{moment().format("dddd, MMM Do").toLowerCase()}</span>
+		    <span className="">{rangeText[0]}</span> <span className="p-1 ml-1 mr-3 text-sm font-black bg-gray-600 rounded">/</span>
+		    <span className="font-thin">{rangeText[1]}</span>
 		</div>
 		<div class="mt-4 absolute shadow-2xl rounded"
 		    style={{
@@ -177,7 +189,6 @@ const See = () => {
 			//zIndex: "-100",
 		    }}
 		>
-		    {console.log(dateRange)}
 		    {showPicker?
 			<>
 			<DateRange
@@ -197,7 +208,8 @@ const See = () => {
 				onClick={() => {
 				    if (showPicker) {
 					setDateRange([datepickerState[0].startDate, datepickerState[0].endDate])
-					console.log("showing", datepickerState)
+					handleNewDates(datepickerState[0].startDate, datepickerState[0].endDate)
+					//console.log("showing", datepickerState)
 				    }
 				    setShowPicker(!showPicker)
 				}}
