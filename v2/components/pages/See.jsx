@@ -217,15 +217,12 @@ const See = () => {
 			</>
 			: "" }
 		</div>
-		<DayGraph date={target}/>
+		{/*//{console.log(dateRange[0], "whee")}*/}
+		{console.log("this is rerendering")}
+		{(rangeText[0] == "day") ? <DayGraph date={dateRange[0]}/> : "nahhh"}
 	    </IonContent>
 	</IonPage>
     );
 };
 
 export default See;
-
-
-
-
-
