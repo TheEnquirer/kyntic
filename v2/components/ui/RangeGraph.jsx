@@ -4,6 +4,30 @@ import moment from "moment"
 import subStyles from "../../styles/Sub.module.css"
 import ExerciseBlock from "./ExerciseBlock";
 import LineGraph from '../ui/LineGraph'
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Fade from '@mui/material/Fade';
+import Backdrop from '@mui/material/Backdrop';
+
+const style = {
+    position: 'absolute',
+    top: '20%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    //width: 400,
+    width: "80%",
+    //bgcolor: 'background.paper',
+    bgcolor: '#f2e8e8',
+    //border: '2px solid #000',
+    borderRadius: "0.8rem",
+    boxShadow: 24,
+    p: 4,
+    outline: "none",
+    color: "#363638",
+    fontWeight: "900",
+};
+
 
 //import {
 //    Chart as ChartJS,
@@ -55,6 +79,25 @@ ChartJS.register(
 export default function RangeGraph(props) {
     const [normedLocal, setNormedLocal] = useState([0, 0, 0, 0, 0, 0])
     const [parsedData, setParsedData] = useState([])
+    const [modal, toggleModal] = useState(false)
+
+    const [activeGraph, setActiveGraph] = useState(0)
+
+    const [graphSettings, setGraphSettings] = useState([
+	{
+	    xAxis: "mood",
+	    yAxis: "sleep"
+	},
+	{
+	    xAxis: "sleep",
+	    yAxis: "perceived severity"
+	},
+	{
+	    xAxis: "mood",
+	    yAxis: "sleep"
+	},
+    ])
+
 
     useEffect(() => db(), [])
 
@@ -191,29 +234,44 @@ export default function RangeGraph(props) {
     return (
 	<div class="border-0 border-red-500 mt-5">
 	    {/*{parsedData[0] && <Line data={data} config={config} options={config}/>}*/}
-	    <LineGraph
-		parsedData={parsedData}
-		datasetName={""}
-		//xAxis={"mood"}
-		xAxis={"time"}
-		//xAxis={"time"}
-		yAxis={"sleep"}
+	    {graphSettings.map((g, i) =>
+		<div
+		    onClick={() => {
+			setActiveGraph(i)
+			toggleModal(true)
+		    }}
+		>
+		    <LineGraph
+			parsedData={parsedData}
+			datasetName={""}
+			xAxis={g.xAxis}
+			yAxis={g.yAxis}
 
-	    />
-	    {/*<LineGraph
-		parsedData={parsedData}
-		datasetName={""}
-		xAxis={"sleep"}
-		yAxis={"perceived severity"}
+		    />
+		</div>
+	    )}
+	    <Modal
+		open={modal}
+		onClose={() => {
+		    toggleModal(false)
 
-	    />
-	    <LineGraph
-		parsedData={parsedData}
-		datasetName={""}
-		xAxis={"exercise"}
-		yAxis={"exercise"}
-
-	    />*/}
+		    let lgs = graphSettings
+		    lgs[activeGraph].xAxis = "exercise"
+		    lgs[activeGraph].yAxis = "exercise"
+		    setGraphSettings(lgs)
+		}}
+		closeAfterTransition
+		BackdropComponent={Backdrop}
+		BackdropProps={{
+		    timeout: 500,
+		}}
+	    >
+		<Fade in={modal}>
+		    <Box sx={style}>
+			{graphSettings[activeGraph].yAxis + " vs. " + graphSettings[activeGraph].xAxis}
+		    </Box>
+		</Fade>
+	    </Modal>
 	</div>
     )
 }

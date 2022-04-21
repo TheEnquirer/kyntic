@@ -3,27 +3,11 @@ import db from '../../lib/db'
 import moment from "moment"
 import subStyles from "../../styles/Sub.module.css"
 import ExerciseBlock from "./ExerciseBlock";
-
-//import {
-//    Chart as ChartJS,
-//    RadialLinearScale,
-//    PointElement,
-//    LineElement,
-//    Filler,
-//    Tooltip,
-//    Legend,
-//} from 'chart.js';
-//import { Line } from 'react-chartjs-2';
-
-//ChartJS.register(
-//    CategoryScale,
-//    LinearScale,
-//    PointElement,
-//    LineElement,
-//    Title,
-//    Tooltip,
-//    Legend
-//);
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Fade from '@mui/material/Fade';
+import Backdrop from '@mui/material/Backdrop';
 
 import {
   Chart as ChartJS,
@@ -47,8 +31,26 @@ ChartJS.register(
   Legend
 )
 
+const style = {
+    position: 'absolute',
+    top: '20%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    //width: 400,
+    width: "80%",
+    //bgcolor: 'background.paper',
+    bgcolor: '#f2e8e8',
+    //border: '2px solid #000',
+    borderRadius: "0.8rem",
+    boxShadow: 24,
+    p: 4,
+    outline: "none",
+    color: "#363638",
+    fontWeight: "900",
+};
 
 export default function LineGraph(props) {
+    const [modal, toggleModal] = useState(false)
 
     let parsedData = props.parsedData
 
@@ -78,12 +80,6 @@ export default function LineGraph(props) {
 	y: d.values[nameToIndex(props.yAxis)]
     }}).sort((a, b) => a.x - b.x)
 
-    let locatedTimeData = parsedData.map((d) => { return {
-	x: (d.date.format("x")/8.64e+7) - parsedData.at(-1).date.format("x")/8.64e+7,
-	y: d.values[nameToIndex(props.yAxis)]
-    }}).sort((a, b) => a.x - b.x)
-    console.log(locatedTimeData, "loc")
-
 
     const data = {
 	labels: Array(parsedData.length).fill(""),
@@ -97,8 +93,6 @@ export default function LineGraph(props) {
 		tension: 0.4,
 		backgroundColor: nameToColors(`${(props.xAxis == "time")? props.yAxis : props.xAxis}`)[0],
 		borderColor: nameToColors(`${(props.xAxis == "time")? props.yAxis : props.xAxis}`)[1],
-		//borderColor: nameToColors(((props.xAxis == "time")? props.yAxis : props.xAxis)[1]),
-
 		borderWidth: 3,
 	    },
 	],
@@ -107,7 +101,6 @@ export default function LineGraph(props) {
 
     const config = {
 	type: 'line',
-	//skipLabels: true,
 	data: data,
 	plugins: {
 	    legend: {
@@ -163,9 +156,35 @@ export default function LineGraph(props) {
 
     return (
 	<div class="border-0 border-red-500 mt-5">
+	    <div class="border-2 border-gray-200 rounded"
+		style={{
+		       //boxShadow: "0px 0px 1px 5000px rgba(256,0,0,1);"
+		}}
+
+		onClick={() => {
+		    //toggleModal(true)
+		}}
+	    >
 	    {parsedData[0] && <Line data={data} config={config} options={config}/>}
+	    </div>
+
+	    <Modal
+		open={modal}
+		onClose={() => {
+		    toggleModal(false)
+		}}
+		closeAfterTransition
+		BackdropComponent={Backdrop}
+		BackdropProps={{
+		    timeout: 500,
+		}}
+	    >
+		<Fade in={modal}>
+		    <Box sx={style}>
+			{props.yAxis + " vs. " + props.xAxis}
+		    </Box>
+		</Fade>
+	    </Modal>
 	</div>
     )
-
-
 }
