@@ -16,6 +16,7 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import db from '../../lib/db'
 import moment from "moment";
 import DayGraph from '../ui/DayGraph';
+import RangeGraph from '../ui/RangeGraph';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
@@ -217,8 +218,9 @@ const See = () => {
 			: "" }
 		</div>
 		{/*//{console.log(dateRange[0], "whee")}*/}
-		{console.log("this is rerendering")}
-		{(rangeText[0] == "day") ? <DayGraph date={dateRange[0]}/> : "nahhh"}
+		{(rangeText[0] == "day") ?
+		    <DayGraph date={dateRange[0]}/> :
+		    <RangeGraph start={dateRange[0]} end={dateRange[1]} /> }
 	    </IonContent>
 	</IonPage>
     );

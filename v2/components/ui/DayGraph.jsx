@@ -73,14 +73,15 @@ export default function DayGraph(props) {
     const [localData, setLocalData] = useState(null)
     const [loaded, setLoaded] = useState(false)
 
+    useEffect(() => db(), [])
+
     useEffect(() => { // load the data
 	//console.log("this is rerunning")
-	db()
 	let ldata = false
 	db.getDataFromRange(
 	    [
 		moment(props.date).subtract(1, 'days').format(),
-		moment(props.date).subtract(-1, 'days').format(),
+		moment(props.date).subtract(0, 'days').format(),
 		//moment().subtract(1, 'days').format(),
 		//moment().subtract(0, 'days').format()
 	    ]).then(e => {
@@ -89,7 +90,7 @@ export default function DayGraph(props) {
 		setNormedLocal(normData)
 		setLocalData(ldata)
 		//console.log(ldata, e, props.date, "???")
-		//console.log(ldata)
+		console.log(ldata, "ldata")
 	    })
 	if (ldata.length == 0) { console.log("no data today!"); return } // deal with this later
 
