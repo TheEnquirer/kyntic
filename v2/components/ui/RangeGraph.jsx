@@ -3,6 +3,7 @@ import db from '../../lib/db'
 import moment from "moment"
 import subStyles from "../../styles/Sub.module.css"
 import ExerciseBlock from "./ExerciseBlock";
+import LineGraph from '../ui/LineGraph'
 
 //import {
 //    Chart as ChartJS,
@@ -75,7 +76,6 @@ export default function RangeGraph(props) {
 		activities: d.activities
 	    }})
 	    console.log(parsed)
-	    console.log(parsed.map((d) => { return { x: d.values[2], y: d.values[1]}}), "here")
 	    setParsedData(parsed)
 	})
     }
@@ -102,132 +102,101 @@ export default function RangeGraph(props) {
 	}
     }
 
-//data: [{
-//        x: 10,
-//        y: 20
-//    }, {
-//        x: 15,
-//        y: 10
-//    }]
-    const data = {
-	labels: Array(parsedData.length).fill(""),
-	datasets: [
-	    {
-		label: '', // TODO fill this in later based on the axis
-		//data: [0, 2,2, 4, 5],
-		//data: parsedData.map((d) => { return { x: d.sleep, y: d.sleep }}),
-		data: parsedData.map((d) => { return { x: d.values[2], y: d.values[1]}}),
-		//borderColor: Utils.CHART_COLORS.red,
-		fill: true,
-		cubicInterpolationMode: 'monotone',
-		tension: 0.4,
-		//backgroundColor: 'rgba(178, 212, 167, 0.5)',
-		//borderColor: 'rgba(178, 212, 167, 1)',
-		borderWidth: 3,
-	    }
-	],
-	config,
-    }
+    //const data = {
+    //    labels: Array(parsedData.length).fill(""),
+    //    datasets: [
+    //        {
+    //            label: '', // TODO fill this in later based on the axis
+    //            //data: [0, 2,2, 4, 5],
+    //            //data: parsedData.map((d) => { return { x: d.sleep, y: d.sleep }}),
+    //            data: parsedData.map((d) => { return { x: d.values[2], y: d.values[1]}}),
+    //            //borderColor: Utils.CHART_COLORS.red,
+    //            fill: true,
+    //            cubicInterpolationMode: 'monotone',
+    //            tension: 0.4,
+    //            //backgroundColor: 'rgba(178, 212, 167, 0.5)',
+    //            //borderColor: 'rgba(178, 212, 167, 1)',
+    //            borderWidth: 3,
+    //        },
+    //        {
+    //            label: '', // TODO fill this in later based on the axis
+    //            //data: [0, 2,2, 4, 5],
+    //            //data: parsedData.map((d) => { return { x: d.sleep, y: d.sleep }}),
+    //            data: parsedData.map((d) => { return { x: d.values[2], y: d.values[3]}}),
+    //            //borderColor: Utils.CHART_COLORS.red,
+    //            fill: true,
+    //            cubicInterpolationMode: 'monotone',
+    //            tension: 0.4,
+    //            //backgroundColor: 'rgba(178, 212, 167, 0.5)',
+    //            //borderColor: 'rgba(178, 212, 167, 1)',
+    //            borderWidth: 3,
+    //        },
+    //    ],
+    //    config,
+    //}
 
-    const config = {
-	type: 'line',
-	//skipLabels: true,
-	data: data,
-	plugins: {
-	    legend: {
-		display: false,
-	    },
-	    title: {
-		display: false,
-	    },
-	},
+    //const config = {
+    //    type: 'line',
+    //    //skipLabels: true,
+    //    data: data,
+    //    plugins: {
+    //        legend: {
+    //            display: false,
+    //        },
+    //        title: {
+    //            display: false,
+    //        },
+    //    },
 
-	//options: {
-	//    responsive: true,
-	//    plugins: {
-	//        title: {
-	//            display: false,
-	//        },
-	//    },
-	//    //interaction: {
-	//    //    intersect: false,
-	//    //},
-	//    scales: {
-	//    //    x: {
-	//    //        display: true,
-	//    //        title: {
-	//    //            display: true,
-	//    //            text: "whee"
-	//    //        }
-	//    //    },
-	//        y: {
-	//    //        display: true,
-	//    //        title: {
-	//    //            display: true,
-	//    //            text: 'Value',
-	//    //            padding: 12,
-	//    //        },
-	//    //        //suggestedMin: -10,
-	//    //        //suggestedMax: 200
-	//            ticks: {
-	//                // Include a dollar sign in the ticks
-	//                callback: function(value, index, ticks) {
-	//                    return '$' + value;
-	//                }
-	//            }
-	//        }
-	//    }
-	//},
-	    responsive: true,
-	    plugins: {
-		title: {
-		    display: false,
-		},
-		legend: {
-		    display: false,
-		}
-	    },
-	//interaction: {
-	//    intersect: false,
-	//},
-	scales: {
-		x: {
-		    display: true,
-		    title: {
-			display: true,
-			text: "whee",
-			//padding: -5,
-		    },
-		    ticks: {
-			display: false,
-			callback: function(value, index, ticks) {
-			    return value;
-			}
-		    }
-		},
-	    y: {
-		//        display: true,
-		title: {
-		    display: true,
-		    text: 'Value',
-		},
-		//        //suggestedMin: -10,
-		//        //suggestedMax: 200
-		ticks: {
-		    display: false,
-		    // Include a dollar sign in the ticks
-		    callback: function(value, index, ticks) {
-			return '' + value;
-		    }
-		}
-	    }
-	}
-    };
+    //        responsive: true,
+    //        plugins: {
+    //            title: {
+    //                display: false,
+    //            },
+    //            legend: {
+    //                display: false,
+    //            }
+    //        },
+    //    scales: {
+    //            x: {
+    //                display: true,
+    //                title: {
+    //                    display: true,
+    //                    text: "whee",
+    //                    //padding: -5,
+    //                },
+    //                ticks: {
+    //                    display: false,
+    //                    callback: function(value, index, ticks) {
+    //                        return value;
+    //                    }
+    //                }
+    //            },
+    //        y: {
+    //            title: {
+    //                display: true,
+    //                text: 'Value',
+    //            },
+    //            ticks: {
+    //                display: false,
+    //                callback: function(value, index, ticks) {
+    //                    return '' + value;
+    //                }
+    //            }
+    //        }
+    //    }
+    //};
 
 
     return (
 	<div class="border-0 border-red-500 mt-5">
-	    {parsedData[0] && <Line data={data} config={config} options={config}/>}
+	    {/*{parsedData[0] && <Line data={data} config={config} options={config}/>}*/}
+	    <LineGraph
+		parsedData={parsedData}
+		datasetName={"datasetName"}
+		xAxis={"exercise"}
+		yAxis={"mood"}
+	    />
 	</div>
     )
 }
