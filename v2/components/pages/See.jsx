@@ -105,25 +105,6 @@ const writeFile = () => {
 };
 
 const See = () => {
-    // connect to the sensor
-    if (!connectCalled) {
-	// this just crashes the app...
-	// writeFile.then(() => {
-	// 	console.log("lets gooooo")
-	// }).catch(err => {
-	// 	console.log("Error while trying to use cap file plugin:")
-	// 	console.log(err);
-	// });
-	MetawearCapacitor.connect()
-	    .then(async () => {
-		console.log('JS: Running connection did not error.');
-	    })
-	    .catch(err => {
-		console.error(err);
-	    });
-    }
-    createConnectedListener(); // listens to see if we have successfully connected
-
     useEffect(() => {
 	db();
 	//db.getDataFromRange([moment().subtract(1, 'days').format(), moment().subtract(0, 'days').format()]).then(e => {
