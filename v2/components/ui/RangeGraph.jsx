@@ -79,6 +79,7 @@ ChartJS.register(
 export default function RangeGraph(props) {
     const [normedLocal, setNormedLocal] = useState([0, 0, 0, 0, 0, 0])
     const [parsedData, setParsedData] = useState([])
+    const [acti, setActi] = useState({})
     const [modal, toggleModal] = useState(false)
 
     const [activeGraph, setActiveGraph] = useState(0)
@@ -110,15 +111,25 @@ export default function RangeGraph(props) {
     const retrieveData = () => {
 	db.getDataFromRange([
 	    moment(props.start).subtract(1, 'days').format(),
-	    moment(props.end).format()
+	    moment(props.end).subtract((moment().isSame(props.end, 'day'))? -1 : 0, 'days').format(),
+
 	]).then(e => {
-	    console.log(e, "e!")
+	    //console.log(e, "e!")
+	    let actiCount = {}
+
 	    let parsed = e.map(d => { return {
 		values: dataNormalizer(d),
 		date: moment(d.created_at),
 		activities: d.activities
 	    }})
-	    console.log(parsed)
+
+	    parsed.forEach(p => {
+		p.activities && p.activities.forEach(pp => {
+		    actiCount[pp] = (+actiCount[pp] || 0) + 1
+		})
+	    })
+	    console.log(parsed, Object.entries(actiCount), 'the parsed!')
+	    setActi(actiCount)
 	    setParsedData(parsed)
 	})
     }
@@ -259,10 +270,6 @@ export default function RangeGraph(props) {
 		open={modal}
 		onClose={() => {
 		    toggleModal(false)
-		    let lgs = graphSettings
-		    //lgs[activeGraph].xAxis = "exercise"
-		    //lgs[activeGraph].yAxis = "exercise"
-		    //setGraphSettings(lgs)
 		}}
 		closeAfterTransition
 		BackdropComponent={Backdrop}
@@ -313,6 +320,16 @@ export default function RangeGraph(props) {
 		    </Box>
 		</Fade>
 	    </Modal>
+	<div className={subStyles.activWrapper}>
+	    <div class="mt-4 flex flex-wrap justify-center">
+		{Object.entries(acti).sort((a,b) => b[1] - a[1]).map( o => { return (
+		    <div class="border-0 text-gray-600 border-red-500 flex flex-row justify-center mt-4">
+			<p class="bg-purple-200 p-2 rounded"> {o[0]} </p>
+			<p class="align-middle content-center p-2"> x {o[1]} </p>
+		    </div>
+		)})}
+	    </div>
+	    </div>
 	</div>
     )
 }

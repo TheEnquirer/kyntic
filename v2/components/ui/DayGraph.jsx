@@ -81,7 +81,7 @@ export default function DayGraph(props) {
 	db.getDataFromRange(
 	    [
 		moment(props.date).subtract(1, 'days').format(),
-		moment(props.date).subtract(0, 'days').format(),
+		moment(props.date).subtract((moment().isSame(props.date, 'day'))? -1 : 0, 'days').format(),
 		//moment().subtract(1, 'days').format(),
 		//moment().subtract(0, 'days').format()
 	    ]).then(e => {
@@ -90,7 +90,7 @@ export default function DayGraph(props) {
 		setNormedLocal(normData)
 		setLocalData(ldata)
 		//console.log(ldata, e, props.date, "???")
-		console.log(ldata, "ldata")
+		console.log(ldata, props.date, "ldata")
 	    })
 	if (ldata.length == 0) { console.log("no data today!"); return } // deal with this later
 
