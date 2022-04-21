@@ -52,7 +52,7 @@ export default function LineGraph(props) {
 
     let parsedData = props.parsedData
 
-    const nameToIndex = (name) => {
+    const nameToIndex = name => {
 	return {
 	    "perceived": 0,
 	    "mood": 1,
@@ -62,52 +62,27 @@ export default function LineGraph(props) {
 	}[name]
     }
 
+    const nameToColors = name => {
+	return {
+	    "perceived": ['rgba(229, 205, 143, 0.5)', 'rgba(229, 205, 143, 1)'],
+	    "mood": ['rgba(178, 212, 167, 0.5)', 'rgba(178, 212, 167, 1)'],
+	    "sleep": ['rgba(167, 174, 212, 0.5)', 'rgba(167, 174, 212, 1)'],
+	    "screenTime": ['rgba(167, 212, 207, 0.5)', 'rgba(167, 212, 207, 1)'],
+	    "exercise": ['rgba(212, 167, 167, 0.5)', 'rgba(212, 167, 167, 1)'],
+	}[name]
+    }
+
 
     let locatedData = parsedData.map((d) => { return {
 	x: d.values[nameToIndex(props.xAxis)],
 	y: d.values[nameToIndex(props.yAxis)]
     }}).sort((a, b) => a.x - b.x)
-    console.log(locatedData)
 
-    //locatedData = [
-	//{
-	//    x: 3,
-	//    y: 2
-	//},
-	//{
-	//    x: 4,
-	//    y: 2
-	//},
-	//{
-	//    x: 5,
-	//    y: 3
-	//},
-	//{
-	//    x: 3,
-	//    y: 2
-	//},
-	//{
-	//    x: 4,
-	//    y: 3
-	//},
-	//{
-	//    x: 0,
-	//    y: 2
-	//},
-    //]
+    let locatedData2 = parsedData.map((d) => { return {
+	x: d.values[nameToIndex(props.xAxis2)],
+	y: d.values[nameToIndex(props.yAxis2)]
+    }}).sort((a, b) => a.x - b.x)
 
-    //locatedData = [
-	//{x: 86, y: 75.18181818181819},
-	//{x: 91, y: 70.90909090909092},
-	//{x: 100, y: 0},
-
-
-	//{x: 100, y: 0},
-	//{x: 91, y: 70.90909090909092},
-	//{x: 86, y: 75.18181818181819},
-
-	//{x: 78, y: 66.27272727272728}
-    //]
 
     const data = {
 	labels: Array(parsedData.length).fill(""),
@@ -121,23 +96,23 @@ export default function LineGraph(props) {
 		fill: true,
 		cubicInterpolationMode: 'monotone',
 		tension: 0.4,
-		backgroundColor: 'rgba(178, 212, 167, 0.5)',
-		borderColor: 'rgba(178, 212, 167, 1)',
+		backgroundColor: nameToColors(props.xAxis)[0],
+		borderColor: nameToColors(props.xAxis)[1],
 		borderWidth: 3,
 	    },
-	    //{
-	    //    label: '', // TODO fill this in later based on the axis
-	    //    //data: [0, 2,2, 4, 5],
-	    //    //data: parsedData.map((d) => { return { x: d.sleep, y: d.sleep }}),
-	    //    data: parsedData.map((d) => { return { x: d.values[2], y: d.values[3]}}),
-	    //    //borderColor: Utils.CHART_COLORS.red,
-	    //    fill: true,
-	    //    cubicInterpolationMode: 'monotone',
-	    //    tension: 0.4,
-	    //    //backgroundColor: 'rgba(178, 212, 167, 0.5)',
-	    //    //borderColor: 'rgba(178, 212, 167, 1)',
-	    //    borderWidth: 3,
-	    //},
+	    {
+		label: props.datasetName, // TODO fill this in later based on the axis
+		//data: [0, 2,2, 4, 5],
+		//data: parsedData.map((d) => { return { x: d.sleep, y: d.sleep }}),
+		data: locatedData2,
+		//borderColor: Utils.CHART_COLORS.red,
+		fill: true,
+		cubicInterpolationMode: 'monotone',
+		tension: 0.4,
+		backgroundColor: nameToColors(props.xAxis2)[0],
+		borderColor: nameToColors(props.xAxis2)[1],
+		borderWidth: 3,
+	    },
 	],
 	config,
     }

@@ -194,9 +194,19 @@ export default function RangeGraph(props) {
 	    <LineGraph
 		parsedData={parsedData}
 		datasetName={"datasetName"}
-		xAxis={"exercise"}
-		yAxis={"mood"}
+		xAxis={"mood"}
+		yAxis={"perceived"}
+
+		xAxis2={"exercise"}
+		yAxis2={"perceived"}
 	    />
+	    {/*<LineGraph
+		parsedData={parsedData}
+		datasetName={"datasetName"}
+		xAxis={"mood"}
+		yAxis={"perceived"}
+
+	    />*/}
 	</div>
     )
 }
