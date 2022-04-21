@@ -80,6 +80,7 @@ export default function RangeGraph(props) {
     const [normedLocal, setNormedLocal] = useState([0, 0, 0, 0, 0, 0])
     const [parsedData, setParsedData] = useState([])
     const [acti, setActi] = useState({})
+    const [averages, setAverages] = useState([])
     const [modal, toggleModal] = useState(false)
 
     const [activeGraph, setActiveGraph] = useState(0)
@@ -116,6 +117,7 @@ export default function RangeGraph(props) {
 	]).then(e => {
 	    //console.log(e, "e!")
 	    let actiCount = {}
+	    let vals = []
 
 	    let parsed = e.map(d => { return {
 		values: dataNormalizer(d),
@@ -127,8 +129,19 @@ export default function RangeGraph(props) {
 		p.activities && p.activities.forEach(pp => {
 		    actiCount[pp] = (+actiCount[pp] || 0) + 1
 		})
+		p.values && vals.push(p.values)
 	    })
-	    console.log(parsed, Object.entries(actiCount), 'the parsed!')
+
+	    let avgs = Array(5).fill(0)
+	    vals.forEach((v) => {
+		v.forEach((vv, j) => {
+		    avgs[j] += vv / 5
+		})
+	    })
+
+	    //console.log(avgs)
+	    console.log(avgs, "yes")
+	    setAverages(avgs)
 	    setActi(actiCount)
 	    setParsedData(parsed)
 	})
@@ -320,12 +333,71 @@ export default function RangeGraph(props) {
 		    </Box>
 		</Fade>
 	    </Modal>
+
+	<div class="flex flex-row space-x-1 justify-center mt-8">
+	    <div class="p-3 pr-5 pl-5 rounded"
+		style={{
+		    background: "#B2D4A7"
+		}}
+	    >
+		{(averages[1] >= 80) && <div class="text-sm" style={{lineHeight: "13px"}}>▲<br />▲</div>}
+		{(averages[1] >= 60 && averages[1] < 80) && <div class="text-sm mt-1">▲</div>}
+		{(averages[1] >= 40 && averages[1] < 60) && <div class="text-lg font-black">--</div>}
+		{(averages[1] >= 20 && averages[1] < 40) && <div class="text-sm">▼</div>}
+		{(averages[1] >= 0 && averages[1] < 20) && <div class="text-sm" style={{lineHeight: "13px"}}>▼<br />▼</div>}
+	    </div>
+	    <div class="p-3 pr-5 pl-5 rounded"
+		style={{
+		    background: "#A7AED4"
+		}}
+	    >
+		{(averages[2] >= 80) && <div class="text-sm" style={{lineHeight: "13px"}}>▲<br />▲</div>}
+		{(averages[2] >= 60 && averages[2] < 80) && <div class="text-sm mt-1">▲</div>}
+		{(averages[2] >= 40 && averages[2] < 60) && <div class="text-lg font-black">--</div>}
+		{(averages[2] >= 20 && averages[2] < 40) && <div class="text-sm mt-1">▼</div>}
+		{(averages[2] >= 0 && averages[2] < 20) && <div class="text-sm" style={{lineHeight: "13px"}}>▼<br />▼</div>}
+	    </div>
+	    <div class="p-3 pr-5 pl-5 rounded"
+		style={{
+		    background: "#E0ADAD"
+		}}
+	    >
+		{(averages[3] >= 80) && <div class="text-sm" style={{lineHeight: "13px"}}>▲<br />▲</div>}
+		{(averages[3] >= 60 && averages[3] < 80) && <div class="text-sm mt-1">▲</div>}
+		{(averages[3] >= 40 && averages[3] < 60) && <div class="text-lg font-black">--</div>}
+		{(averages[3] >= 20 && averages[3] < 40) && <div class="text-sm mt-1">▼</div>}
+		{(averages[3] >= 0 && averages[3] < 20) && <div class="text-sm" style={{lineHeight: "13px"}}>▼<br />▼</div>}
+	    </div>
+	    <div class="p-3 pr-5 pl-5 rounded"
+		style={{
+		    background: "rgb(167, 212, 207)"
+		}}
+	    >
+		{(averages[4] >= 80) && <div class="text-sm" style={{lineHeight: "13px"}}>▲<br />▲</div>}
+		{(averages[4] >= 60 && averages[4] < 80) && <div class="text-sm mt-1">▲</div>}
+		{(averages[4] >= 40 && averages[4] < 60) && <div class="text-lg font-black">--</div>}
+		{(averages[4] >= 20 && averages[4] < 40) && <div class="text-sm mt-1">▼</div>}
+		{(averages[4] >= 0 && averages[4] < 20) && <div class="text-sm" style={{lineHeight: "13px"}}>▼<br />▼</div>}
+	    </div>
+	    <div class="p-3 pr-5 pl-5 rounded"
+		style={{
+		    background: "rgb(229, 205, 143)"
+		}}
+	    >
+		{(averages[0] >= 80) && <div class="text-sm" style={{lineHeight: "13px"}}>▲<br />▲</div>}
+		{(averages[0] >= 60 && averages[0] < 80) && <div class="text-sm mt-1">▲</div>}
+		{(averages[0] >= 40 && averages[0] < 60) && <div class="text-lg font-black">--</div>}
+		{(averages[0] >= 20 && averages[0] < 40) && <div class="text-sm mt-1">▼</div>}
+		{(averages[0] >= 0 && averages[0] < 20) && <div class="text-sm" style={{lineHeight: "13px"}}>▼<br />▼</div>}
+	    </div>
+	</div>
+
 	<div className={subStyles.activWrapper}>
 	    <div class="mt-4 flex flex-wrap justify-center">
 		{Object.entries(acti).sort((a,b) => b[1] - a[1]).map( o => { return (
 		    <div class="border-0 text-gray-600 border-red-500 flex flex-row justify-center mt-4">
 			<p class="bg-purple-200 p-2 rounded"> {o[0]} </p>
-			<p class="align-middle content-center p-2"> x {o[1]} </p>
+			<p class="align-middle content-center p-2 mr-1"> x {o[1]} </p>
 		    </div>
 		)})}
 	    </div>
