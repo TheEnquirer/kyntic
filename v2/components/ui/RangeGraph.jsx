@@ -12,7 +12,7 @@ import Backdrop from '@mui/material/Backdrop';
 
 const style = {
     position: 'absolute',
-    top: '20%',
+    top: '30%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     //width: 400,
@@ -86,15 +86,15 @@ export default function RangeGraph(props) {
     const [graphSettings, setGraphSettings] = useState([
 	{
 	    xAxis: "mood",
-	    yAxis: "sleep"
-	},
-	{
-	    xAxis: "sleep",
 	    yAxis: "perceived severity"
 	},
 	{
-	    xAxis: "mood",
-	    yAxis: "sleep"
+	    xAxis: "screen time",
+	    yAxis: "perceived severity"
+	},
+	{
+	    xAxis: "sleep",
+	    yAxis: "mood"
 	},
     ])
 
@@ -230,10 +230,15 @@ export default function RangeGraph(props) {
     //    }
     //};
 
+    const axisOptions = [
+	    "perceived severity",
+	    "mood",
+	    "sleep",
+	    "screen time",
+	    "exercise"]
 
     return (
 	<div class="border-0 border-red-500 mt-5">
-	    {/*{parsedData[0] && <Line data={data} config={config} options={config}/>}*/}
 	    {graphSettings.map((g, i) =>
 		<div
 		    onClick={() => {
@@ -254,11 +259,10 @@ export default function RangeGraph(props) {
 		open={modal}
 		onClose={() => {
 		    toggleModal(false)
-
 		    let lgs = graphSettings
-		    lgs[activeGraph].xAxis = "exercise"
-		    lgs[activeGraph].yAxis = "exercise"
-		    setGraphSettings(lgs)
+		    //lgs[activeGraph].xAxis = "exercise"
+		    //lgs[activeGraph].yAxis = "exercise"
+		    //setGraphSettings(lgs)
 		}}
 		closeAfterTransition
 		BackdropComponent={Backdrop}
@@ -268,7 +272,44 @@ export default function RangeGraph(props) {
 	    >
 		<Fade in={modal}>
 		    <Box sx={style}>
-			{graphSettings[activeGraph].yAxis + " vs. " + graphSettings[activeGraph].xAxis}
+			{/*{graphSettings[activeGraph].yAxis + " vs. " + graphSettings[activeGraph].xAxis}*/}
+			<div>
+			    <div class="flex flex-wrap justify-left">
+				{axisOptions.map(o =>
+				<div class={`rounded ${(o == graphSettings[activeGraph].yAxis)? "bg-green-300" : "bg-blue-200"} p-1 m-1 transition`}
+				    onClick={() => {
+					let lgs = graphSettings
+					lgs[activeGraph].yAxis = o
+					//lgs[activeGraph].yAxis = "exercise"
+					setGraphSettings(lgs)
+					toggleModal(false)
+					setTimeout(function(){
+					    toggleModal(true)
+					}, 1);
+				    }}
+
+					>{o}</div>
+				)}
+			    </div>
+			    <p class="text-center mt-2 mb-4">vs.</p>
+			    <div class="flex flex-wrap justify-end">
+
+				{[...axisOptions, "time"].reverse().map(o =>
+				<div class={`rounded ${(o == graphSettings[activeGraph].xAxis)? "bg-green-300" : "bg-blue-200"} p-1 m-1 transition`}
+				    onClick={() => {
+					let lgs = graphSettings
+					lgs[activeGraph].xAxis = o
+					//lgs[activeGraph].yAxis = "exercise"
+					setGraphSettings(lgs)
+					toggleModal(false)
+					setTimeout(function(){
+					    toggleModal(true)
+					}, 1);
+				    }}
+					>{o}</div>
+				)}
+			    </div>
+			</div>
 		    </Box>
 		</Fade>
 	    </Modal>
