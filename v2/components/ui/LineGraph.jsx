@@ -54,34 +54,35 @@ export default function LineGraph(props) {
 
     const nameToIndex = name => {
 	return {
-	    "perceived": 0,
+	    "perceived severity": 0,
 	    "mood": 1,
 	    "sleep": 2,
-	    "screenTime": 3,
+	    "screen time": 3,
 	    "exercise": 4,
 	}[name]
     }
 
     const nameToColors = name => {
 	return {
-	    "perceived": ['rgba(229, 205, 143, 0.5)', 'rgba(229, 205, 143, 1)'],
+	    "perceived severity": ['rgba(229, 205, 143, 0.5)', 'rgba(229, 205, 143, 1)'],
 	    "mood": ['rgba(178, 212, 167, 0.5)', 'rgba(178, 212, 167, 1)'],
 	    "sleep": ['rgba(167, 174, 212, 0.5)', 'rgba(167, 174, 212, 1)'],
-	    "screenTime": ['rgba(167, 212, 207, 0.5)', 'rgba(167, 212, 207, 1)'],
+	    "screen time": ['rgba(167, 212, 207, 0.5)', 'rgba(167, 212, 207, 1)'],
 	    "exercise": ['rgba(212, 167, 167, 0.5)', 'rgba(212, 167, 167, 1)'],
 	}[name]
     }
 
 
     let locatedData = parsedData.map((d) => { return {
-	x: d.values[nameToIndex(props.xAxis)],
+	x: (props.xAxis == "time")? (d.date.format("x")/8.64e+7) - parsedData.at(-1).date.format("x")/8.64e+7 : d.values[nameToIndex(props.xAxis)],
 	y: d.values[nameToIndex(props.yAxis)]
     }}).sort((a, b) => a.x - b.x)
 
-    let locatedData2 = parsedData.map((d) => { return {
-	x: d.values[nameToIndex(props.xAxis2)],
-	y: d.values[nameToIndex(props.yAxis2)]
+    let locatedTimeData = parsedData.map((d) => { return {
+	x: (d.date.format("x")/8.64e+7) - parsedData.at(-1).date.format("x")/8.64e+7,
+	y: d.values[nameToIndex(props.yAxis)]
     }}).sort((a, b) => a.x - b.x)
+    console.log(locatedTimeData, "loc")
 
 
     const data = {
@@ -89,28 +90,15 @@ export default function LineGraph(props) {
 	datasets: [
 	    {
 		label: props.datasetName, // TODO fill this in later based on the axis
-		//data: [0, 2,2, 4, 5],
-		//data: parsedData.map((d) => { return { x: d.sleep, y: d.sleep }}),
 		data: locatedData,
-		//borderColor: Utils.CHART_COLORS.red,
+		//data: locatedTimeData,
 		fill: true,
 		cubicInterpolationMode: 'monotone',
 		tension: 0.4,
-		backgroundColor: nameToColors(props.xAxis)[0],
-		borderColor: nameToColors(props.xAxis)[1],
-		borderWidth: 3,
-	    },
-	    {
-		label: props.datasetName, // TODO fill this in later based on the axis
-		//data: [0, 2,2, 4, 5],
-		//data: parsedData.map((d) => { return { x: d.sleep, y: d.sleep }}),
-		data: locatedData2,
-		//borderColor: Utils.CHART_COLORS.red,
-		fill: true,
-		cubicInterpolationMode: 'monotone',
-		tension: 0.4,
-		backgroundColor: nameToColors(props.xAxis2)[0],
-		borderColor: nameToColors(props.xAxis2)[1],
+		backgroundColor: nameToColors(`${(props.xAxis == "time")? props.yAxis : props.xAxis}`)[0],
+		borderColor: nameToColors(`${(props.xAxis == "time")? props.yAxis : props.xAxis}`)[1],
+		//borderColor: nameToColors(((props.xAxis == "time")? props.yAxis : props.xAxis)[1]),
+
 		borderWidth: 3,
 	    },
 	],
@@ -169,21 +157,6 @@ export default function LineGraph(props) {
 		    },
 		}
 	    },
-	    //xAxes: [{
-	    //    type: 'linear',
-	    //    ticks: {
-	    //        suggestedMin: 0,
-	    //        suggestedMax: 10,
-	    //        stepSize: 2 //interval between ticks
-	    //    }
-	    //}],
-	    //yAxes: [{
-	    //    display: true,
-	    //    ticks: {
-	    //        suggestedMin: 70,
-	    //        suggestedMax: 100
-	    //    }
-	    //}]
 	}
     };
 

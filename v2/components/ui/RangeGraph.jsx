@@ -193,18 +193,25 @@ export default function RangeGraph(props) {
 	    {/*{parsedData[0] && <Line data={data} config={config} options={config}/>}*/}
 	    <LineGraph
 		parsedData={parsedData}
-		datasetName={"datasetName"}
-		xAxis={"mood"}
-		yAxis={"perceived"}
+		datasetName={""}
+		//xAxis={"mood"}
+		xAxis={"time"}
+		//xAxis={"time"}
+		yAxis={"sleep"}
 
-		xAxis2={"exercise"}
-		yAxis2={"perceived"}
 	    />
 	    {/*<LineGraph
 		parsedData={parsedData}
-		datasetName={"datasetName"}
-		xAxis={"mood"}
-		yAxis={"perceived"}
+		datasetName={""}
+		xAxis={"sleep"}
+		yAxis={"perceived severity"}
+
+	    />
+	    <LineGraph
+		parsedData={parsedData}
+		datasetName={""}
+		xAxis={"exercise"}
+		yAxis={"exercise"}
 
 	    />*/}
 	</div>
