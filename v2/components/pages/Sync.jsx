@@ -10,10 +10,12 @@ import {
 } from '@ionic/react';
 import pageStyles from '../../styles/Pages.module.css';
 import { MetawearCapacitor } from 'metawear-capacitor';
+import React from 'react';
+
 //import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 class Sync extends React.Component {
-	
+
 	// TODO: figure out how ionic toasts work in react so that we can alert the user
 
 	constructor(props) {
@@ -147,7 +149,7 @@ class Sync extends React.Component {
 					}
 					<IonButton onClick={() => this.connectButton()} expand='block'>
 						Record 
-						<IonIcon slot="end" name="bluetooth"></IonIcon>
+						<IonIcon slot="end" icon="bluetooth"></IonIcon>
 					</IonButton>
 				</IonContent>
 			</IonPage>
