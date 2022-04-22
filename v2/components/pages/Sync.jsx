@@ -5,12 +5,17 @@ import {
 	IonButton,
 	IonContent,
 	IonProgressBar,
+	IonIcon,
+	IonToast
 } from '@ionic/react';
 import pageStyles from '../../styles/Pages.module.css';
 import { MetawearCapacitor } from 'metawear-capacitor';
 //import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 class Sync extends React.Component {
+	
+	// TODO: figure out how ionic toasts work in react so that we can alert the user
+
 	constructor(props) {
         super(props);
 		this.state = {
@@ -51,6 +56,7 @@ class Sync extends React.Component {
 					console.log('JS: Data files created!');
 					MetawearCapacitor.startData().then(() => {
 						console.log('JS: Running startData did not error.');
+						// TODO: tell the user that we are now logging
 						this.createGyroDataListener();
 						this.createAccelDataListener();
 					}).catch(err => {
@@ -137,8 +143,12 @@ class Sync extends React.Component {
 						// shows a loading indicator while we are connecting
 						this.state.connectCalled && !this.state.connected &&
 						<IonProgressBar type="indeterminate"></IonProgressBar>
+						// <ion-icon slot="end" name="bluetooth"></ion-icon>
 					}
-					<IonButton onClick={() => this.connectButton()} expand='block'>Record</IonButton>
+					<IonButton onClick={() => this.connectButton()} expand='block'>
+						Record 
+						<IonIcon slot="end" name="bluetooth"></IonIcon>
+					</IonButton>
 				</IonContent>
 			</IonPage>
 		);
