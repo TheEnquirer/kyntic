@@ -139,8 +139,6 @@ export default function RangeGraph(props) {
 		})
 	    })
 
-	    //console.log(avgs)
-	    console.log(avgs, "yes")
 	    setAverages(avgs)
 	    setActi(actiCount)
 	    setParsedData(parsed)
@@ -262,7 +260,10 @@ export default function RangeGraph(props) {
 	    "exercise"]
 
     return (
+	<>
+	    {parsedData.length? 
 	<div class="border-0 border-red-500 mt-5">
+	    
 	    {graphSettings.map((g, i) =>
 		<div
 		    onClick={() => {
@@ -402,7 +403,8 @@ export default function RangeGraph(props) {
 		)})}
 	    </div>
 	    </div>
-	</div>
+	</div> : <p class="font-black text-center text-gray-700 mt-3">no data to show</p>}
+	</>
     )
 }
 

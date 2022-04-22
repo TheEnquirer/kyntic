@@ -132,6 +132,30 @@ export default function DayGraph(props) {
 		borderWidth: 3,
 
 	    },
+	    //{
+	    //    label: [],
+	    //    data: [70, 20, 80, 30, 90],
+	    //    backgroundColor: 'rgba(220, 20, 20, 0.5)',
+	    //    borderColor: 'rgba(220, 20, 20, 1)',
+	    //    borderWidth: 3,
+
+	    //},
+	    //{
+	    //    label: [],
+	    //    data: [10, 30, 40, 50, 60],
+	    //    backgroundColor: 'rgba(20, 20, 220, 0.5)',
+	    //    borderColor: 'rgba(20, 20, 220, 1)',
+	    //    borderWidth: 3,
+
+	    //},
+	    //{
+	    //    label: [],
+	    //    data: [90, 30, 70, 50, 40].reverse(),
+	    //    backgroundColor: 'rgba(220, 20, 220, 0.5)',
+	    //    borderColor: 'rgba(220, 20, 220, 1)',
+	    //    borderWidth: 3,
+
+	    //},
 	],
 	options,
     };
