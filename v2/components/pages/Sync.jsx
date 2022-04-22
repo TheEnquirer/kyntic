@@ -1,18 +1,14 @@
 import {
 	IonPage,
-	IonHeader,
 	IonToolbar,
 	IonTitle,
-	IonButtons,
 	IonButton,
-	IonIcon,
 	IonContent,
-	IonMenuButton,
 	IonProgressBar,
 } from '@ionic/react';
 import pageStyles from '../../styles/Pages.module.css';
 import { MetawearCapacitor } from 'metawear-capacitor';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+//import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 class Sync extends React.Component {
 	constructor(props) {
