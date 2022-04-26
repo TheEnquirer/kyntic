@@ -1,5 +1,7 @@
 {
   "name": "kyntic",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }

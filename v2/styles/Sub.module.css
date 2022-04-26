@@ -72,3 +72,10 @@
     @apply p-4 mt-8 text-gray-600 border-0 border-red-400 rounded-lg outline-none;
 
 }
+
+.activWrapper {
+    font-family: 'Rubik', sans-serif;
+    @apply font-semibold;
+}
+
+

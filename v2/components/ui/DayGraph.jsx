@@ -73,14 +73,15 @@ export default function DayGraph(props) {
     const [localData, setLocalData] = useState(null)
     const [loaded, setLoaded] = useState(false)
 
+    useEffect(() => db(), [])
+
     useEffect(() => { // load the data
 	//console.log("this is rerunning")
-	db()
 	let ldata = false
 	db.getDataFromRange(
 	    [
 		moment(props.date).subtract(1, 'days').format(),
-		moment(props.date).subtract(-1, 'days').format(),
+		moment(props.date).subtract((moment().isSame(props.date, 'day'))? -1 : 0, 'days').format(),
 		//moment().subtract(1, 'days').format(),
 		//moment().subtract(0, 'days').format()
 	    ]).then(e => {
@@ -89,7 +90,7 @@ export default function DayGraph(props) {
 		setNormedLocal(normData)
 		setLocalData(ldata)
 		//console.log(ldata, e, props.date, "???")
-		//console.log(ldata)
+		console.log(ldata, props.date, "ldata")
 	    })
 	if (ldata.length == 0) { console.log("no data today!"); return } // deal with this later
 
@@ -131,6 +132,30 @@ export default function DayGraph(props) {
 		borderWidth: 3,
 
 	    },
+	    //{
+	    //    label: [],
+	    //    data: [70, 20, 80, 30, 90],
+	    //    backgroundColor: 'rgba(220, 20, 20, 0.5)',
+	    //    borderColor: 'rgba(220, 20, 20, 1)',
+	    //    borderWidth: 3,
+
+	    //},
+	    //{
+	    //    label: [],
+	    //    data: [10, 30, 40, 50, 60],
+	    //    backgroundColor: 'rgba(20, 20, 220, 0.5)',
+	    //    borderColor: 'rgba(20, 20, 220, 1)',
+	    //    borderWidth: 3,
+
+	    //},
+	    //{
+	    //    label: [],
+	    //    data: [90, 30, 70, 50, 40].reverse(),
+	    //    backgroundColor: 'rgba(220, 20, 220, 0.5)',
+	    //    borderColor: 'rgba(220, 20, 220, 1)',
+	    //    borderWidth: 3,
+
+	    //},
 	],
 	options,
     };

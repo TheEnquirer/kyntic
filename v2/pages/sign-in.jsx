@@ -1,13 +1,10 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect } from "react";
 import supabaseClient from '../lib/supabase.js'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-
-
-
-
 
 export default function SignIn() {
     //const [name, setName] = useState('Cat in the Hat');
