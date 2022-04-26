@@ -44,7 +44,7 @@ export default function SignIn() {
 
 	const { error, data } = await supabaseClient.auth.signIn({
 	    email
-	})
+	},{ redirectTo: "http://localhost:3000" })
 
 	if (error) {
 	    console.log({error})
