@@ -39,9 +39,15 @@ export default function SignIn() {
 	    return
 	}
 
+	// TODO: only works for web, not ios
 	const { error, data } = await supabaseClient.auth.signIn({
 	    email
 	},{ redirectTo: "http://localhost:3000" })
+
+	// TODO: also only works for web
+	// const { user, session, error } = await supabaseClient.auth.signIn({
+	// 	provider: 'google'
+	// })
 
 	if (error) {
 	    console.log({error})
