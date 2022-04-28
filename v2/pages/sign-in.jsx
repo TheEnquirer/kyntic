@@ -13,8 +13,8 @@ export default function SignIn() {
     };
 
     const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
     const [error, setError] = useState('')
-    const [submitted, setSubmitted] = useState(false)
     const router = useRouter()
 
     useEffect(() => {
@@ -32,6 +32,21 @@ export default function SignIn() {
 );
     };
 
+	async function signUp() {
+		if (!validateEmail(email)) {
+			setError("not a valid email :(")
+			return
+		}
+		const { user, session, error } = await supabaseClient.auth.signUp({
+			email: email,
+			password: password,
+		})
+		if (error) {
+			console.log({error})
+			setError(error.message)
+		}
+	}
+
     async function signIn() {
 
 	if (!validateEmail(email)) {
@@ -40,9 +55,13 @@ export default function SignIn() {
 	}
 
 	// TODO: only works for web, not ios
-	const { error, data } = await supabaseClient.auth.signIn({
-	    email
-	},{ redirectTo: "http://localhost:3000" })
+	// const { error, data } = await supabaseClient.auth.signIn({
+	//     email
+	// },{ redirectTo: "http://localhost:3000" })
+	const { user, session, error } = await supabaseClient.auth.signIn({
+		email: email,
+		password: password,
+	})
 
 	// TODO: also only works for web
 	// const { user, session, error } = await supabaseClient.auth.signIn({
@@ -53,15 +72,6 @@ export default function SignIn() {
 	    console.log({error})
 	    setError(error.message)
 	}
-	else { setSubmitted(true) }
-    }
-
-    if (submitted) {
-	return (
-	    <div className={styles.container}>
-		<h1>check your email to sign in!</h1>
-	    </div>
-	)
     }
 
     return (
@@ -83,13 +93,23 @@ export default function SignIn() {
 			    value={email}
 			    onChange={e => { setEmail(e.target.value); setError("") }}
 			/>
+			<TextField id="standard-basic" label="password" variant="standard"
+			    value={password}
+			    onChange={e => { setPassword(e.target.value); setError("") }}
+			/>
 		    </Box>
 		    <div className="flex flex-col items-center content-center justify-center text-center center">
 			<p
 			    className={styles.largeButton}
 			    onClick={() => signIn()}
 			>
-			    let's go!
+			    Login
+			</p>
+			<p
+			    className={styles.largeButton}
+			    onClick={() => signUp()}
+			>
+			    Signup
 			</p>
 		    {error && (<div className="w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded "> {error} </div>)}
 		    </div>
@@ -100,7 +120,3 @@ export default function SignIn() {
 	</>
     )
 }
-
-
-
-
