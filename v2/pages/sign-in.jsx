@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 export default function SignIn() {
-    //const [name, setName] = useState('Cat in the Hat');
     const handleChange = (event) => {
 	setName(event.target.value);
     };
@@ -83,7 +82,6 @@ export default function SignIn() {
 
 		    <Box
 			className="mt-12"
-			//component="form"
 			sx={{
 			    '& > :not(style)': { m: 1, width: '25ch' },
 			}}
