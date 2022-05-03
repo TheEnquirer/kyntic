@@ -25,6 +25,7 @@
     "@mui/material": "^5.2.8",
     "@supabase/supabase-js": "^1.29.4",
     "autoprefixer": "^10.2.6",
+    "base64-arraybuffer": "^1.0.2",
     "boring-avatars": "^1.6.1",
     "chart.js": "^3.7.1",
     "classnames": "^2.2.6",
