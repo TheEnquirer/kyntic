@@ -164,6 +164,21 @@ const db = (props) => {
 	}
 
     }, "getUserData")
+
+	/**
+	 * Upload gyro and accel data to supabase database.
+	 */
+	fn(async(fileName, file) => {
+		const { data, error } = await supabaseClient
+			.storage
+			.from('data')
+			.upload(`${supabaseClient.auth.user().id}/${fileName}`, file, {
+				cacheControl: '3600', // I think this keeps it in the cache for an hour... probs don't want that 
+				upsert: true
+			})
+		db.checkErrors(error) 
+		return error
+	}, "uploadData")
 }
 
 export default db;

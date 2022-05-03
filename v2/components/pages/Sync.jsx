@@ -15,7 +15,8 @@ import { MetawearCapacitor } from 'metawear-capacitor';
 import React from 'react';
 
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-
+import db from '../../lib/db';
+import supabaseClient from '../../lib/supabase';
 class Sync extends React.Component {
 
 	// TODO: figure out how ionic toasts work in react so that we can alert the user
@@ -34,7 +35,13 @@ class Sync extends React.Component {
 		}
 		this.accelUpdated = false;
 		this.gyroUpdated = false;
+		this.user = supabaseClient.auth.user()
+		if (user && router.pathname == "/sign-in") {
+			router.push('/tabs')
+		}
     };
+
+	componentDidMount() { db(); /* db init */ }
 
 	// ionic doesn't unmount tabs when they are switched, so this would not work
 	// async componentWillUnmount()
@@ -152,7 +159,15 @@ class Sync extends React.Component {
 			directory: Directory.Data,
 			encoding: Encoding.UTF8
 		}).then(() => {
+			console.log("Successfully created data file in JS!")
 			this.setState({path: path})
+		}).catch((err) => {
+			console.error(err);
+			this.setState({error: err.toString()})
+			setTimeout(() =>
+			{
+				this.setState({error: null})
+			}, 3000)
 		})
 	}
 
@@ -167,17 +182,7 @@ class Sync extends React.Component {
 		// begginning of data file is a !
 		if (!this.state.path)
 		{
-			try{
-				await this.createDataFile();
-			} catch (e)
-			{
-				console.error(err);
-				this.setState({error: err.toString()})
-				setTimeout(() =>
-				{
-					this.setState({error: null})
-				}, 3000)
-			}
+			await this.createDataFile();
 		}
 		let data = `[(${accel["x"]},${accel["y"]},${accel["z"]}):(${gyro["x"]},${gyro["y"]},${gyro["z"]})];`
 		try {
@@ -188,14 +193,46 @@ class Sync extends React.Component {
 				encoding: Encoding.UTF8
 			})
 		} catch (e) {
-			console.log(`Error while appending: ${e}`)
+			console.error(`Error while appending: ${e}`)
+			this.setState({error: err.toString()})
+			setTimeout(() =>
+			{
+				this.setState({error: null})
+			}, 3000)
 		}
 	}
 
-	connectButton() {
+	async uploadToServer() {
+		if (!this.state.path) { return; }
+		let data;
+		try {
+			data = (await Filesystem.readFile({
+				path: this.state.path,
+				directory: Directory.Data
+			})).data
+		} catch (e) {
+			console.error(`Error while reading data from local file: ${e}`)
+			this.setState({error: e.toString()})
+			setTimeout(() =>
+			{
+				this.setState({error: null})
+			}, 3000)
+		}
+		e = await db.uploadData(path, data);
+		if (e) {
+			console.error(`Error while uploading data to server: ${e}`)
+			this.setState({error: e.toString()})
+			setTimeout(() =>
+			{
+				this.setState({error: null})
+			}, 3000)
+		}
+	}
+
+	async connectButton() {
 		if (!this.state.connectCalled) {
 			this.setState({connectCalled: true});
-			this.createDataFile();
+			await this.createDataFile();
 			MetawearCapacitor.connect()
 				.then(async () => {
 					console.log('Running connection did not error.');
