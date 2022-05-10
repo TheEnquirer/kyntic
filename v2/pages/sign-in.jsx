@@ -14,6 +14,7 @@ export default function SignIn() {
     const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [confirmEmail, setConfirmEmail] = useState(false)
     const router = useRouter()
 
     useEffect(() => {
@@ -36,6 +37,7 @@ export default function SignIn() {
 			setError("not a valid email :(")
 			return
 		}
+		setConfirmEmail(true)	
 		const { user, session, error } = await supabaseClient.auth.signUp({
 			email: email,
 			password: password,
@@ -77,6 +79,7 @@ export default function SignIn() {
 	<>
 	    <div className="flex flex-col content-center justify-center h-screen bg-gray-100 ">
 		{error && (<div className="absolute top-0 w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded left-1/2 transform -translate-x-1/2 "> {error} </div>)}
+		{/*{confirmEmail? <div class="absolute">please check your inbox and confirm your email!</div>: ""}*/}
 		<div className="flex flex-col h-screen pt-64 text-center border-0 border-red-500">
 		    <p className={styles.cleanTitle}> sign in </p>
 
@@ -98,6 +101,9 @@ export default function SignIn() {
 			/>
 		    </Box>
 		    <div className="flex flex-col items-center content-center justify-center text-center center">
+			{confirmEmail? <div class="mt-5 p-5 font-bold"> 
+			    please check your inbox and confirm your email!
+			</div>: <>
 			<p
 			    className={styles.largeButton}
 			    onClick={() => signIn()}
@@ -110,6 +116,8 @@ export default function SignIn() {
 			>
 			    Signup
 			</p>
+			</>
+			}
 		    </div>
 		</div>
 

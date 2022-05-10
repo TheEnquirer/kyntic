@@ -45,6 +45,7 @@ function MyApp({ Component, pageProps }) {
 	    }
 	    if (event === 'SIGNED_OUT') {
 		setAuthenticatedState('not-authenticated')
+		router.push('/tabs')
 	    }
 	})
 	checkUser()
