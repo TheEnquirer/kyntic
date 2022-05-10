@@ -101,15 +101,15 @@ export default function SignIn() {
 			/>
 		    </Box>
 		    <div className="flex flex-col items-center content-center justify-center text-center center">
-			{confirmEmail? <div class="mt-5 p-5 font-bold"> 
-			    please check your inbox and confirm your email!
-			</div>: <>
 			<p
 			    className={styles.largeButton}
 			    onClick={() => signIn()}
 			>
 			    Login
 			</p>
+			{confirmEmail? <div class="mt-5 p-5 font-bold"> 
+			    please check your inbox and confirm your email, and then click the "login" button!
+			</div>: <>
 			<p
 			    className={styles.largeButton}
 			    onClick={() => signUp()}
