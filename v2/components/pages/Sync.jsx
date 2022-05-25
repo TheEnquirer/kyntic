@@ -17,7 +17,8 @@ import React from 'react';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import db from '../../lib/db';
 import supabaseClient from '../../lib/supabase';
-class Sync extends React.Component {
+import { withRouter } from 'next/router';
+export default withRouter(class Sync extends React.Component {
 
 	// TODO: figure out how ionic toasts work in react so that we can alert the user
 
@@ -36,8 +37,10 @@ class Sync extends React.Component {
 		this.accelUpdated = false;
 		this.gyroUpdated = false;
 		this.user = supabaseClient.auth.user()
-		if (user && router.pathname == "/sign-in") {
-			router.push('/tabs')
+	    //console.log(
+		//if (!user) router.push('/tabs')
+		if (this.user && this.props.router.pathname == "/sign-in") {
+			this.props.router.push('/tabs')
 		}
     };
 
@@ -309,6 +312,6 @@ class Sync extends React.Component {
 			</IonPage>
 		);
 	}
-}
+})
 
-export default Sync;
+//export default Sync;
