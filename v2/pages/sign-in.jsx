@@ -37,7 +37,7 @@ export default function SignIn() {
 			setError("not a valid email :(")
 			return
 		}
-		setConfirmEmail(true)	
+		setConfirmEmail(true)
 		const { user, session, error } = await supabaseClient.auth.signUp({
 			email: email,
 			password: password,
@@ -71,7 +71,11 @@ export default function SignIn() {
 
 	if (error) {
 	    console.log({error})
-	    setError(error.message)
+	    let modErr = error.message
+	    if (error.message == "Invalid login credentials") {
+		modErr += ". Try signing up if you don't have an account."
+	    }
+	    setError(modErr)
 	}
     }
 
