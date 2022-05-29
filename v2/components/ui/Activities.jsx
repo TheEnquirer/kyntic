@@ -33,7 +33,6 @@ import db from '../../lib/db'
 const Activities = (props) => {
     const [activitieOptions, setActivitieOptions] = useState([])
     const [value, setValue] = useState();
-    //const [noteValue, setNoteValue] = useState({ target: {value: ""}})
     const [noteValue, setNoteValue] = useState({target: ""})
 
     useEffect(() => {
