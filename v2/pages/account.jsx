@@ -43,7 +43,7 @@ export default function Account() {
 		setAvatarUrl(data.avatar_url)
 	    }
 	} catch (error) {
-	    alert(error.message)
+	    console.log(error.message)
 	} finally {
 	    setLoading(false)
 	}
@@ -70,7 +70,7 @@ export default function Account() {
 		throw error
 	    }
 	} catch (error) {
-	    alert(error.message)
+	    console.log(error.message)
 	} finally {
 	    setLoading(false)
 	}
@@ -78,11 +78,11 @@ export default function Account() {
 
     return (
 	<div className="form-widget">
-	    <div>
-		<label htmlFor="email">Email</label>
-		<input id="email" type="text" value={session && session.user.email} disabled />
+	    <div class="mt-8 flex align-center justify-items-center content-center text-center items-center justify-center">
+		<label htmlFor="email" class="pr-2 font-black">email: </label>
+		<input id="email" type="text" class="font-thin" value={session && session.user.email} disabled />
 	    </div>
-	    <div>
+	    {/*<div>
 		<label htmlFor="username">Name</label>
 		<input
 		    id="username"
@@ -90,8 +90,8 @@ export default function Account() {
 		    value={username || ''}
 		    onChange={(e) => setUsername(e.target.value)}
 		/>
-	    </div>
-	    <div>
+	    </div>*/}
+	    {/*<div>
 		<label htmlFor="website">Website</label>
 		<input
 		    id="website"
@@ -99,9 +99,9 @@ export default function Account() {
 		    value={website || ''}
 		    onChange={(e) => setWebsite(e.target.value)}
 		/>
-	    </div>
+	    </div>*/}
 
-	    <div>
+	    {/*<div>
 		<button
 		    className="block button primary"
 		    onClick={() => updateProfile({ username, website, avatar_url })}
@@ -109,11 +109,11 @@ export default function Account() {
 		>
 		    {loading ? 'Loading ...' : 'Update'}
 		</button>
-	    </div>
+	    </div>*/}
 
-	    <div>
-		<button className="block button" onClick={() => supabaseClient.auth.signOut()}>
-		    Sign Out
+	    <div class="flex align-center items-center justify-center justify-items-center mt-5 font-xl">
+		<button className="block p-1 pl-2 pr-2 font-bold text-gray-100 bg-red-500 rounded button" onClick={() => supabaseClient.auth.signOut()}>
+		    sign out
 		</button>
 	    </div>
 	</div>
