@@ -3,7 +3,7 @@ import { useContext } from "react"
 import moment from 'moment'
 import GlobalContext from '../utils/global-context'
 import { decode } from 'base64-arraybuffer'
-
+import { useRouter } from "next/router"
 
 
 const db = (props) => {
@@ -51,6 +51,10 @@ const db = (props) => {
 	//    console.log(error)
 	//}
 	db.checkErrors(error)
+
+	if (!data) {
+	    return false
+	}
 
 	let toEdit = data.filter((i) => {
 	    let g = moment(i.created_at)
@@ -176,10 +180,10 @@ const db = (props) => {
 			.storage
 			.from('data')
 			.upload(`${supabaseClient.auth.user().id}/${fileName}`, decode(file), {
-				cacheControl: '3600', // I think this keeps it in the cache for an hour... probs don't want that 
+				cacheControl: '3600', // I think this keeps it in the cache for an hour... probs don't want that
 				upsert: true
 			})
-		db.checkErrors(error) 
+		db.checkErrors(error)
 		return error
 	}, "uploadData")
 }
