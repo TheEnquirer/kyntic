@@ -309,7 +309,7 @@ export default withRouter(class Sync extends React.Component {
 							Acceleration: {this.state.accel["x"]}, {this.state.accel["y"]}, {this.state.accel["z"]}
 						</IonList>
 					}
-					{this.state.error && (<IonFooter><div className="absolute top-0 w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded left-1/2 transform -translate-x-1/2 "> {this.state.error} </div></IonFooter>)}
+					{this.state.error && (<IonFooter><div className="absolute w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded top-14 left-1/2 transform -translate-x-1/2 "> {this.state.error} </div></IonFooter>)}
 				    <hr class="border-1 border-gray-800 mt-8"/>
 					<div class="border-red-500 flex flex-row border-0 mt-8 text-black text-3xl mt-2"
 					    onClick={() => {
