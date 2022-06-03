@@ -189,8 +189,8 @@ export default withRouter(class Sync extends React.Component {
 		}
 		let data = `[(${accel["x"]},${accel["y"]},${accel["z"]}):(${gyro["x"]},${gyro["y"]},${gyro["z"]})];`
 		try {
-			Filesystem.appendFile({
-				path: path,
+			await Filesystem.appendFile({
+				path: this.state.path,
 				data: data,
 				directory: Directory.Data,
 				encoding: Encoding.UTF8
@@ -221,7 +221,8 @@ export default withRouter(class Sync extends React.Component {
 				this.setState({error: null})
 			}, 3000)
 		}
-		e = await db.uploadData(path, data);
+		// TODO: change/set path
+		e = await db.uploadData(this.state.path, data);
 		if (e) {
 			console.error(`Error while uploading data to server: ${e}`)
 			this.setState({error: e.toString()})
