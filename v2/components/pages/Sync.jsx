@@ -259,6 +259,7 @@ export default withRouter(class Sync extends React.Component {
 		MetawearCapacitor.disconnect()
 			.then(async () => {
 				this.setState({connectCalled: false, connected: false, startedLogging: false, path: null})
+				await this.uploadToServer()
 			})
 			.catch(err => {
 				console.error(err);
