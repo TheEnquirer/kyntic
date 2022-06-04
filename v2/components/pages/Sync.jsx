@@ -79,34 +79,13 @@ export default withRouter(class Sync extends React.Component {
 	startLogging() {
 		if (!this.state.startedLogging) {
 			this.setState({startedLogging: true});
-			MetawearCapacitor.createDataFiles().then((successful) => {
-				if (successful.successful) {
-					console.log('JS: Data files created!');
-					MetawearCapacitor.startData().then(() => {
-						console.log('JS: Running startData did not error.');
-						// TODO: tell the user that we are now logging
-						this.createGyroDataListener();
-						this.createAccelDataListener();
-					}).catch(err => {
-						console.log("JS: Error while starting data logging:")
-						console.error(err);
-						this.setState({error: err.toString()})
-						setTimeout(() =>
-						{
-							this.setState({error: null})
-						}, 3000)
-					});
-				}
-				else {
-					console.log("JS: Error while making data files.");
-					this.setState({error: err.toString()})
-					setTimeout(() =>
-					{
-						this.setState({error: null})
-					}, 3000)
-				}
+			MetawearCapacitor.startData().then(() => {
+				console.log('JS: Running startData did not error.');
+				// TODO: tell the user that we are now logging
+				this.createGyroDataListener();
+				this.createAccelDataListener();
 			}).catch(err => {
-				console.log("JS: Error while making data files:")
+				console.log("JS: Error while starting data logging:")
 				console.error(err);
 				this.setState({error: err.toString()})
 				setTimeout(() =>
@@ -259,7 +238,7 @@ export default withRouter(class Sync extends React.Component {
 
 	stopButton()
 	{
-		MetawearCapacitor.disconnect()
+		MetawearCapacitor.stopData()
 			.then(async () => {
 				console.log("JS: disconnected.")
 				console.log(`Datafile path: ${this.state.path}`)
