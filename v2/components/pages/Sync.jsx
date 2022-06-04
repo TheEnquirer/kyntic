@@ -206,13 +206,16 @@ export default withRouter(class Sync extends React.Component {
 	}
 
 	async uploadToServer() {
-		if (!this.state.path) { return; }
+		console.log(`Going to uplaod datafile "${this.state.path}".`)
+		if (!this.state.path) { console.log("No datafile path ;("); return; }
 		let data;
 		try {
+			console.log("Let's read the datafile.")
 			data = (await Filesystem.readFile({
 				path: this.state.path,
 				directory: Directory.Data
 			})).data
+			console.log("Successfully read data file.")
 		} catch (e) {
 			console.error(`Error while reading data from local file: ${e}`)
 			this.setState({error: e.toString()})
@@ -221,16 +224,16 @@ export default withRouter(class Sync extends React.Component {
 				this.setState({error: null})
 			}, 3000)
 		}
-		// TODO: change/set path
-		e = await db.uploadData(this.state.path, data);
-		if (e) {
-			console.error(`Error while uploading data to server: ${e}`)
-			this.setState({error: e.toString()})
+		console.log("Calling db upload.")
+		if (await db.uploadData(this.state.path, data)) { // db.uploadData will either return null or an error.
+			console.error(`Error while uploading data to server :(`)
+			this.setState({error: "Unable to upload data to server."})
 			setTimeout(() =>
 			{
 				this.setState({error: null})
 			}, 3000)
 		}
+		console.log("Done uploading to server!")
 	}
 
 	async connectButton() {
@@ -258,8 +261,10 @@ export default withRouter(class Sync extends React.Component {
 	{
 		MetawearCapacitor.disconnect()
 			.then(async () => {
-				this.setState({connectCalled: false, connected: false, startedLogging: false, path: null})
+				console.log("JS: disconnected.")
+				console.log(`Datafile path: ${this.state.path}`)
 				await this.uploadToServer()
+				this.setState({connectCalled: false, connected: false, startedLogging: false, path: null})
 			})
 			.catch(err => {
 				console.error(err);

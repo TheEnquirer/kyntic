@@ -176,6 +176,7 @@ const db = (props) => {
 	 * File must be a b64 string.
 	 */
 	fn(async(fileName, file) => {
+		console.log("Calling supabase client to upload datafile.")
 		const { data, error } = await supabaseClient
 			.storage
 			.from('data')
