@@ -280,7 +280,6 @@ export default withRouter(class Sync extends React.Component {
 						// shows a loading indicator while we are connecting
 						this.state.connectCalled && !this.state.connected &&
 						<IonProgressBar type="indeterminate"></IonProgressBar>
-						// <ion-icon slot="end" name="bluetooth"></ion-icon>
 					}
 				    <>
 					{button}
@@ -311,5 +310,3 @@ export default withRouter(class Sync extends React.Component {
 		);
 	}
 })
-
-//export default Sync;
