@@ -305,6 +305,9 @@ export default withRouter(class Sync extends React.Component {
 						settings
 					    </span>
 					</div>
+				    <div class="text-gray-200 text-center bg-gray-700 p-2 rounded-lg mt-4"
+					onClick={db.testUpload}
+				    > test upload </div>
 				</IonContent>
 			</IonPage>
 		);

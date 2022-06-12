@@ -18,7 +18,11 @@ const db = (props) => {
 
     fn(async (e) => {
 	if (e) console.log(e)
-	if (e == {message: 'JWT expired'}) { db.signOut() }
+	if (e && e.message == 'JWT expired') {
+	    console.log("jwt expired registered, redirecting")
+	    db.signOut();
+	    window.location.href = "/sign-in";
+	}
     }, "checkErrors")
 
     fn((m) => {
@@ -187,6 +191,13 @@ const db = (props) => {
 		db.checkErrors(error)
 		return error
 	}, "uploadData")
+
+
+	fn( async () => {
+	    console.log("testing upload")
+	    db.checkErrors({message: 'JWT expired'})
+	}, "testUpload")
+
 }
 
 export default db;
