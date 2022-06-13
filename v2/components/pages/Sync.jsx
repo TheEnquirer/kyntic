@@ -282,7 +282,7 @@ export default withRouter(class Sync extends React.Component {
 		}
 
 		return (
-			<IonPage>
+			<IonPage class="plt-android plt-mobile md" mode="md">
 				<IonToolbar>
 					<IonTitle>
 						<div className={pageStyles.title}> sync </div>

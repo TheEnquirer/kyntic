@@ -83,7 +83,7 @@ function MyApp({ Component, pageProps }) {
 		    {(authenticatedState === 'not-authenticated')? (
 			<> <SignIn /> </>
 		    ) : (
-			<> <Component {...pageProps} /> </>
+			<div class="plt-android plt-mobile md" mode="md"> <Component {...pageProps} /> </div>
 		    )}
 
 		</div>

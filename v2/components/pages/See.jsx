@@ -54,7 +54,7 @@ const See = () => {
     }
 
     return (
-	<IonPage>
+	<IonPage class="plt-android plt-mobile md" mode="md">
 	    <IonToolbar>
 		<IonTitle>
 		    <div className={pageStyles.title}> see </div>
