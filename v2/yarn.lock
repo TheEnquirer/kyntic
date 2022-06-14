@@ -1130,11 +1130,6 @@
   "resolved" "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   "version" "0.2.3"
 
-"@capacitor/android@^3.0.1":
-  "integrity" "sha512-+bKm0J1/oSln8VlVRfC25AWn+lLFwvC3Q8OeIA7DyI36RPi8WMkGfVPvZ3EIywUKBquj7mVuEXXhiZyM+YlDeQ=="
-  "resolved" "https://registry.npmjs.org/@capacitor/android/-/android-3.0.1.tgz"
-  "version" "3.0.1"
-
 "@capacitor/cli@^3.5.1":
   "integrity" "sha512-zIA5BqT8ZnfUFEJwHlSdQ8Q5iWqmT7S6Mgsjbk55Pkv3BKQIP2VIFYpM4E7lGLEKd4kBnKStD0lTw5/P3E03KA=="
   "resolved" "https://registry.npmjs.org/@capacitor/cli/-/cli-3.5.1.tgz"
@@ -1157,7 +1152,7 @@
     "tslib" "^2.1.0"
     "xml2js" "^0.4.23"
 
-"@capacitor/core@^3.0.0", "@capacitor/core@^3.4.0", "@capacitor/core@~3.0.0":
+"@capacitor/core@^3.0.0", "@capacitor/core@^3.4.0":
   "integrity" "sha512-utfMAYZyU8SL+JkVOcqanjmWarSBlvCyVDPL6AnXG/B//9VtleZ5NtorUXL0ggnK7t+Zbd8xGgA+LN7mn4+3Lw=="
   "resolved" "https://registry.npmjs.org/@capacitor/core/-/core-3.4.0.tgz"
   "version" "3.4.0"
@@ -8181,10 +8176,10 @@
   "resolved" "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   "version" "1.4.1"
 
-"metawear-capacitor@^0.3.1":
-  "integrity" "sha512-xx8HfFiR5Mp/JELSTLZeZHvT3Vx1w8s/jjZ4EMbYBHLmzKcPQzGffnH4JJl95k+t/ArgGudBeB/olaqqw0vFug=="
-  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.3.1.tgz"
-  "version" "0.3.1"
+"metawear-capacitor@^0.4.1":
+  "integrity" "sha512-CthM4wc7+so6HTPIgi1cHToQDQyiI+QI3xrpDfh99ZXI5LL6WSxqqLh1FTkrWUgFWw63QSa0u7tGCtxl7F0rJA=="
+  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.4.1.tgz"
+  "version" "0.4.1"
 
 "methods@~1.1.2":
   "integrity" "sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w=="
