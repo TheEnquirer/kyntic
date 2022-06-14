@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react'
 import  supabaseClient  from '../lib/supabase'
+//import { useHistory } from "react-router-dom";
+import { useRouter } from 'next/router';
+
+
 
 export default function Account() {
 
     const [session, setSession] = useState(null)
+    const history = useRouter()
+
 
     useEffect(() => {
 	setSession(supabaseClient.auth.session())
@@ -43,7 +49,7 @@ export default function Account() {
 		setAvatarUrl(data.avatar_url)
 	    }
 	} catch (error) {
-	    alert(error.message)
+	    console.log(error.message)
 	} finally {
 	    setLoading(false)
 	}
@@ -70,50 +76,29 @@ export default function Account() {
 		throw error
 	    }
 	} catch (error) {
-	    alert(error.message)
+	    console.log(error.message)
 	} finally {
 	    setLoading(false)
 	}
     }
 
     return (
-	<div className="form-widget">
-	    <div>
-		<label htmlFor="email">Email</label>
-		<input id="email" type="text" value={session && session.user.email} disabled />
-	    </div>
-	    <div>
-		<label htmlFor="username">Name</label>
-		<input
-		    id="username"
-		    type="text"
-		    value={username || ''}
-		    onChange={(e) => setUsername(e.target.value)}
-		/>
-	    </div>
-	    <div>
-		<label htmlFor="website">Website</label>
-		<input
-		    id="website"
-		    type="website"
-		    value={website || ''}
-		    onChange={(e) => setWebsite(e.target.value)}
-		/>
+	<div className="p-12 bg-white form-widget">
+	    <div class="mt-8 flex align-center justify-items-center content-center text-center items-center justify-center">
+		<label htmlFor="email" class="pr-2 font-black">email: </label>
+		<input id="email" type="text" class="font-thin" value={session && session.user.email} disabled />
 	    </div>
 
-	    <div>
-		<button
-		    className="block button primary"
-		    onClick={() => updateProfile({ username, website, avatar_url })}
-		    disabled={loading}
-		>
-		    {loading ? 'Loading ...' : 'Update'}
+	    <div class="flex align-center items-center justify-center justify-items-center mt-5 font-xl">
+		<button className="block p-1 pl-2 pr-2 mr-2 font-bold text-gray-100 bg-blue-500 rounded button"
+		    onClick={() => {
+			history.push("/tabs/log");
+		    }}>
+
+		    go back
 		</button>
-	    </div>
-
-	    <div>
-		<button className="block button" onClick={() => supabaseClient.auth.signOut()}>
-		    Sign Out
+		<button className="block p-1 pl-2 pr-2 font-bold text-gray-100 bg-red-500 rounded button" onClick={() => supabaseClient.auth.signOut()}>
+		    sign out
 		</button>
 	    </div>
 	</div>

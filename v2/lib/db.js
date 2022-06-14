@@ -3,7 +3,7 @@ import { useContext } from "react"
 import moment from 'moment'
 import GlobalContext from '../utils/global-context'
 import { decode } from 'base64-arraybuffer'
-
+import { useRouter } from "next/router"
 
 
 const db = (props) => {
@@ -18,7 +18,11 @@ const db = (props) => {
 
     fn(async (e) => {
 	if (e) console.log(e)
-	if (e == {message: 'JWT expired'}) { db.signOut() }
+	if (e && e.message == 'JWT expired') {
+	    console.log("jwt expired registered, redirecting")
+	    db.signOut();
+	    window.location.href = "/sign-in";
+	}
     }, "checkErrors")
 
     fn((m) => {
@@ -51,6 +55,10 @@ const db = (props) => {
 	//    console.log(error)
 	//}
 	db.checkErrors(error)
+
+	if (!data) {
+	    return false
+	}
 
 	let toEdit = data.filter((i) => {
 	    let g = moment(i.created_at)
@@ -172,16 +180,24 @@ const db = (props) => {
 	 * File must be a b64 string.
 	 */
 	fn(async(fileName, file) => {
+		console.log("Calling supabase client to upload datafile.")
 		const { data, error } = await supabaseClient
 			.storage
 			.from('data')
 			.upload(`${supabaseClient.auth.user().id}/${fileName}`, decode(file), {
-				cacheControl: '3600', // I think this keeps it in the cache for an hour... probs don't want that 
+				cacheControl: '3600', // I think this keeps it in the cache for an hour... probs don't want that
 				upsert: true
 			})
-		db.checkErrors(error) 
+		db.checkErrors(error)
 		return error
 	}, "uploadData")
+
+
+	fn( async () => {
+	    console.log("testing upload")
+	    db.checkErrors({message: 'JWT expired'})
+	}, "testUpload")
+
 }
 
 export default db;

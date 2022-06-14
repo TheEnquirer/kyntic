@@ -79,34 +79,13 @@ export default withRouter(class Sync extends React.Component {
 	startLogging() {
 		if (!this.state.startedLogging) {
 			this.setState({startedLogging: true});
-			MetawearCapacitor.createDataFiles().then((successful) => {
-				if (successful.successful) {
-					console.log('JS: Data files created!');
-					MetawearCapacitor.startData().then(() => {
-						console.log('JS: Running startData did not error.');
-						// TODO: tell the user that we are now logging
-						this.createGyroDataListener();
-						this.createAccelDataListener();
-					}).catch(err => {
-						console.log("JS: Error while starting data logging:")
-						console.error(err);
-						this.setState({error: err.toString()})
-						setTimeout(() =>
-						{
-							this.setState({error: null})
-						}, 3000)
-					});
-				}
-				else {
-					console.log("JS: Error while making data files.");
-					this.setState({error: err.toString()})
-					setTimeout(() =>
-					{
-						this.setState({error: null})
-					}, 3000)
-				}
+			MetawearCapacitor.startData().then(() => {
+				console.log('JS: Running startData did not error.');
+				// TODO: tell the user that we are now logging
+				this.createGyroDataListener();
+				this.createAccelDataListener();
 			}).catch(err => {
-				console.log("JS: Error while making data files:")
+				console.log("JS: Error while starting data logging:")
 				console.error(err);
 				this.setState({error: err.toString()})
 				setTimeout(() =>
@@ -189,8 +168,8 @@ export default withRouter(class Sync extends React.Component {
 		}
 		let data = `[(${accel["x"]},${accel["y"]},${accel["z"]}):(${gyro["x"]},${gyro["y"]},${gyro["z"]})];`
 		try {
-			Filesystem.appendFile({
-				path: path,
+			await Filesystem.appendFile({
+				path: this.state.path,
 				data: data,
 				directory: Directory.Data,
 				encoding: Encoding.UTF8
@@ -206,13 +185,16 @@ export default withRouter(class Sync extends React.Component {
 	}
 
 	async uploadToServer() {
-		if (!this.state.path) { return; }
+		console.log(`Going to uplaod datafile "${this.state.path}".`)
+		if (!this.state.path) { console.log("No datafile path ;("); return; }
 		let data;
 		try {
+			console.log("Let's read the datafile.")
 			data = (await Filesystem.readFile({
 				path: this.state.path,
 				directory: Directory.Data
 			})).data
+			console.log("Successfully read data file.")
 		} catch (e) {
 			console.error(`Error while reading data from local file: ${e}`)
 			this.setState({error: e.toString()})
@@ -221,15 +203,16 @@ export default withRouter(class Sync extends React.Component {
 				this.setState({error: null})
 			}, 3000)
 		}
-		e = await db.uploadData(path, data);
-		if (e) {
-			console.error(`Error while uploading data to server: ${e}`)
-			this.setState({error: e.toString()})
+		console.log("Calling db upload.")
+		if (await db.uploadData(this.state.path, data)) { // db.uploadData will either return null or an error.
+			console.error(`Error while uploading data to server :(`)
+			this.setState({error: "Unable to upload data to server."})
 			setTimeout(() =>
 			{
 				this.setState({error: null})
 			}, 3000)
 		}
+		console.log("Done uploading to server!")
 	}
 
 	async connectButton() {
@@ -255,8 +238,11 @@ export default withRouter(class Sync extends React.Component {
 
 	stopButton()
 	{
-		MetawearCapacitor.disconnect()
+		MetawearCapacitor.stopData()
 			.then(async () => {
+				console.log("JS: disconnected.")
+				console.log(`Datafile path: ${this.state.path}`)
+				await this.uploadToServer()
 				this.setState({connectCalled: false, connected: false, startedLogging: false, path: null})
 			})
 			.catch(err => {
@@ -278,7 +264,7 @@ export default withRouter(class Sync extends React.Component {
 		}
 		else
 		{
-			button = <IonButton onClick={() => this.connectButton()} expand='block'>Record<IonIcon slot="end" icon="bluetooth"></IonIcon></IonButton>
+			button = <IonButton onClick={() => this.connectButton()} expand='block'>record<IonIcon slot="end" icon="bluetooth"></IonIcon></IonButton>
 		}
 
 		return (
@@ -294,9 +280,10 @@ export default withRouter(class Sync extends React.Component {
 						// shows a loading indicator while we are connecting
 						this.state.connectCalled && !this.state.connected &&
 						<IonProgressBar type="indeterminate"></IonProgressBar>
-						// <ion-icon slot="end" name="bluetooth"></ion-icon>
 					}
+				    <>
 					{button}
+				    </>
 					{this.state.gyro &&
 						<IonList>
 							Gyroscope: {this.state.gyro["x"]}, {this.state.gyro["y"]}, {this.state.gyro["z"]}
@@ -307,11 +294,22 @@ export default withRouter(class Sync extends React.Component {
 							Acceleration: {this.state.accel["x"]}, {this.state.accel["y"]}, {this.state.accel["z"]}
 						</IonList>
 					}
-					{this.state.error && (<IonFooter><div className="absolute top-0 w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded left-1/2 transform -translate-x-1/2 "> {this.state.error} </div></IonFooter>)}
+					{this.state.error && (<IonFooter><div className="absolute w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded top-14 left-1/2 transform -translate-x-1/2 "> {this.state.error} </div></IonFooter>)}
+				    <hr class="border-1 border-gray-800 mt-8"/>
+					<div class="border-red-500 flex flex-row border-0 mt-8 text-black text-3xl mt-2"
+					    onClick={() => {
+						this.props.router.push('/account')
+					    }}
+					> <IonIcon icon="settings-outline"></IonIcon>
+					    <span class="text-lg ml-2 font-bold">
+						settings
+					    </span>
+					</div>
+				    <div class="text-gray-200 text-center bg-gray-700 p-2 rounded-lg mt-4"
+					onClick={db.testUpload}
+				    > test upload </div>
 				</IonContent>
 			</IonPage>
 		);
 	}
 })
-
-//export default Sync;
