@@ -193,10 +193,17 @@ const db = (props) => {
 	}, "uploadData")
 
 
-	fn( async () => {
-	    console.log("testing upload")
-	    db.checkErrors({message: 'JWT expired'})
-	}, "testUpload")
+    fn( async () => {
+	console.log("testing upload")
+	const { data, error } = await supabaseClient.storage
+	    .from('sensor-data') // you need to actually make a bucket for the data to go in within the storage section of supabase
+	    .upload(`${supabaseClient.auth.user().id}/test.svg`, '../public/vercel.svg', // upload with the user id, just using a file in public as a test file for now
+		{
+		    upsert: true // we should do this right? so we can update data as it comes?
+		})
+	db.checkErrors(error)
+	return error
+    }, "testUpload")
 
 }
 
