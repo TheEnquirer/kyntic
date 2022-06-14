@@ -193,10 +193,17 @@ const db = (props) => {
 	}, "uploadData")
 
 
-	fn( async () => {
-	    console.log("testing upload")
-	    db.checkErrors({message: 'JWT expired'})
-	}, "testUpload")
+    fn( async () => {
+	console.log("testing upload")
+	const { data, error } = await supabaseClient.storage
+	    .from('sensor-data')
+	    .upload(`${supabaseClient.auth.user().id}/test.svg`, '../public/vercel.svg',
+		{
+		    upsert: true
+		})
+	db.checkErrors(error)
+	return error
+    }, "testUpload")
 
 }
 
