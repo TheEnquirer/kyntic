@@ -29,6 +29,8 @@ export default withRouter(class Sync extends React.Component {
 			connected: false, // have we been told by the plugin that we have successfully connected?
 			startedLogging: false, // have we started to log data? 
 			connectedListenerMade: false, // have we made a listener that hears when we successfully connected?
+			accelLogListenerMade: false, // have we made a listener that listens for the accel log ID?
+			gyroLogListenerMade: false, // have we made a listener that listens for the gyro log ID?
 			accel: null, // last accel data point
 			gyro: null, // last gyro data point
 			path: null, // TODO: reset path to null once done logging
@@ -68,6 +70,38 @@ export default withRouter(class Sync extends React.Component {
 					console.log('JS knows that we are connected!');
 					this.startLogging();
 				}
+			});
+		}
+	}
+
+	/**
+	 * Creates a listener to see if we have started on-board logging accel data.
+	 */
+	createAccelLogListener() {
+		if (!this.state.accelLogListenerMade) {
+			this.setState({accelLogListenerMade: true});
+			console.log("CreateAccelLogListener made.");
+			MetawearCapacitor.addListener('accelLogID', (data) => {
+				let accelLogID = data["ID"];
+				let time = data["time"];
+				console.log(`JS: accelLogID: ${accelLogID}, time: ${time}`);
+				// TODO: sync to server's user data  
+			});
+		}
+	}
+
+	/**
+	 * Creates a listener to see if we have started on-board logging gyro data.
+	 */
+	createGyroLogListener() {
+		if (!this.state.gyroLogListenerMade) {
+			this.setState({gyroLogListenerMade: true});
+			console.log("CreateGyroLogListener made.");
+			MetawearCapacitor.addListener('gyroLogID', (data) => {
+				let gyroLogID = data["ID"];
+				let time = data["time"];
+				console.log(`JS: gyroLogID: ${gyroLogID}, time: ${time}`);
+				// TODO: sync to server's user data
 			});
 		}
 	}
@@ -234,6 +268,8 @@ export default withRouter(class Sync extends React.Component {
 				});
 		}
 		this.createConnectedListener(); // listens to see if we have successfully connected
+		this.createAccelLogListener(); // have we successfully begun on-board accel logging?
+		this.createGyroLogListener(); // have we successfully begun on-board gyro logging?
 	}
 
 	stopButton()
