@@ -184,7 +184,7 @@ const db = (props) => {
 		console.log("Calling supabase client to upload datafile.")
 		const { data, error } = await supabaseClient
 			.storage
-			.from('data')
+			.from('sensor-data')
 			.upload(`${supabaseClient.auth.user().id}/${fileName}`, decode(file), {
 				cacheControl: '3600', // I think this keeps it in the cache for an hour... probs don't want that
 				upsert: true

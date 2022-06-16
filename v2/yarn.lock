@@ -8176,10 +8176,10 @@
   "resolved" "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   "version" "1.4.1"
 
-"metawear-capacitor@^0.4.1":
-  "integrity" "sha512-CthM4wc7+so6HTPIgi1cHToQDQyiI+QI3xrpDfh99ZXI5LL6WSxqqLh1FTkrWUgFWw63QSa0u7tGCtxl7F0rJA=="
-  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.4.1.tgz"
-  "version" "0.4.1"
+"metawear-capacitor@^0.4.2":
+  "integrity" "sha512-GGCxK8RYJMwODdG1rB1VOP5L7dGFqDfm9QOUJW4ZmIUK7JUNMiElkyIaTtklzIzHkVwRirjSWlD5w/AiNToFlQ=="
+  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.4.2.tgz"
+  "version" "0.4.2"
 
 "methods@~1.1.2":
   "integrity" "sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w=="
