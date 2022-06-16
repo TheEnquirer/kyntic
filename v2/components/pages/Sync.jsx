@@ -291,7 +291,7 @@ export default withRouter(class Sync extends React.Component {
 			})
 	}
 
-	render() 
+	render()
 	{
 		let button;
 		if (this.state.startedLogging)
