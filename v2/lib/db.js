@@ -128,6 +128,7 @@ const db = (props) => {
 	const { data, error } = await supabaseClient
 	    .from('users')
 	    .update({ id: db.getUser().id, ...dataObject })
+	    .match({ id: db.getUser().id })
 	//if (error) console.log(error)
 	db.checkErrors(error)
     }, "setUserData")

@@ -13,7 +13,7 @@ import {
 import pageStyles from '../../styles/Pages.module.css';
 import { MetawearCapacitor } from 'metawear-capacitor';
 import React from 'react';
-
+import moment from "moment";
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import db from '../../lib/db';
 import supabaseClient from '../../lib/supabase';
@@ -255,7 +255,7 @@ export default withRouter(class Sync extends React.Component {
 			})
 	}
 
-	render() 
+	render()
 	{
 		let button;
 		if (this.state.startedLogging)
@@ -306,8 +306,10 @@ export default withRouter(class Sync extends React.Component {
 					    </span>
 					</div>
 				    <div class="text-gray-200 text-center bg-gray-700 p-2 rounded-lg mt-4"
-					onClick={db.testUpload}
-				    > test upload </div>
+					onClick={() => {
+					    db.setUserData({recordingStartTime: moment().format()})
+					}}
+				    > test setting user data recording start timestamp </div>
 				</IonContent>
 			</IonPage>
 		);
