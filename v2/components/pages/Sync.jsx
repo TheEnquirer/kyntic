@@ -1,3 +1,9 @@
+// 3. pull down log ids from server (and temporarily make them nil in server so they don't get pulled down again)
+// 4. request for log 
+// 5. listener for log
+// 6. shove log to server
+
+
 import {
 	IonPage,
 	IonToolbar,
@@ -85,7 +91,7 @@ export default withRouter(class Sync extends React.Component {
 				let accelLogID = data["ID"];
 				let time = data["time"];
 				console.log(`JS: accelLogID: ${accelLogID}, time: ${time}`);
-				// TODO: sync to server's user data  
+				db.setUserData({recordingStartTime: time});
 			});
 		}
 	}
@@ -101,7 +107,7 @@ export default withRouter(class Sync extends React.Component {
 				let gyroLogID = data["ID"];
 				let time = data["time"];
 				console.log(`JS: gyroLogID: ${gyroLogID}, time: ${time}`);
-				// TODO: sync to server's user data
+				db.setUserData({recordingStartTime: time});
 			});
 		}
 	}
@@ -137,9 +143,9 @@ export default withRouter(class Sync extends React.Component {
 		MetawearCapacitor.addListener('gyroData', (gyro) => {
 			this.setState({gyro: gyro})
 			this.gyroUpdated = true
-			this.shouldWrite();
+			// this.shouldWrite(); // now we use on board logging
 			console.log(`JS: gyroData: (${gyro["x"]}, ${gyro["y"]}, ${gyro["z"]})`);
-			// TODO: sync to server
+			// purely for display purposes 
 		});
 	}
 
@@ -150,13 +156,14 @@ export default withRouter(class Sync extends React.Component {
 		MetawearCapacitor.addListener('accelData', (accel) => {
 			this.setState({accel: accel})
 			this.accelUpdated = true
-			this.shouldWrite();
+			// this.shouldWrite(); // now we use on board logging
 			console.log(`JS: accel: (${accel["x"]}, ${accel["y"]}, ${accel["z"]})`);
-			// TODO: sync to server
+			// purely for display purposes 
 		});
 	}
 
 	/**
+	 * DEPRECATED.
 	 * Should we write to the data file?
 	 */
 	shouldWrite() {
@@ -167,6 +174,10 @@ export default withRouter(class Sync extends React.Component {
 		}
 	}
 
+	/**
+	 * DEPRECATED.
+	 * Create a data file to write to. 
+	 */
 	createDataFile() {
 		let path = (new Date()).getTime().toString();
 		return Filesystem.writeFile({
@@ -189,6 +200,7 @@ export default withRouter(class Sync extends React.Component {
 
 	/**
 	 * 
+	 * DEPRECATED.
 	 * Write acceleration and gyroscope data to datafile.
 	 * @param {*} accel 
 	 * @param {*} gyro 
@@ -247,6 +259,10 @@ export default withRouter(class Sync extends React.Component {
 			}, 3000)
 		}
 		console.log("Done uploading to server!")
+	}
+
+	async uploadLogToServer() {
+
 	}
 
 	async connectButton() {
@@ -350,7 +366,7 @@ export default withRouter(class Sync extends React.Component {
 					</div>
 				    <div class="text-gray-200 text-center bg-gray-700 p-2 rounded-lg mt-4"
 					onClick={() => {
-					    db.setUserData({recordingStartTime: moment().format()})
+					    console.log(db.getLogTimestamp());
 					}}
 				    > test setting user data recording start timestamp </div>
 				</IonContent>
