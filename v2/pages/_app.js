@@ -35,7 +35,18 @@ function MyApp({ Component, pageProps }) {
     const router = useRouter()
     const [subPage, setSubPage] = useState(0)
 
-    useEffect(() => {
+    useEffect(async () => {
+	//let temp = "#access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjU2Mzk1ODkwLCJzdWIiOiI3YmIzMTE3Yy1kY2EyLTQzZDAtYTVlZi1hNzliZjZiNmM3ZmEiLCJlbWFpbCI6Imh1eG1hcnZAbnVldmFzY2hvb2wub3JnIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIn0.7BVpLw1ToQceorl_bCBmZkwvjPOwdDpNO4cAoGzxdG0&expires_in=3600&refresh_token=jgyVb4Sq3whGRc3lrD4EsA&token_type=bearer&type=recovery"
+	//console.log(temp.split("&")[0].substring(14))
+
+	if (window.location.hash && window.location.hash.includes("access_token")) {
+	    let access_token = window.location.hash.split("&")[0].substring(14)
+
+	    const { error, data } = await supabaseClient.auth.api
+		.updateUser(access_token, { password : "yummywummy" })
+	    console.log(error, data, "resetting!")
+	}
+
 	/* fires when a user signs in or out */
 	const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, session) => {
 	    handleAuthChange(event, session)
