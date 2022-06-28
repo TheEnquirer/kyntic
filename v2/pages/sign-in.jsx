@@ -48,6 +48,18 @@ export default function SignIn() {
 		}
 	}
 
+    async function resetEmail() {
+	const { data, error } = await supabaseClient.auth.api
+	    .resetPasswordForEmail(email)
+
+	if (error) {
+	    console.log({error})
+	    setError(error.message)
+	}
+
+	return data
+    }
+
     async function signIn() {
 
 	if (!validateEmail(email)) {
@@ -109,7 +121,7 @@ export default function SignIn() {
 			    className={styles.largeButton}
 			    onClick={() => signIn()}
 			>
-			    Login
+			    login
 			</p>
 			{confirmEmail? <div class="mt-5 p-5 font-bold"> 
 			    please check your inbox and confirm your email, and then click the "login" button!
@@ -118,8 +130,11 @@ export default function SignIn() {
 			    className={styles.largeButton}
 			    onClick={() => signUp()}
 			>
-			    Signup
+			    signup
 			</p>
+			    <p class="mt-2 font-bold text-gray-400"
+				onClick={resetEmail}
+			    > reset email </p>
 			</>
 			}
 		    </div>

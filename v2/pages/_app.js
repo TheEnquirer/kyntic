@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }) {
 	targetSubPage: 0,
 	update
     })
+    const [startingLocation, setStartingLocation] = useState("")
     function update(data) {
 	setState(Object.assign({}, state, data));
     }
@@ -35,7 +36,14 @@ function MyApp({ Component, pageProps }) {
     const router = useRouter()
     const [subPage, setSubPage] = useState(0)
 
-    useEffect(() => {
+    useEffect(async () => {
+	setStartingLocation(window.location.pathname)
+	if (window.location.hash && window.location.hash.includes("access_token")) {
+	    const access_token = window.location.hash.split("&")[0].substring(14)
+
+	    router.push(`/password-reset#access_token=${access_token}`)
+	}
+
 	/* fires when a user signs in or out */
 	const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, session) => {
 	    handleAuthChange(event, session)
@@ -80,7 +88,7 @@ function MyApp({ Component, pageProps }) {
 		    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 		></meta> </Head>
 		<div>
-		    {(authenticatedState === 'not-authenticated')? (
+		    {(authenticatedState === 'not-authenticated' && !startingLocation.includes("password-reset"))? (
 			<> <SignIn /> </>
 		    ) : (
 			<div class="plt-android plt-mobile md" mode="md"> <Component {...pageProps} /> </div>

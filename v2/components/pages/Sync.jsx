@@ -381,7 +381,7 @@ export default withRouter(class Sync extends React.Component {
 		}
 		else
 		{
-			button = <IonButton onClick={() => this.connectButton()} expand='block'>record<IonIcon slot="end" icon="bluetooth"></IonIcon></IonButton>
+		    button = <IonButton style={{"--box-shadow":"none"}}onClick={() => this.connectButton()} expand='block'>record<IonIcon slot="end" shadow="none" icon="bluetooth"></IonIcon></IonButton>
 		}
 
 		return (
@@ -400,6 +400,13 @@ export default withRouter(class Sync extends React.Component {
 					}
 				    <>
 					{button}
+					<div class="text-gray-800 font-bold flex text-center align-center content-centor justify-center flex-col p-2 mt-4 rounded bg-green-400"
+					    onClick={{
+						// contents go here @nick
+					    }}
+					>
+					    retrieve sensor data
+					</div>
 				    </>
 					{this.state.gyro &&
 						<IonList>
@@ -413,7 +420,7 @@ export default withRouter(class Sync extends React.Component {
 					}
 					{this.state.error && (<IonFooter><div className="absolute w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded top-14 left-1/2 transform -translate-x-1/2 "> {this.state.error} </div></IonFooter>)}
 				    <hr class="border-1 border-gray-800 mt-8"/>
-					<div class="border-red-500 flex flex-row border-0 mt-8 text-black text-3xl mt-2"
+					<div class="border-red-500 flex flex-row border-0 mt-3 text-black text-3xl mt-5"
 					    onClick={() => {
 						this.props.router.push('/account')
 					    }}
