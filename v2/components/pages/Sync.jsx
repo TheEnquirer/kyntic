@@ -1,9 +1,3 @@
-// 3. pull down log ids from server (and temporarily make them nil in server so they don't get pulled down again)
-// 4. request for log 
-// 5. listener for log
-// 6. shove log to server
-
-
 import {
 	IonPage,
 	IonToolbar,
@@ -26,6 +20,9 @@ import supabaseClient from '../../lib/supabase';
 import { withRouter } from 'next/router';
 export default withRouter(class Sync extends React.Component {
 
+	GYRO_LOG_ID = "angular-velocity";
+	ACCEL_LOG_ID = "acceleration";
+
 	// TODO: figure out how ionic toasts work in react so that we can alert the user
 
 	constructor(props) {
@@ -37,13 +34,22 @@ export default withRouter(class Sync extends React.Component {
 			connectedListenerMade: false, // have we made a listener that hears when we successfully connected?
 			accelLogListenerMade: false, // have we made a listener that listens for the accel log ID?
 			gyroLogListenerMade: false, // have we made a listener that listens for the gyro log ID?
+			accelLogDownloadListenerMade: false, // have we made a listener that listens for the accel log download?
+			gyroLogDownloadListenerMade: false, // have we made a listener that listens for the gyro log download?
+			accelLogDownloadFinishedListenerMade: false, // have we made a listener that listens for the accel log download finished?
+			gyroLogDownloadFinishedListenerMade: false, // have we made a listener that listens for the gyro log download finished?
+			gyroLogDownloadFinished: false, // have we finished downloading the accel log?
+			accelLogDownloadFinished: false, // have we finished downloading the gyro log?
 			accel: null, // last accel data point
 			gyro: null, // last gyro data point
 			path: null, // TODO: reset path to null once done logging
 			error: null
 		}
+		// TODO: half of the above propertires should not be in the state
 		this.accelUpdated = false;
 		this.gyroUpdated = false;
+		this.gyroLogPoint = null;
+		this.accelLogPoint = null;
 		this.user = supabaseClient.auth.user()
 	    //console.log(
 		//if (!user) router.push('/tabs')
@@ -142,10 +148,10 @@ export default withRouter(class Sync extends React.Component {
 	createGyroDataListener() {
 		MetawearCapacitor.addListener('gyroData', (gyro) => {
 			this.setState({gyro: gyro})
-			this.gyroUpdated = true
+			// this.gyroUpdated = true // now we use on board logging
 			// this.shouldWrite(); // now we use on board logging
 			console.log(`JS: gyroData: (${gyro["x"]}, ${gyro["y"]}, ${gyro["z"]})`);
-			// purely for display purposes 
+			// now purely for display purposes (user satisfaction)
 		});
 	}
 
@@ -155,28 +161,28 @@ export default withRouter(class Sync extends React.Component {
 	createAccelDataListener() {
 		MetawearCapacitor.addListener('accelData', (accel) => {
 			this.setState({accel: accel})
-			this.accelUpdated = true
+			// this.accelUpdated = true // now we use on board logging
 			// this.shouldWrite(); // now we use on board logging
 			console.log(`JS: accel: (${accel["x"]}, ${accel["y"]}, ${accel["z"]})`);
-			// purely for display purposes 
+			// now purely for display purposes (user satisfaction)
 		});
 	}
 
 	/**
-	 * DEPRECATED.
 	 * Should we write to the data file?
+	 * Now used for when we are writing to a data file onto the phone for the on-board logging.
 	 */
 	shouldWrite() {
 		if (this.gyroUpdated && this.accelUpdated)
 		{
 			this.gyroUpdated = false, this.accelUpdated = false;
-			this.writeFile(this.state.accel, this.state.gyro)
+			this.writeFile(this.accelLogPoint, this.gyroLogPoint)
 		}
 	}
 
 	/**
-	 * DEPRECATED.
 	 * Create a data file to write to. 
+	 * Now used for when we are creating a data file on the phone for the on-board logging.
 	 */
 	createDataFile() {
 		let path = (new Date()).getTime().toString();
@@ -200,8 +206,8 @@ export default withRouter(class Sync extends React.Component {
 
 	/**
 	 * 
-	 * DEPRECATED.
 	 * Write acceleration and gyroscope data to datafile.
+	 * Now used for when we are writing to a data file on the phone for the on-board logging.
 	 * @param {*} accel 
 	 * @param {*} gyro 
 	 */
@@ -250,7 +256,9 @@ export default withRouter(class Sync extends React.Component {
 			}, 3000)
 		}
 		console.log("Calling db upload.")
-		if (await db.uploadData(this.state.path, data)) { // db.uploadData will either return null or an error.
+		let oldPath = this.state.path;
+		await this.createDataFile(); // create a new data file for a later log
+		if (await db.uploadData(oldPath, data)) { // db.uploadData will either return null or an error.
 			console.error(`Error while uploading data to server :(`)
 			this.setState({error: "Unable to upload data to server."})
 			setTimeout(() =>
@@ -261,8 +269,60 @@ export default withRouter(class Sync extends React.Component {
 		console.log("Done uploading to server!")
 	}
 
-	async uploadLogToServer() {
+	async createLogDownloadListeners() {
+		if (!this.state.accelLogDownloadListenerMade) {
+			this.setState({accelLogDownloadListenerMade: true});
+			MetawearCapacitor.addListener(this.ACCEL_LOG_ID, (log) => {
+				this.accelLogPoint = log;
+				console.log(`JS: accelData: (${log["x"]}, ${log["y"]}, ${log["z"]})`);
+				this.accelUpdated = true;
+				this.shouldWrite();
+			})
+		}
+		if (!this.state.gyroLogDownloadListenerMade) {
+			this.setState({gyroLogDownloadListenerMade: true});
+			MetawearCapacitor.addListener(this.GYRO_LOG_ID, (log) => {
+				this.gyroLogPoint = log;
+				console.log(`JS: gyroData: (${log["x"]}, ${log["y"]}, ${log["z"]})`);
+				this.gyroUpdated = true;
+				this.shouldWrite();
+			})
+		}
+		if (!this.state.gyroLogDownloadFinishedListenerMade) {
+			this.setState({gyroLogDownloadFinishedListenerMade: true});
+			MetawearCapacitor.addListener(`logFinished${this.GYRO_LOG_ID}`, () => {
+				this.setState({gyroLogDownloadFinished: true});
+			})
+		}
+		if (!this.state.accelLogDownloadFinishedListenerMade) {
+			this.setState({accelLogDownloadFinishedListenerMade: true});
+			MetawearCapacitor.addListener(`logFinished${this.ACCEL_LOG_ID}`, () => {
+				this.setState({accelLogDownloadFinished: true});
+			})
+		}
+	}
 
+	/**
+	 * Button to upload on-board log to server.
+	 */
+	async uploadLogToServer() {
+		let logTime = db.getLogTimestamp()
+		console.log("JS: Log time: " + logTime)
+		logTime = logTime[0].recordingStartTime;
+		if (logTime) {
+			db.setUserData({recordingStartTime: null}) // reset the log time
+			this.createLogDownloadListeners(); // create listeners for log download
+			Promise.all([MetawearCapacitor.downloadData(this.ACCEL_LOG_ID), MetawearCapacitor.downloadData(this.GYRO_LOG_ID)]) // download the logs
+				.then(() => {})
+				.catch(err => {
+					console.error(err);
+					this.setState({error: err.toString()})
+					setTimeout(() =>
+					{
+						this.setState({error: null})
+					}, 3000)
+				})
+		}
 	}
 
 	async connectButton() {
@@ -294,7 +354,7 @@ export default withRouter(class Sync extends React.Component {
 			.then(async () => {
 				console.log("JS: disconnected.")
 				console.log(`Datafile path: ${this.state.path}`)
-				await this.uploadToServer()
+				// await this.uploadToServer()
 				this.setState({connectCalled: false, connected: false, startedLogging: false, path: null})
 			})
 			.catch(err => {
@@ -309,6 +369,11 @@ export default withRouter(class Sync extends React.Component {
 
 	render()
 	{
+		if (this.state.gyroLogDownloadFinished && this.state.accelLogDownloadFinished) {
+			this.uploadToServer();
+			this.setState({gyroLogDownloadFinished: false, accelLogDownloadFinished: false});
+		}
+
 		let button;
 		if (this.state.startedLogging)
 		{
