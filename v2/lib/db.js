@@ -133,6 +133,14 @@ const db = (props) => {
 	db.checkErrors(error)
     }, "setUserData")
 
+    fn( async () => {
+	const { data, error } = await supabaseClient
+	    .from('users')
+	    .select("recordingStartTime")
+	db.checkErrors(error)
+	return data
+    }, "getLogTimestamp")
+
     fn(async () => {
 	const { data, error } = await supabaseClient
 	    .from('users')
