@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }) {
 	targetSubPage: 0,
 	update
     })
+    const [startingLocation, setStartingLocation] = useState("")
     function update(data) {
 	setState(Object.assign({}, state, data));
     }
@@ -36,15 +37,11 @@ function MyApp({ Component, pageProps }) {
     const [subPage, setSubPage] = useState(0)
 
     useEffect(async () => {
-	//let temp = "#access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjU2Mzk1ODkwLCJzdWIiOiI3YmIzMTE3Yy1kY2EyLTQzZDAtYTVlZi1hNzliZjZiNmM3ZmEiLCJlbWFpbCI6Imh1eG1hcnZAbnVldmFzY2hvb2wub3JnIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIn0.7BVpLw1ToQceorl_bCBmZkwvjPOwdDpNO4cAoGzxdG0&expires_in=3600&refresh_token=jgyVb4Sq3whGRc3lrD4EsA&token_type=bearer&type=recovery"
-	//console.log(temp.split("&")[0].substring(14))
-
+	setStartingLocation(window.location.pathname)
 	if (window.location.hash && window.location.hash.includes("access_token")) {
-	    let access_token = window.location.hash.split("&")[0].substring(14)
+	    const access_token = window.location.hash.split("&")[0].substring(14)
 
-	    const { error, data } = await supabaseClient.auth.api
-		.updateUser(access_token, { password : "yummywummy" })
-	    console.log(error, data, "resetting!")
+	    router.push(`/password-reset#access_token=${access_token}`)
 	}
 
 	/* fires when a user signs in or out */
@@ -91,7 +88,7 @@ function MyApp({ Component, pageProps }) {
 		    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 		></meta> </Head>
 		<div>
-		    {(authenticatedState === 'not-authenticated')? (
+		    {(authenticatedState === 'not-authenticated' && !startingLocation.includes("password-reset"))? (
 			<> <SignIn /> </>
 		    ) : (
 			<div class="plt-android plt-mobile md" mode="md"> <Component {...pageProps} /> </div>

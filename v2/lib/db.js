@@ -214,6 +214,15 @@ const db = (props) => {
 	return error
     }, "testUpload")
 
+    fn( async (password, access_token) => {
+	const { error, data } = await supabaseClient.auth.api
+	    .updateUser(access_token, { password : password})
+	console.log(error, data, "resetting!")
+
+	db.checkErrors(error)
+	return data
+    }, "resetPassword")
+
 }
 
 export default db;
