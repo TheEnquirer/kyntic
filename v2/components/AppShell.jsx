@@ -24,15 +24,11 @@ const AppShell = () => {
     return (
 	<IonApp>
 	    <IonReactRouter>
-		{/*<IonSplitPane contentId="main">*/}
-		    {/*<Menu />*/}
 		    <IonRouterOutlet id="main">
 			<Route path="/tabs" render={() => <Tabs />} />
 			<Route exact path="/" render={() => <Redirect to="/tabs" />} />
 			<Route path="/password-reset" render={() => <PasswordReset />} />
-			{/*<Route path="/#access_token" render={() => <> what </>} />*/}
 		    </IonRouterOutlet>
-		{/*</IonSplitPane>*/}
 	    </IonReactRouter>
 	</IonApp>
     );
