@@ -1,27 +1,27 @@
-import {
-	IonPage,
-	IonToolbar,
-	IonTitle,
-	IonButton,
-	IonContent,
-	IonProgressBar,
-	IonIcon,
-	IonToast,
-	IonList,
-	IonFooter
-} from '@ionic/react';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import pageStyles from '../../styles/Pages.module.css';
 import { MetawearCapacitor } from 'metawear-capacitor';
-import React from 'react';
-import moment from "moment";
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import db from '../../lib/db';
 import supabaseClient from '../../lib/supabase';
 import { withRouter } from 'next/router';
+import db from '../../lib/db';
+import React from 'react';
+import {
+	IonProgressBar,
+	IonToolbar,
+	IonContent,
+	IonButton,
+	IonFooter,
+	IonTitle,
+	IonPage,
+	IonIcon,
+	IonList
+} from '@ionic/react';
+
 export default withRouter(class Sync extends React.Component {
 
-	GYRO_LOG_ID = "angular-velocity";
-	ACCEL_LOG_ID = "acceleration";
+	// the IDs of the on-board log
+	GYRO_LOG_ID = "angular-velocity"; 
+	ACCEL_LOG_ID = "acceleration"; 
 
 	constructor(props) {
         super(props);
