@@ -23,36 +23,34 @@ export default withRouter(class Sync extends React.Component {
 	GYRO_LOG_ID = "angular-velocity";
 	ACCEL_LOG_ID = "acceleration";
 
-	// TODO: figure out how ionic toasts work in react so that we can alert the user
-
 	constructor(props) {
         super(props);
+
 		this.state = {
 			connectCalled: false, // have we asked the plugin to connect?
 			connected: false, // have we been told by the plugin that we have successfully connected?
 			startedLogging: false, // have we started to log data? 
-			connectedListenerMade: false, // have we made a listener that hears when we successfully connected?
-			accelLogListenerMade: false, // have we made a listener that listens for the accel log ID?
-			gyroLogListenerMade: false, // have we made a listener that listens for the gyro log ID?
-			accelLogDownloadListenerMade: false, // have we made a listener that listens for the accel log download?
-			gyroLogDownloadListenerMade: false, // have we made a listener that listens for the gyro log download?
-			accelLogDownloadFinishedListenerMade: false, // have we made a listener that listens for the accel log download finished?
-			gyroLogDownloadFinishedListenerMade: false, // have we made a listener that listens for the gyro log download finished?
-			gyroLogDownloadFinished: false, // have we finished downloading the accel log?
-			accelLogDownloadFinished: false, // have we finished downloading the gyro log?
-			accel: null, // last accel data point
-			gyro: null, // last gyro data point
-			path: null, // TODO: reset path to null once done logging
-			error: null
+			accel: null, // last streamed accel data point
+			gyro: null, // last streamed gyro data point
+			error: null // error message if there is one
 		}
-		// TODO: half of the above propertires should not be in the state
-		this.accelUpdated = false;
-		this.gyroUpdated = false;
-		this.gyroLogPoint = null;
-		this.accelLogPoint = null;
+
+		this.accelUpdated = false; // have we received a new accel data point?
+		this.gyroUpdated = false; // have we received a new gyro data point?
+		this.gyroLogPoint = null; // last gyro data point we downloaded from the sensor's on-board log
+		this.accelLogPoint = null; // last accel data point we downloaded from the sensor's on-board log
+		this.connectedListenerMade = false // have we made a listener that hears when we successfully connected?
+		this.accelLogListenerMade = false // have we made a listener that listens for the accel log ID?
+		this.gyroLogListenerMade = false // have we made a listener that listens for the gyro log ID?
+		this.accelLogDownloadListenerMade = false // have we made a listener that listens for the accel log download?
+		this.gyroLogDownloadListenerMade = false // have we made a listener that listens for the gyro log download?
+		this.accelLogDownloadFinishedListenerMade = false // have we made a listener that listens for the accel log download finished?
+		this.gyroLogDownloadFinishedListenerMade = false // have we made a listener that listens for the gyro log download finished?
+		this.gyroLogDownloadFinished = false // have we finished downloading the accel log?
+		this.accelLogDownloadFinished = false // have we finished downloading the gyro log?
+		this.path = null // TODO: reset path to null once done logging
 		this.user = supabaseClient.auth.user()
-	    //console.log(
-		//if (!user) router.push('/tabs')
+
 		if (this.user && this.props.router.pathname == "/sign-in") {
 			this.props.router.push('/tabs')
 		}
@@ -60,21 +58,14 @@ export default withRouter(class Sync extends React.Component {
 
 	componentDidMount() { db(); /* db init */ }
 
-	// ionic doesn't unmount tabs when they are switched, so this would not work
-	// async componentWillUnmount()
-	// {
-	// 	// cleanup time!
-	// 	// they'll have to reconnect to sensor
-	// 	await MetawearCapacitor.disconnect();
-	// }
 
 	/**
 	 * Creates a listener to see if we have successfully connected to the sensor.
 	 * If we have, call the startLogging function.
 	 */
 	createConnectedListener() {
-		if (!this.state.connectedListenerMade) {
-			this.setState({connectedListenerMade: true});
+		if (!this.connectedListenerMade) {
+			this.connectedListenerMade = true;
 			console.log("CreateConnectedListener made.");
 			MetawearCapacitor.addListener('successfulConnection', () => {
 				if (!this.state.connected) {
@@ -90,8 +81,8 @@ export default withRouter(class Sync extends React.Component {
 	 * Creates a listener to see if we have started on-board logging accel data.
 	 */
 	createAccelLogListener() {
-		if (!this.state.accelLogListenerMade) {
-			this.setState({accelLogListenerMade: true});
+		if (!this.accelLogListenerMade) {
+			this.accelLogListenerMade = true;
 			console.log("CreateAccelLogListener made.");
 			MetawearCapacitor.addListener('accelLogID', (data) => {
 				let accelLogID = data["ID"];
@@ -106,8 +97,8 @@ export default withRouter(class Sync extends React.Component {
 	 * Creates a listener to see if we have started on-board logging gyro data.
 	 */
 	createGyroLogListener() {
-		if (!this.state.gyroLogListenerMade) {
-			this.setState({gyroLogListenerMade: true});
+		if (!this.gyroLogListenerMade) {
+			this.gyroLogListenerMade = true;
 			console.log("CreateGyroLogListener made.");
 			MetawearCapacitor.addListener('gyroLogID', (data) => {
 				let gyroLogID = data["ID"];
@@ -270,8 +261,8 @@ export default withRouter(class Sync extends React.Component {
 	}
 
 	async createLogDownloadListeners() {
-		if (!this.state.accelLogDownloadListenerMade) {
-			this.setState({accelLogDownloadListenerMade: true});
+		if (!this.accelLogDownloadListenerMade) {
+			this.accelLogDownloadListenerMade = true;
 			MetawearCapacitor.addListener(this.ACCEL_LOG_ID, (log) => {
 				this.accelLogPoint = log;
 				console.log(`JS: accelData: (${log["x"]}, ${log["y"]}, ${log["z"]})`);
@@ -279,8 +270,8 @@ export default withRouter(class Sync extends React.Component {
 				this.shouldWrite();
 			})
 		}
-		if (!this.state.gyroLogDownloadListenerMade) {
-			this.setState({gyroLogDownloadListenerMade: true});
+		if (!this.gyroLogDownloadListenerMade) {
+			this.gyroLogDownloadListenerMade = true;
 			MetawearCapacitor.addListener(this.GYRO_LOG_ID, (log) => {
 				this.gyroLogPoint = log;
 				console.log(`JS: gyroData: (${log["x"]}, ${log["y"]}, ${log["z"]})`);
@@ -288,16 +279,16 @@ export default withRouter(class Sync extends React.Component {
 				this.shouldWrite();
 			})
 		}
-		if (!this.state.gyroLogDownloadFinishedListenerMade) {
-			this.setState({gyroLogDownloadFinishedListenerMade: true});
+		if (!this.gyroLogDownloadFinishedListenerMade) {
+			this.gyroLogDownloadFinishedListenerMade = true;
 			MetawearCapacitor.addListener(`logFinished${this.GYRO_LOG_ID}`, () => {
-				this.setState({gyroLogDownloadFinished: true});
+				this.gyroLogDownloadFinished = true;
 			})
 		}
-		if (!this.state.accelLogDownloadFinishedListenerMade) {
-			this.setState({accelLogDownloadFinishedListenerMade: true});
+		if (!this.accelLogDownloadFinishedListenerMade) {
+			this.accelLogDownloadFinishedListenerMade = true;
 			MetawearCapacitor.addListener(`logFinished${this.ACCEL_LOG_ID}`, () => {
-				this.setState({accelLogDownloadFinished: true});
+				this.accelLogDownloadFinished = true;
 			})
 		}
 	}
@@ -369,9 +360,10 @@ export default withRouter(class Sync extends React.Component {
 
 	render()
 	{
-		if (this.state.gyroLogDownloadFinished && this.state.accelLogDownloadFinished) {
+		if (this.gyroLogDownloadFinished && this.accelLogDownloadFinished) {
+			this.gyroLogDownloadFinished = false;
+			this.accelLogDownloadFinished = false;
 			this.uploadToServer();
-			this.setState({gyroLogDownloadFinished: false, accelLogDownloadFinished: false});
 		}
 
 		let button;
