@@ -29,7 +29,7 @@ export default withRouter(class Sync extends React.Component {
 		this.state = {
 			connectCalled: false, // have we asked the plugin to connect?
 			connected: false, // have we been told by the plugin that we have successfully connected?
-			startedLogging: false, // have we started to log data? 
+			streaming: false, // have we started to log data? 
 			accel: null, // last streamed accel data point
 			gyro: null, // last streamed gyro data point
 			error: null // error message if there is one
@@ -48,7 +48,8 @@ export default withRouter(class Sync extends React.Component {
 		this.gyroLogDownloadFinishedListenerMade = false // have we made a listener that listens for the gyro log download finished?
 		this.gyroLogDownloadFinished = false // have we finished downloading the accel log?
 		this.accelLogDownloadFinished = false // have we finished downloading the gyro log?
-		this.path = null // TODO: reset path to null once done logging
+		this.path = null // path to the file that we write the on-board log to
+		this.logTime = null // time the log started
 		this.user = supabaseClient.auth.user()
 
 		if (this.user && this.props.router.pathname == "/sign-in") {
@@ -71,7 +72,7 @@ export default withRouter(class Sync extends React.Component {
 				if (!this.state.connected) {
 					this.setState({connected: true});
 					console.log('JS knows that we are connected!');
-					this.startLogging();
+					this.startStreamVis();
 				}
 			});
 		}
@@ -110,19 +111,17 @@ export default withRouter(class Sync extends React.Component {
 	}
 
 	/**
-	 * Attempts to create the data files.
-	 * If we successfully create the files, start logging.
+	 * Start streaming real-time data and display on the screen.
 	 */
-	startLogging() {
-		if (!this.state.startedLogging) {
-			this.setState({startedLogging: true});
+	startStreamVis() {
+		if (!this.state.streaming) {
+			this.setState({streaming: true});
 			MetawearCapacitor.startData().then(() => {
 				console.log('JS: Running startData did not error.');
-				// TODO: tell the user that we are now logging
 				this.createGyroDataListener();
 				this.createAccelDataListener();
 			}).catch(err => {
-				console.log("JS: Error while starting data logging:")
+				console.log("JS: Error while starting data stream:")
 				console.error(err);
 				this.setState({error: err.toString()})
 				setTimeout(() =>
@@ -134,28 +133,24 @@ export default withRouter(class Sync extends React.Component {
 	}
 
 	/**
-	 * Gyro data stream from native code.
+	 * Real-time gyro data stream from native code.
+	 * Purely for display purposes (user-satisfaction).
 	 */
 	createGyroDataListener() {
 		MetawearCapacitor.addListener('gyroData', (gyro) => {
 			this.setState({gyro: gyro})
-			// this.gyroUpdated = true // now we use on board logging
-			// this.shouldWrite(); // now we use on board logging
-			console.log(`JS: gyroData: (${gyro["x"]}, ${gyro["y"]}, ${gyro["z"]})`);
-			// now purely for display purposes (user satisfaction)
+			//console.log(`JS: gyroData: (${gyro["x"]}, ${gyro["y"]}, ${gyro["z"]})`);
 		});
 	}
 
 	/**
-	 * Accel data stream from native code.
+	 * Real-time accel data stream from native code.
+	 * Purely for display purposes (user-satisfaction).
 	 */
 	createAccelDataListener() {
 		MetawearCapacitor.addListener('accelData', (accel) => {
 			this.setState({accel: accel})
-			// this.accelUpdated = true // now we use on board logging
-			// this.shouldWrite(); // now we use on board logging
-			console.log(`JS: accel: (${accel["x"]}, ${accel["y"]}, ${accel["z"]})`);
-			// now purely for display purposes (user satisfaction)
+			//console.log(`JS: accel: (${accel["x"]}, ${accel["y"]}, ${accel["z"]})`);
 		});
 	}
 
@@ -247,9 +242,8 @@ export default withRouter(class Sync extends React.Component {
 			}, 3000)
 		}
 		console.log("Calling db upload.")
-		let oldPath = this.state.path;
 		await this.createDataFile(); // create a new data file for a later log
-		if (await db.uploadData(oldPath, data)) { // db.uploadData will either return null or an error.
+		if (await db.uploadData(this.logTime, data)) { // db.uploadData will either return null or an error.
 			console.error(`Error while uploading data to server :(`)
 			this.setState({error: "Unable to upload data to server."})
 			setTimeout(() =>
@@ -257,7 +251,11 @@ export default withRouter(class Sync extends React.Component {
 				this.setState({error: null})
 			}, 3000)
 		}
-		console.log("Done uploading to server!")
+		else 
+		{
+			this.logTime = null;
+			console.log("Done uploading to server!")
+		}
 	}
 
 	async createLogDownloadListeners() {
@@ -298,9 +296,9 @@ export default withRouter(class Sync extends React.Component {
 	 */
 	async uploadLogToServer() {
 		let logTime = db.getLogTimestamp()
-		console.log("JS: Log time: " + logTime)
-		logTime = logTime[0].recordingStartTime;
+		this.logTime = logTime[0].recordingStartTime;
 		if (logTime) {
+			console.log("JS: Log time: " + logTime)
 			db.setUserData({recordingStartTime: null}) // reset the log time
 			this.createLogDownloadListeners(); // create listeners for log download
 			Promise.all([MetawearCapacitor.downloadData(this.ACCEL_LOG_ID), MetawearCapacitor.downloadData(this.GYRO_LOG_ID)]) // download the logs
@@ -319,7 +317,6 @@ export default withRouter(class Sync extends React.Component {
 	async connectButton() {
 		if (!this.state.connectCalled) {
 			this.setState({connectCalled: true});
-			await this.createDataFile();
 			MetawearCapacitor.connect()
 				.then(async () => {
 					console.log('Running connection did not error.');
@@ -346,7 +343,7 @@ export default withRouter(class Sync extends React.Component {
 				console.log("JS: disconnected.")
 				console.log(`Datafile path: ${this.state.path}`)
 				// await this.uploadToServer()
-				this.setState({connectCalled: false, connected: false, startedLogging: false, path: null})
+				this.setState({connectCalled: false, connected: false, streaming: false, path: null})
 			})
 			.catch(err => {
 				console.error(err);
@@ -367,7 +364,7 @@ export default withRouter(class Sync extends React.Component {
 		}
 
 		let button;
-		if (this.state.startedLogging)
+		if (this.state.streaming)
 		{
 			button = <IonButton onClick={() => this.stopButton()}>Stop</IonButton>
 		}
