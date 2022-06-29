@@ -83,7 +83,7 @@ export default function Account() {
     }
 
     return (
-	<div className="p-12 bg-white form-widget">
+	<div className="h-screen p-12 bg-white border-0 border-red-400 form-widget">
 	    <div class="mt-8 flex align-center justify-items-center content-center text-center items-center justify-center">
 		<label htmlFor="email" class="pr-2 font-black">email: </label>
 		<input id="email" type="text" class="font-thin" value={session && session.user.email} disabled />

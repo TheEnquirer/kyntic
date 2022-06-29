@@ -134,7 +134,7 @@ export default function SignIn() {
 			</p>
 			    <p class="mt-2 font-bold text-gray-400"
 				onClick={resetEmail}
-			    > reset email </p>
+			    > reset password </p>
 			</>
 			}
 		    </div>

@@ -393,8 +393,9 @@ export default withRouter(class Sync extends React.Component {
 				    <>
 					{button}
 					<div class="text-gray-800 font-bold flex text-center align-center content-centor justify-center flex-col p-2 mt-4 rounded bg-green-400"
-					    onClick={{
+					    onClick={ () => {
 						// contents go here @nick
+						console.log("#TODO")
 					    }}
 					>
 					    retrieve sensor data
@@ -421,11 +422,11 @@ export default withRouter(class Sync extends React.Component {
 						settings
 					    </span>
 					</div>
-				    <div class="text-gray-200 text-center bg-gray-700 p-2 rounded-lg mt-4"
+				    {/*<div class="text-gray-200 text-center bg-gray-700 p-2 rounded-lg mt-4"
 					onClick={() => {
 					    console.log(db.getLogTimestamp());
 					}}
-				    > test setting user data recording start timestamp </div>
+				    > test setting user data recording start timestamp </div>*/}
 				</IonContent>
 			</IonPage>
 		);
