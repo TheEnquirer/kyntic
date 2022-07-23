@@ -32,7 +32,7 @@ const Slide = ({ children, props }) => {
 
     return (
 	<div className={pageStyles.pager}>
-	    <IonIcon icon={arrowBackOutline} className="absolute z-10 p-3 mt-5 ml-3 text-lg text-gray-500 border-0 border-red-500"
+	    <IonIcon icon={arrowBackOutline} className="absolute z-10 p-3 mt-8 ml-3 text-lg text-gray-500 border-0 border-red-500"
 		onClick={() => {
 		    history.push("/tabs/log");
 		}}
