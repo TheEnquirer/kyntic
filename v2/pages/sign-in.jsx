@@ -109,9 +109,11 @@ export default function SignIn() {
 		    >
 			<TextField id="standard-basic" label="email" variant="standard"
 			    value={email}
+			    type={"email"}
 			    onChange={e => { setEmail(e.target.value); setError("") }}
 			/>
 			<TextField id="standard-basic" label="password" variant="standard"
+			    type={"password"}
 			    value={password}
 			    onChange={e => { setPassword(e.target.value); setError("") }}
 			/>

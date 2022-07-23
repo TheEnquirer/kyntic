@@ -6,7 +6,7 @@
     /*font-weight: 900;*/
     font-size: 64px;
     font-family: 'Rubik', sans-serif;
-    @apply font-bold text-center border-0;
+    @apply mt-6 font-bold text-center border-0;
 }
 
 .sep {
