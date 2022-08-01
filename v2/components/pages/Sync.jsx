@@ -35,10 +35,6 @@ export default withRouter(class Sync extends React.Component {
 			error: null // error message if there is one
 		}
 
-		this.accelUpdated = false; // have we received a new accel data point?
-		this.gyroUpdated = false; // have we received a new gyro data point?
-		this.gyroLogPoint = null; // last gyro data point we downloaded from the sensor's on-board log
-		this.accelLogPoint = null; // last accel data point we downloaded from the sensor's on-board log
 		this.connectedListenerMade = false // have we made a listener that hears when we successfully connected?
 		this.accelLogListenerMade = false // have we made a listener that listens for the accel log ID?
 		this.gyroLogListenerMade = false // have we made a listener that listens for the gyro log ID?
@@ -155,18 +151,6 @@ export default withRouter(class Sync extends React.Component {
 	}
 
 	/**
-	 * Should we write to the data file?
-	 * Now used for when we are writing to a data file onto the phone for the on-board logging.
-	 */
-	shouldWrite() {
-		if (this.gyroUpdated && this.accelUpdated)
-		{
-			this.gyroUpdated = false, this.accelUpdated = false;
-			this.writeFile(this.accelLogPoint, this.gyroLogPoint)
-		}
-	}
-
-	/**
 	 * Create a data file to write to. 
 	 * Now used for when we are creating a data file on the phone for the on-board logging.
 	 */
@@ -192,19 +176,17 @@ export default withRouter(class Sync extends React.Component {
 
 	/**
 	 * 
-	 * Write acceleration and gyroscope data to datafile.
+	 * Write acceleration or gyroscope data to datafile.
 	 * Now used for when we are writing to a data file on the phone for the on-board logging.
-	 * @param {*} accel 
-	 * @param {*} gyro 
 	 */
-	async writeFile(accel, gyro) {
-		// data format: [(a_x,a_y,a_z):(g_x,g_y,g_z)];
+	async writeFile(datapoint, isAccel) {
+		// data format: !a(x,y,z)a(x,y,z)...g(x,y,z)g(x,y,z)...;
 		// begginning of data file is a !
 		if (!this.state.path)
 		{
 			await this.createDataFile();
 		}
-		let data = `[(${accel["x"]},${accel["y"]},${accel["z"]}):(${gyro["x"]},${gyro["y"]},${gyro["z"]})];`
+		let data = isAccel ? `a(${datapoint["x"]},${datapoint["y"]},${datapoint["z"]})` : `g(${datapoint["x"]},${datapoint["y"]},${datapoint["z"]})`;
 		try {
 			await Filesystem.appendFile({
 				path: this.state.path,
@@ -262,19 +244,15 @@ export default withRouter(class Sync extends React.Component {
 		if (!this.accelLogDownloadListenerMade) {
 			this.accelLogDownloadListenerMade = true;
 			MetawearCapacitor.addListener(this.ACCEL_LOG_ID, (log) => {
-				this.accelLogPoint = log;
 				console.log(`JS: accelData: (${log["x"]}, ${log["y"]}, ${log["z"]})`);
-				this.accelUpdated = true;
-				this.shouldWrite();
+				this.writeFile(log, isAccel=true);
 			})
 		}
 		if (!this.gyroLogDownloadListenerMade) {
 			this.gyroLogDownloadListenerMade = true;
 			MetawearCapacitor.addListener(this.GYRO_LOG_ID, (log) => {
-				this.gyroLogPoint = log;
 				console.log(`JS: gyroData: (${log["x"]}, ${log["y"]}, ${log["z"]})`);
-				this.gyroUpdated = true;
-				this.shouldWrite();
+				this.writeFile(log, isAccel=false);
 			})
 		}
 		if (!this.gyroLogDownloadFinishedListenerMade) {
@@ -287,6 +265,16 @@ export default withRouter(class Sync extends React.Component {
 			this.accelLogDownloadFinishedListenerMade = true;
 			MetawearCapacitor.addListener(`logFinished${this.ACCEL_LOG_ID}`, () => {
 				this.accelLogDownloadFinished = true;
+				MetawearCapacitor.downloadData(this.GYRO_LOG_ID) // start downloading gyro data, we can only download one at a time
+					.then(() => {})
+					.catch(err => {
+						console.error(err);
+						this.setState({error: err.toString()})
+						setTimeout(() =>
+						{
+							this.setState({error: null})
+						}, 3000)
+					})
 			})
 		}
 	}
@@ -301,7 +289,7 @@ export default withRouter(class Sync extends React.Component {
 			console.log("JS: Log time: " + logTime)
 			db.setUserData({recordingStartTime: null}) // reset the log time
 			this.createLogDownloadListeners(); // create listeners for log download
-			Promise.all([MetawearCapacitor.downloadData(this.ACCEL_LOG_ID), MetawearCapacitor.downloadData(this.GYRO_LOG_ID)]) // download the logs
+			MetawearCapacitor.downloadData(this.ACCEL_LOG_ID) // download accel log, we will download gyro log after
 				.then(() => {})
 				.catch(err => {
 					console.error(err);
