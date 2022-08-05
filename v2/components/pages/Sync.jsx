@@ -158,6 +158,7 @@ export default withRouter(class Sync extends React.Component {
 	 * Now used for when we are creating a data file on the phone for the on-board logging.
 	 */
 	createDataFile() {
+		console.log("JS: Creating data file.");
 		let path = (new Date()).getTime().toString();
 		return Filesystem.writeFile({
 			path: path,
@@ -183,10 +184,12 @@ export default withRouter(class Sync extends React.Component {
 	 * Now used for when we are writing to a data file on the phone for the on-board logging.
 	 */
 	async writeFile(datapoint, isAccel) {
+		console.log("time to write")
 		// data format: !a(x,y,z)a(x,y,z)...g(x,y,z)g(x,y,z)...;
 		// begginning of data file is a !
 		if (!this.state.path)
 		{
+			console.log("Datafile needs to be created.")
 			await this.createDataFile();
 		}
 		let data = isAccel ? `a(${datapoint["x"]},${datapoint["y"]},${datapoint["z"]})` : `g(${datapoint["x"]},${datapoint["y"]},${datapoint["z"]})`;
@@ -197,6 +200,7 @@ export default withRouter(class Sync extends React.Component {
 				directory: Directory.Data,
 				encoding: Encoding.UTF8
 			})
+			console.log("Successfully wrote data to file in JS!")
 		} catch (e) {
 			console.error(`Error while appending: ${e}`)
 			this.setState({error: err.toString()})
@@ -208,7 +212,7 @@ export default withRouter(class Sync extends React.Component {
 	}
 
 	async uploadToServer() {
-		console.log(`Going to uplaod datafile "${this.state.path}".`)
+		console.log(`Going to upload datafile "${this.state.path}".`)
 		if (!this.state.path) { console.log("No datafile path ;("); return; }
 		let data;
 		try {
@@ -265,14 +269,23 @@ export default withRouter(class Sync extends React.Component {
 				console.log("JS: gyro log download finished.");
 				if (!this.accelLogDownloadFinished) {
 					MetawearCapacitor.downloadData({ID: this.ACCEL_LOG_ID}) // start downloading accel data, we can only download one at a time
-					.then(() => {})
-					.catch(err => {
-						console.error(err);
-						this.setState({error: err.toString()})
-						setTimeout(() =>
-						{
-							this.setState({error: null})
-						}, 3000)
+						.then(() => {})
+						.catch(err => {
+							console.error(err);
+							this.setState({error: err.toString()})
+							setTimeout(() =>
+							{
+								this.setState({error: null})
+							}, 3000)
+						})
+				}
+				else 
+				{
+					this.gyroLogDownloadFinished = false;
+					this.accelLogDownloadFinished = false;
+					console.log("JS: Both logs downloaded, uploading to server.")
+					this.uploadToServer().then(() => {
+						db.setUserData({recordingStartTime: null}) // reset the log time
 					})
 				}
 			})
@@ -293,6 +306,15 @@ export default withRouter(class Sync extends React.Component {
 								this.setState({error: null})
 							}, 3000)
 						})
+				}
+				else 
+				{
+					this.gyroLogDownloadFinished = false;
+					this.accelLogDownloadFinished = false;
+					console.log("JS: Both logs downloaded, uploading to server.")
+					this.uploadToServer().then(() => {
+						db.setUserData({recordingStartTime: null}) // reset the log time
+					})
 				}
 			})
 		}
@@ -371,14 +393,6 @@ export default withRouter(class Sync extends React.Component {
 
 	render()
 	{
-		if (this.gyroLogDownloadFinished && this.accelLogDownloadFinished) {
-			this.gyroLogDownloadFinished = false;
-			this.accelLogDownloadFinished = false;
-			this.uploadToServer().then(() => {
-				db.setUserData({recordingStartTime: null}) // reset the log time
-			})
-		}
-
 		let button;
 		if (this.state.streaming)
 		{
