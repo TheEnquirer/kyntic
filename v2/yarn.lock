@@ -1919,9 +1919,9 @@
   "resolved" "https://registry.npmjs.org/@next/eslint-plugin-next/-/eslint-plugin-next-11.0.0.tgz"
   "version" "11.0.0"
 
-"@next/swc-darwin-arm64@12.1.6":
-  "integrity" "sha512-P0EXU12BMSdNj1F7vdkP/VrYDuCNwBExtRPDYawgSUakzi6qP0iKJpya2BuLvNzXx+XPU49GFuDC5X+SvY0mOw=="
-  "resolved" "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-12.1.6.tgz"
+"@next/swc-darwin-x64@12.1.6":
+  "integrity" "sha512-9FptMnbgHJK3dRDzfTpexs9S2hGpzOQxSQbe8omz6Pcl7rnEp9x4uSEKY51ho85JCjL4d0tDLBcXEJZKKLzxNg=="
+  "resolved" "https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-12.1.6.tgz"
   "version" "12.1.6"
 
 "@nodelib/fs.scandir@2.1.5":
@@ -8183,10 +8183,10 @@
   "resolved" "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   "version" "1.4.1"
 
-"metawear-capacitor@^0.4.2":
-  "integrity" "sha512-GGCxK8RYJMwODdG1rB1VOP5L7dGFqDfm9QOUJW4ZmIUK7JUNMiElkyIaTtklzIzHkVwRirjSWlD5w/AiNToFlQ=="
-  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.4.2.tgz"
-  "version" "0.4.2"
+"metawear-capacitor@^0.4.5":
+  "integrity" "sha512-ExmGKHpOOiJ6xMj0o02/+hLTfP83ZqhwaHnMu7mQYcBTLiQGU+AWPdU6gUV0EXfy0uw3SaodyV9g5DsFNgJcrw=="
+  "resolved" "https://registry.npmjs.org/metawear-capacitor/-/metawear-capacitor-0.4.5.tgz"
+  "version" "0.4.5"
 
 "methods@~1.1.2":
   "integrity" "sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w=="

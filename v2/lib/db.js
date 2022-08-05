@@ -134,6 +134,7 @@ const db = (props) => {
     }, "setUserData")
 
     fn( async () => {
+		console.log("getting log timestamp")
 	const { data, error } = await supabaseClient
 	    .from('users')
 	    .select("recordingStartTime")
