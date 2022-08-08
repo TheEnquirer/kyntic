@@ -30,7 +30,7 @@
     "chartjs-plugin-streaming": "^2.0.0",
     "classnames": "^2.2.6",
     "luxon": "^3.0.1",
-    "metawear-capacitor": "^0.4.9",
+    "metawear-capacitor": "^0.4.92",
     "moment": "^2.29.1",
     "momentjs": "^2.0.0",
     "next": "^12.1.6",
