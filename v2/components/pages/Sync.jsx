@@ -130,9 +130,7 @@ export default withRouter(class Sync extends React.Component {
 		}
 	}
 
-	/**
-	 * Start streaming real-time data and display on the screen.
-	 */
+	/** Start streaming real-time data and display on the screen. */
 	startStreamVis() {
 		if (!this.state.streaming) {
 			this.setState({streaming: true});
@@ -158,7 +156,7 @@ export default withRouter(class Sync extends React.Component {
 		const config = {
 			type: 'line',
 			data: {
-				datasets: [
+				datasets: [ // self-explanatory
 					{
 						label: 'Accel X', 
 						data: [],
@@ -220,12 +218,12 @@ export default withRouter(class Sync extends React.Component {
 						delay: 0,       // delay of 500 ms, so upcoming values are known before plotting a line
 						refresh: 20,      // onRefresh callback will be called every 20 ms
 						onRefresh: chart => {
-							if (this.accel == null) 
+							if (this.accel == null) // if we are no longer streaming, pause the chart scrolling
 							{
 								chart.options.scales.x.realtime.pause = true
 								return
 							}
-							else if (chart.options.scales.x.realtime.pause) 
+							else if (chart.options.scales.x.realtime.pause) // unpause chart scrolling when we are streaming again
 							{
 								chart.options.scales.x.realtime.pause = false
 							}
@@ -242,7 +240,7 @@ export default withRouter(class Sync extends React.Component {
 				},
 				elements: {
                     point:{
-                        radius: 0
+                        radius: 0 // I don't like seeing individual data points
                     }
                 },
 				plugins: {
@@ -616,14 +614,6 @@ export default withRouter(class Sync extends React.Component {
 					}
 				    <>
 					{button}
-					
-					{/*<div class="text-gray-800 font-bold flex text-center align-center content-centor justify-center flex-col p-2 mt-4 rounded bg-green-400"
-					    onClick={ () => {
-						this.uploadLogToServer();
-					    }}
-					>
-					    retrieve sensor data
-					</div>*/}
 					<IonButton color="success" style={{"--box-shadow":"none"}} expand='block' onClick={() => this.uploadLogToServer()}>retrieve sensor data</IonButton>
 					{
 						// shows a progress indicator when we are downloading logs 
@@ -631,19 +621,7 @@ export default withRouter(class Sync extends React.Component {
 						<IonProgressBar value={((this.state.gyroLogDownloadProgress ?? 0) + (this.state.accelLogDownloadProgress ?? 0)/2)}></IonProgressBar>
 					}
 				    </>
-					{/*
-					{this.state.gyro && this.state.streaming &&
-						<IonList>
-							Gyroscope: {this.state.gyro["x"]}, {this.state.gyro["y"]}, {this.state.gyro["z"]}
-						</IonList>
-					}
-					{this.state.accel && this.state.streaming &&
-						<IonList>
-							Acceleration: {this.state.accel["x"]}, {this.state.accel["y"]}, {this.state.accel["z"]}
-						</IonList>
-					}*/
 					<div><canvas id="myChart"></canvas></div>
-					}
 					{this.state.error && (<IonFooter><div className="absolute w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded top-14 left-1/2 transform -translate-x-1/2 "> {this.state.error} </div></IonFooter>)}
 				    <hr class="border-1 border-gray-800 mt-8"/>
 					<div class="border-red-500 flex flex-row border-0 mt-3 text-black text-3xl mt-5"
@@ -655,11 +633,6 @@ export default withRouter(class Sync extends React.Component {
 						settings
 					    </span>
 					</div>
-				    {/*<div class="text-gray-200 text-center bg-gray-700 p-2 rounded-lg mt-4"
-					onClick={() => {
-					    console.log(db.getLogTimestamp());
-					}}
-				    > test setting user data recording start timestamp </div>*/}
 				</IonContent>
 			</IonPage>
 		);
