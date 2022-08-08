@@ -16,6 +16,10 @@ import {
 	IonIcon,
 	IonList
 } from '@ionic/react';
+import 'chartjs-adapter-luxon';
+import { Chart } from 'chart.js';
+import ChartStreaming from 'chartjs-plugin-streaming';
+import { update } from 'pullstate';
 
 export default withRouter(class Sync extends React.Component {
 
@@ -30,9 +34,12 @@ export default withRouter(class Sync extends React.Component {
 			connectCalled: false, // have we asked the plugin to connect?
 			connected: false, // have we been told by the plugin that we have successfully connected?
 			streaming: false, // have we started to log data? 
-			accel: null, // last streamed accel data point
-			gyro: null, // last streamed gyro data point
-			error: null // error message if there is one
+			// accel: null, // last streamed accel data point
+			// gyro: null, // last streamed gyro data point
+			error: null, // error message if there is one
+			gyroLogDownloadProgress: null, // progress of downloading the gyro log, 0-1
+			accelLogDownloadProgress: null, // progress of downloading the accel log, 0-1
+			chart: null, // chart object, for streaming data visualization
 		}
 
 		this.connectedListenerMade = false // have we made a listener that hears when we successfully connected?
@@ -40,6 +47,8 @@ export default withRouter(class Sync extends React.Component {
 		this.gyroLogListenerMade = false // have we made a listener that listens for the gyro log ID?
 		this.accelLogDownloadListenerMade = false // have we made a listener that listens for the accel log download?
 		this.gyroLogDownloadListenerMade = false // have we made a listener that listens for the gyro log download?
+		this.accelLogDownloadProgressListenerMade = false // have we made a listener that listens for the accel log download progress?
+		this.gyroLogDownloadProgressListenerMade = false // have we made a listener that listens for the gyro log download progress?
 		this.accelLogDownloadFinishedListenerMade = false // have we made a listener that listens for the accel log download finished?
 		this.gyroLogDownloadFinishedListenerMade = false // have we made a listener that listens for the gyro log download finished?
 		this.gyroLogDownloadFinished = false // have we finished downloading the accel log?
@@ -48,13 +57,23 @@ export default withRouter(class Sync extends React.Component {
 		this.logTime = null // time the log started
 		this.user = supabaseClient.auth.user()
 		this.callback = null // janky callback
+		this.gyro = null // last streamed gyro data point
+		this.accel = null // last streamed accel data point
 
 		if (this.user && this.props.router.pathname == "/sign-in") {
 			this.props.router.push('/tabs')
 		}
     };
 
-	componentDidMount() { db(); /* db init */ }
+	componentDidMount() 
+	{ 
+		db(); // db init
+		Chart.register(ChartStreaming); // register streaming plugin
+		Chart.defaults.set('plugins.streaming', {
+			duration: 1000,
+			delay: 0,
+		});
+	}
 
 
 	/**
@@ -134,14 +153,122 @@ export default withRouter(class Sync extends React.Component {
 		}
 	}
 
+	/** Creates chart for streaming data. */
+	createChart() {
+		const config = {
+			type: 'line',
+			data: {
+				datasets: [
+					{
+						label: 'Accel X', 
+						data: [],
+						showLine: true,
+						borderColor: '#89B0AE',
+						tension: 0.1,
+						fill: false
+					}, // accel x
+					{
+						label: 'Accel Y', 
+						data: [],
+						showLine: true,
+						borderColor: '#BEE3DB',
+						tension: 0.1,
+						fill: false
+					}, // accel y
+					{
+						label: 'Accel Z', 
+						data: [],
+						showLine: true,
+						borderColor: '#22577A',
+						tension: 0.1,
+						fill: false
+					}, // accel z
+					{
+						label: 'Gyro X', 
+						data: [],
+						showLine: true,
+						borderColor: '#9F2042',
+						tension: 0.1,
+						fill: false
+					},  // gyro x
+					{
+						label: 'Gyro Y', 
+						data: [],
+						showLine: true,
+						borderColor: '#D65C8F',
+						tension: 0.1,
+						fill: false
+					},  // gyro y
+					{
+						label: 'Gyro Z', 
+						data: [],
+						showLine: true,
+						borderColor: '#E79DBC',
+						tension: 0.1,
+						fill: false
+					},  // gyro z
+				]
+			},
+			options: {
+				scales: {
+					x: {
+					  type: 'realtime',   // x axis will auto-scroll from right to left
+					  realtime: {         // per-axis options
+						pause: false,     // chart is not paused
+						ttl: undefined,   // data will be automatically deleted as it disappears off the chart
+						frameRate: 60,    // data points are drawn 30 times every second
+						delay: 0,       // delay of 500 ms, so upcoming values are known before plotting a line
+						refresh: 20,      // onRefresh callback will be called every 20 ms
+						onRefresh: chart => {
+							if (this.accel == null) 
+							{
+								chart.options.scales.x.realtime.pause = true
+								return
+							}
+							else if (chart.options.scales.x.realtime.pause) 
+							{
+								chart.options.scales.x.realtime.pause = false
+							}
+							let time = (new Date()).getTime();
+							chart.data.datasets[0].data.push({x: time, y: this.accel["x"]});
+							chart.data.datasets[1].data.push({x: time, y: this.accel["y"]});
+							chart.data.datasets[2].data.push({x: time, y: this.accel["z"]});
+							chart.data.datasets[3].data.push({x: time, y: this.gyro["x"]});
+							chart.data.datasets[4].data.push({x: time, y: this.gyro["y"]});
+							chart.data.datasets[5].data.push({x: time, y: this.gyro["z"]});
+						}
+					  }
+					}
+				},
+				elements: {
+                    point:{
+                        radius: 0
+                    }
+                },
+				plugins: {
+					title: {
+						display: true,
+						text: 'Accerlerometer and Gyroscope Real-Time Data'
+					}
+				},
+			}
+		};
+		console.log("JS: Creating chart.");
+		return new Chart(document.getElementById('myChart'), config);
+	}
+
 	/**
 	 * Real-time gyro data stream from native code.
 	 * Purely for display purposes (user-satisfaction).
 	 */
 	createGyroDataListener() {
 		MetawearCapacitor.addListener('gyroData', (gyro) => {
-			this.setState({gyro: gyro})
-			//console.log(`JS: gyroData: (${gyro["x"]}, ${gyro["y"]}, ${gyro["z"]})`);
+			if (this.state.chart == null) 
+			{
+				this.setState({chart: this.createChart()})
+			}
+			console.log(`JS: gyroData: (${gyro["x"]}, ${gyro["y"]}, ${gyro["z"]})`);
+			this.gyro = gyro;
 		});
 	}
 
@@ -151,8 +278,12 @@ export default withRouter(class Sync extends React.Component {
 	 */
 	createAccelDataListener() {
 		MetawearCapacitor.addListener('accelData', (accel) => {
-			this.setState({accel: accel})
-			//console.log(`JS: accel: (${accel["x"]}, ${accel["y"]}, ${accel["z"]})`);
+			if (this.state.chart == null) 
+			{
+				this.setState({chart: this.createChart()})
+			}
+			console.log(`JS: accelData: (${accel["x"]}, ${accel["y"]}, ${accel["z"]})`);
+			this.accel = accel;
 		});
 	}
 
@@ -294,6 +425,7 @@ export default withRouter(class Sync extends React.Component {
 					{
 						console.log("JS: Both logs downloaded and stopped, uploading to server.")
 						this.uploadToServer().then(() => {
+							this.setState({gyroLogDownloadProgress: null, accelLogDownloadProgress: null}) // no longer downloading, reset progress, no more progress bar
 							db.setUserData({recordingStartTime: null}) // reset the log time
 						})
 					}).catch(err => {
@@ -336,6 +468,7 @@ export default withRouter(class Sync extends React.Component {
 					{
 						console.log("JS: Both logs downloaded and stopped, uploading to server.")
 						this.uploadToServer().then(() => {
+							this.setState({gyroLogDownloadProgress: null, accelLogDownloadProgress: null}) // no longer downloading, reset progress, no more progress bar
 							db.setUserData({recordingStartTime: null}) // reset the log time
 						})
 					}).catch(err => {
@@ -349,6 +482,22 @@ export default withRouter(class Sync extends React.Component {
 						} , 3000)
 					})
 				}
+			})
+		}
+		if (!this.gyroLogDownloadProgressListenerMade)
+		{
+			this.gyroLogDownloadProgressListenerMade = true;
+			MetawearCapacitor.addListener(`logProgress-${this.GYRO_LOG_ID}`, (progress) => {
+				console.log(`JS: gyro log download progress: ${progress["progress"]}`);
+				this.setState({gyroLogDownloadProgress: progress["progress"]});
+			})
+		}
+		if (!this.accelLogDownloadProgressListenerMade)
+		{
+			this.accelLogDownloadProgressListenerMade = true;
+			MetawearCapacitor.addListener(`logProgress-${this.ACCEL_LOG_ID}`, (progress) => {
+				console.log(`JS: accel log download progress: ${progress["progress"]}`);
+				this.setState({accelLogDownloadProgress: progress["progress"]});
 			})
 		}
 	}
@@ -422,7 +571,10 @@ export default withRouter(class Sync extends React.Component {
 		MetawearCapacitor.stopData()
 			.then(async () => {
 				console.log("JS: stopped streaming.")
+				this.state.chart.options.scales.x.realtime.pause = true
 				this.setState({connectCalled: false, connected: false, streaming: false})
+				this.gyro = null
+				this.accel = null
 			})
 			.catch(err => {
 				console.error(err);
@@ -446,6 +598,7 @@ export default withRouter(class Sync extends React.Component {
 		    button = <IonButton style={{"--box-shadow":"none"}}onClick={() => this.recordButton()} expand='block'>record<IonIcon slot="end" shadow="none" icon="bluetooth"></IonIcon></IonButton>
 		}
 
+
 		return (
 			<IonPage class="plt-android plt-mobile md" mode="md">
 				<IonToolbar>
@@ -459,17 +612,26 @@ export default withRouter(class Sync extends React.Component {
 						// shows a loading indicator while we are connecting
 						this.state.connectCalled && !this.state.connected &&
 						<IonProgressBar type="indeterminate"></IonProgressBar>
+
 					}
 				    <>
 					{button}
-					<div class="text-gray-800 font-bold flex text-center align-center content-centor justify-center flex-col p-2 mt-4 rounded bg-green-400"
+					
+					{/*<div class="text-gray-800 font-bold flex text-center align-center content-centor justify-center flex-col p-2 mt-4 rounded bg-green-400"
 					    onClick={ () => {
 						this.uploadLogToServer();
 					    }}
 					>
 					    retrieve sensor data
-					</div>
+					</div>*/}
+					<IonButton color="success" style={{"--box-shadow":"none"}} expand='block' onClick={() => this.uploadLogToServer()}>retrieve sensor data</IonButton>
+					{
+						// shows a progress indicator when we are downloading logs 
+						(this.state.gyroLogDownloadProgress != null || this.state.accelLogDownloadProgress != null) &&
+						<IonProgressBar value={((this.state.gyroLogDownloadProgress ?? 0) + (this.state.accelLogDownloadProgress ?? 0)/2)}></IonProgressBar>
+					}
 				    </>
+					{/*
 					{this.state.gyro && this.state.streaming &&
 						<IonList>
 							Gyroscope: {this.state.gyro["x"]}, {this.state.gyro["y"]}, {this.state.gyro["z"]}
@@ -479,6 +641,8 @@ export default withRouter(class Sync extends React.Component {
 						<IonList>
 							Acceleration: {this.state.accel["x"]}, {this.state.accel["y"]}, {this.state.accel["z"]}
 						</IonList>
+					}*/
+					<div><canvas id="myChart"></canvas></div>
 					}
 					{this.state.error && (<IonFooter><div className="absolute w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded top-14 left-1/2 transform -translate-x-1/2 "> {this.state.error} </div></IonFooter>)}
 				    <hr class="border-1 border-gray-800 mt-8"/>
