@@ -6,13 +6,19 @@ import { useRouter } from 'next/router'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+
+
 export default function SignIn() {
     const handleChange = (event) => {
 	setName(event.target.value);
     };
 
     const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+    const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [confirmEmail, setConfirmEmail] = useState(false)
     const router = useRouter()
@@ -32,21 +38,21 @@ export default function SignIn() {
 );
     };
 
-	async function signUp() {
-		if (!validateEmail(email)) {
-			setError("not a valid email :(")
-			return
-		}
-		setConfirmEmail(true)
-		const { user, session, error } = await supabaseClient.auth.signUp({
-			email: email,
-			password: password,
-		})
-		if (error) {
-			console.log({error})
-			setError(error.message)
-		}
-	}
+    async function signUp() {
+	    if (!validateEmail(email)) {
+		    setError("not a valid email :(")
+		    return
+	    }
+	    setConfirmEmail(true)
+	    const { user, session, error } = await supabaseClient.auth.signUp({
+		    email: email,
+		    password: password,
+	    })
+	    if (error) {
+		    console.log({error})
+		    setError(error.message)
+	    }
+    }
 
     async function resetEmail() {
 	const { data, error } = await supabaseClient.auth.api
@@ -93,9 +99,9 @@ export default function SignIn() {
 
     return (
 	<>
-	    <div className="flex flex-col content-center justify-center h-screen bg-gray-100 ">
+	    {/*<div className="flex flex-col content-center justify-center h-screen bg-gray-100 ">
 		{error && (<div className="absolute top-0 w-48 p-3 mt-12 font-bold text-center text-red-700 bg-red-300 rounded left-1/2 transform -translate-x-1/2 "> {error} </div>)}
-		{/*{confirmEmail? <div class="absolute">please check your inbox and confirm your email!</div>: ""}*/}
+		[>{confirmEmail? <div class="absolute">please check your inbox and confirm your email!</div>: ""}<]
 		<div className="flex flex-col h-screen pt-64 text-center border-0 border-red-500">
 		    <p className={styles.cleanTitle}> sign in </p>
 
@@ -143,7 +149,117 @@ export default function SignIn() {
 		</div>
 
 	    </div>
+*/}
 
-	</>
+	    {/*<div onClick={navToSignIn}> sign in </div>
+	    <div onClick={navToSignUp}> sign up </div>*/}
+
+	    <Accordion>
+		<AccordionSummary expandIcon={"⌄"} >
+		    sign in!
+		</AccordionSummary>
+		<AccordionDetails>
+
+		<Accordion>
+		    <AccordionSummary expandIcon={"⌄"} > phone number
+		    </AccordionSummary>
+		    <AccordionDetails>
+			<PhoneInput supabaseClient={supabaseClient}/>
+		</AccordionDetails></Accordion>
+
+		<Accordion>
+		    <AccordionSummary expandIcon={"⌄"} > email and password
+		    </AccordionSummary>
+		    <AccordionDetails>
+		</AccordionDetails></Accordion>
+
+		<Accordion>
+		    <AccordionSummary expandIcon={"⌄"} > passwordless email
+		    </AccordionSummary>
+		    <AccordionDetails>
+		</AccordionDetails></Accordion>
+
+		</AccordionDetails>
+	    </Accordion>
+
+
+
+	    <Accordion>
+		<AccordionSummary expandIcon={"⌄"} >
+		    sign up!
+		</AccordionSummary>
+		<AccordionDetails>
+
+
+		</AccordionDetails>
+	    </Accordion>
+	    </>
     )
 }
+
+
+
+
+
+const SignInComponent = () => { 
+
+}
+
+
+
+
+
+const PhoneInput = (props) => {
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [error, setError] = useState('');
+    const phoneNumberRegex = /^\d{3}-\d{3}-\d{4}$/;
+
+    const handleChange = e => {
+	setPhoneNumber(e.target.value);
+    };
+
+    const handleBlur = e => {
+	if (!phoneNumberRegex.test(e.target.value)) {
+	    setError('Invalid phone number format. Please enter a valid phone number in the format 555-555-5555.');
+	} else {
+	    setError('');
+	}
+    };
+
+    return (
+	<>
+	    <div className="relative rounded-md shadow-sm">
+		<input
+		    className={`form-input py-3 px-4 block w-full leading-5 rounded-md transition duration-150 ease-in-out sm:text-sm sm:leading-5 ${error ? 'border-red-500' : ''}`}
+		    placeholder="Enter phone number"
+		    type="tel"
+		    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+		    title="Format: 555-555-5555"
+		    value={phoneNumber}
+		    onChange={handleChange}
+		    onBlur={handleBlur}
+		/>
+		{error && <p className="text-red-500 text-xs">{error}</p>}
+
+	    </div>
+	    <button
+		disable={(error || !phoneNumber) ? true : false}
+		className={`
+		    mt-4 py-3 px-4
+		    ${(error || !phoneNumber)? 'bg-gray-500' : 'bg-blue-500'}
+		    text-white rounded-md
+		`}
+		onClick={async () => {
+		    console.log("registering click")
+		    console.log(props.supabaseClient.auth.signInWithOtp)
+		    //let { data, error } = await props.supabaseClient.auth.signInWithOtp({
+		    //    phone: '+1' + phoneNumber,
+		    //})
+
+		}}
+	    > submit </button>
+	</>
+    );
+};
+
+
